@@ -6,7 +6,7 @@ from pathlib import Path
 sys.path.append(str(Path(__file__).parent))
 
 from data.series import SERIES_DATA
-from data.metiers import METIERS_DATA
+from data.metier import METIER_DATA
 from data.chatbot_responses import CHATBOT_RESPONSES
 from utils.scoring import calculer_recommandations
 from utils.ikigai import calculer_score_ikigai
@@ -325,4 +325,5 @@ def main():
             page_resultats()
 
 if __name__ == "__main__":
+
     main()
