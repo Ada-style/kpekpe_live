@@ -5,8 +5,8 @@ from pathlib import Path
 # Ajouter le dossier parent au path pour les imports
 sys.path.append(str(Path(__file__).parent))
 
-from data.series import Serie.py
-from data.Metier import Metier.py
+from data.series import Serie
+from data.Metier import Metier
 from data.chatbot_responses import chatbot_responses.py
 from utils.scoring import calculer_recommandations
 from utils.ikigai import calculer_score_ikigai
@@ -327,5 +327,6 @@ def main():
 if __name__ == "__main__":
 
     main()
+
 
 
