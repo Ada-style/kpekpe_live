@@ -225,3 +225,87 @@ def calculer_recommandations(responses, data_dict, profil):
     recommandations.sort(key=lambda x: x['score'], reverse=True)
     
     return recommandations
+
+
+def calculer_recommandations_texte_libre(responses, data_dict, profil):
+    """
+    Génère les recommandations en tenant compte des réponses en texte libre
+    """
+    recommandations = []
+    
+    # Extraire les textes libres
+    passion_text = responses.get('passion_principale', '').lower()
+    forces_text = responses.get('forces_naturelles', '').lower()
+    impact_text = responses.get('impact_souhaite', '').lower()
+    priorites_text = responses.get('priorites_personnelles', '').lower()
+    
+    for key, data in data_dict.items():
+        # Calcul de base avec les sélections
+        if profil == 'collegien':
+            score = calculer_score_serie(responses, data)
+        else:
+            score = calculer_score_metier(responses, data)
+        
+        # Bonus pour correspondances dans le texte libre
+        bonus_texte = 0
+        
+        # Analyser le texte de passion
+        mots_cles_passion = {
+            'calculer': ['math', 'calcul', 'chiffre', 'nombre', 'equation'],
+            'créer': ['créer', 'dessin', 'art', 'imagination', 'inventer'],
+            'aider': ['aider', 'soin', 'santé', 'soigner', 'médecin'],
+            'construire': ['construire', 'bâtir', 'réparer', 'assembler', 'mécanique'],
+            'communiquer': ['parler', 'écrire', 'communiquer', 'convaincre', 'expliquer'],
+            'analyser': ['analyser', 'comprendre', 'réfléchir', 'résoudre', 'logique'],
+            'organiser': ['organiser', 'gérer', 'planifier', 'ranger'],
+            'technologie': ['ordinateur', 'informatique', 'technologie', 'programmer', 'code']
+        }
+        
+        for categorie, mots in mots_cles_passion.items():
+            if any(mot in passion_text for mot in mots):
+                # Vérifier si cette catégorie correspond à la série/métier
+                nom_data = data['nom'].lower()
+                description = data.get('description', data.get('explication', '')).lower()
+                
+                if any(mot in nom_data + description for mot in mots):
+                    bonus_texte += 5
+        
+        # Analyser le texte des forces
+        if any(mot in forces_text for mot in ['patience', 'expliquer', 'enseigner']):
+            if 'enseignement' in data['nom'].lower() or 'professeur' in data['nom'].lower():
+                bonus_texte += 10
+        
+        if any(mot in forces_text for mot in ['manuel', 'main', 'réparer', 'construire']):
+            if data.get('type') == 'Technique-Industriel' or 'technicien' in data['nom'].lower():
+                bonus_texte += 10
+        
+        # Analyser le texte d'impact
+        if any(mot in impact_text for mot in ['santé', 'soigner', 'maladie', 'médecin']):
+            if data.get('domaine') == 'Santé' or 'santé' in data['nom'].lower():
+                bonus_texte += 10
+        
+        if any(mot in impact_text for mot in ['enseigner', 'éduquer', 'école', 'apprendre']):
+            if data.get('domaine') == 'Éducation' or 'enseignement' in data['nom'].lower():
+                bonus_texte += 10
+        
+        if any(mot in impact_text for mot in ['construire', 'infrastructure', 'route', 'bâtiment']):
+            if 'génie civil' in data['nom'].lower() or 'btp' in data['nom'].lower():
+                bonus_texte += 10
+        
+        # Score final
+        score_final = min(score + bonus_texte, 100)
+        
+        recommandations.append({
+            'nom': data['nom'],
+            'badge': data.get('badge', ''),
+            'score': round(score_final),
+            'explication': data.get('description', data.get('explication', '')),
+            'competences': data.get('profil_ideal', {}).get('talents', []) if profil == 'collegien' else data.get('competences', []),
+            'debouches': data.get('debouches_post_bac', []) if profil == 'collegien' else data.get('debouches_concrets', []),
+            'duree': f"Parcours : Seconde → Première (BAC 1) → Terminale (BAC 2)" if profil == 'collegien' else data.get('duree_etudes', '')
+        })
+    
+    # Trier par score décroissant
+    recommandations.sort(key=lambda x: x['score'], reverse=True)
+    
+    return recommandations
