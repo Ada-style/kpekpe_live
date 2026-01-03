@@ -195,20 +195,24 @@ kpekpe_prototype/
 ├── app.py                          # Application principale Streamlit
 │   ├── Authentification
 │   ├── Page d'accueil
-│   ├── Quiz Ikigaï
-│   ├── Affichage des résultats
-│   └── Chatbot FAQ
+│   ├── Quiz Ikigaï (questions ouvertes + champs libres)
+│   ├── Affichage des résultats avec écoles recommandées
+│   └── Chatbot FAQ enrichi
 │
 ├── data/                           # Données de l'application
 │   ├── series.py                   # 12 séries togolaises (A4, C, D, E, F1-F4, TI, G1-G3)
 │   ├── metiers.py                  # 18+ métiers/filières post-BAC
-│   └── chatbot_responses.py        # 13+ réponses FAQ chatbot
+│   ├── chatbot_responses.py        # 20+ réponses FAQ enrichies
+│   ├── universites.py              # 97 universités/écoles reconnues (2025-2026)
+│   ├── debouches_secteurs.py       # 47 métiers prometteurs par secteur (ANPE)
+│   └── matieres_togo.py            # Matières du système éducatif togolais
 │
 ├── utils/                          # Algorithmes et logique métier
 │   ├── scoring.py                  # Algorithme de recommandation
 │   │   ├── calculer_score_serie()
 │   │   ├── calculer_score_metier()
-│   │   └── calculer_recommandations()
+│   │   ├── calculer_recommandations()
+│   │   └── calculer_recommandations_texte_libre()  # Analyse texte libre
 │   │
 │   └── ikigai.py                   # Logique Ikigaï (4 dimensions)
 │       ├── calculer_score_ikigai()
@@ -454,8 +458,8 @@ Pour contribuer au projet :
 ## 📞 Contact
 
 Pour toute question ou suggestion sur **Kpékpé**, contacte l'équipe via :
-- Email : adadossi24@gmail.com
-- Téléphone : 71162394
+- Email : [adadossi24@gmail.com]
+- Téléphone : [71162394]
 
 ---
 
@@ -470,6 +474,5 @@ Ce projet est développé dans le cadre de l'initiative **Kpékpé** pour l'orie
 ## 🙏 Remerciements
 
 Merci à tous ceux qui contribuent à améliorer l'orientation des jeunes togolais !
-
 
 **Ensemble, construisons l'avenir du Togo ! 🇹🇬🚀**
