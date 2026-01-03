@@ -6,7 +6,7 @@ from pathlib import Path
 sys.path.append(str(Path(__file__).parent))
 
 from data.series import SERIES_DATA
-from data.metiers import METIERS_DATA
+from data.Metier import METIERS_DATA
 from data.chatbot_responses import CHATBOT_RESPONSES
 from data.universites import UNIVERSITES_PUBLIQUES, UNIVERSITES_PRIVEES_PRINCIPALES, trouver_ecoles_par_domaine
 from data.debouches_secteurs import DEBOUCHES_PAR_SECTEUR, obtenir_metiers_forte_demande
@@ -506,4 +506,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
