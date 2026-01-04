@@ -2,150 +2,189 @@ import streamlit as st
 import sys
 from pathlib import Path
 
-# Ajouter le dossier parent au path pour les imports
 sys.path.append(str(Path(__file__).parent))
 
 from data.series import SERIES_DATA
 from data.Metier import METIERS_DATA
 from data.chatbot_responses import CHATBOT_RESPONSES
 from data.universites import UNIVERSITES_PUBLIQUES, UNIVERSITES_PRIVEES_PRINCIPALES, trouver_ecoles_par_domaine
-from data.debouches_secteurs import DEBOUCHES_PAR_SECTEUR, obtenir_metiers_forte_demande
+from data.debouches_secteurs import DEBOUCHES_PAR_SECTEUR
 from utils.scoring import calculer_recommandations_texte_libre
-from utils.Ikigai import calculer_score_ikigai
 
-# Configuration de la page
 st.set_page_config(
-    page_title="Kpékpé - Ton guide d'orientation",
+    page_title="Kpékpé - Light on your way",
     page_icon="🎓",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
 
-# CSS personnalisé - Design épuré avec couleurs nudes
+# CSS avec couleurs du logo Kpékpé
 st.markdown("""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
     
     * {
-        font-family: 'Inter', sans-serif;
+        font-family: 'Poppins', sans-serif;
+    }
+    
+    .main {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
     }
     
     .main-header {
-        background: linear-gradient(135deg, #E8DDD3 0%, #D4C4B0 100%);
-        padding: 3rem 2rem;
-        border-radius: 12px;
+        background: linear-gradient(135deg, #004B87 0%, #0066b3 100%);
+        padding: 2.5rem 2rem;
+        border-radius: 15px;
         text-align: center;
         margin-bottom: 2rem;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        box-shadow: 0 4px 15px rgba(0, 75, 135, 0.2);
+        border: 3px solid #FF6B35;
     }
     
     .main-header h1 {
-        color: #5C4D42;
-        font-weight: 600;
+        color: white;
+        font-weight: 700;
         margin-bottom: 0.5rem;
-        font-size: 2.5rem;
+        font-size: 3rem;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
     }
     
-    .main-header p {
-        color: #7A6C5D;
-        font-weight: 300;
-        font-size: 1.1rem;
+    .main-header .slogan {
+        color: #FDB913;
+        font-weight: 500;
+        font-size: 1.4rem;
+        font-style: italic;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
     }
     
     .stButton>button {
-        background-color: #9C8B7A;
+        background: linear-gradient(135deg, #FF6B35 0%, #ff8c5a 100%);
         color: white;
-        border-radius: 8px;
-        padding: 0.75rem 2rem;
-        font-weight: 500;
+        border-radius: 12px;
+        padding: 0.9rem 2.5rem;
+        font-weight: 600;
         border: none;
+        font-size: 1.1rem;
         transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
     }
     
     .stButton>button:hover {
-        background-color: #8A7869;
-        box-shadow: 0 4px 12px rgba(156, 139, 122, 0.3);
+        background: linear-gradient(135deg, #e55a2b 0%, #ff6b35 100%);
+        box-shadow: 0 6px 20px rgba(255, 107, 53, 0.5);
+        transform: translateY(-2px);
     }
     
     .section-header {
-        color: #5C4D42;
-        font-weight: 600;
-        font-size: 1.5rem;
+        color: #004B87;
+        font-weight: 700;
+        font-size: 1.8rem;
         margin-top: 2rem;
-        margin-bottom: 1rem;
-        padding-bottom: 0.5rem;
-        border-bottom: 2px solid #E8DDD3;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.8rem;
+        border-bottom: 3px solid #FF6B35;
+        background: linear-gradient(90deg, rgba(255,107,53,0.1) 0%, rgba(253,185,19,0.1) 100%);
+        padding-left: 1rem;
+        border-radius: 8px;
     }
     
     .question-context {
-        background-color: #FAF8F6;
-        padding: 1rem;
-        border-radius: 8px;
-        border-left: 3px solid #C9B8A5;
-        margin-bottom: 1rem;
-        color: #6B5D52;
-        font-size: 0.95rem;
-        line-style: italic;
+        background: linear-gradient(135deg, #fff9f0 0%, #fff5e6 100%);
+        padding: 1.3rem;
+        border-radius: 10px;
+        border-left: 4px solid #FDB913;
+        margin-bottom: 1.2rem;
+        color: #2d3748;
+        font-size: 1rem;
+        box-shadow: 0 2px 8px rgba(253, 185, 19, 0.15);
     }
     
     .result-card {
-        background-color: #FAF8F6;
+        background: white;
         padding: 2rem;
-        border-radius: 12px;
-        border-left: 4px solid #9C8B7A;
-        margin-bottom: 1.5rem;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        border-radius: 15px;
+        border-left: 6px solid #004B87;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 15px rgba(0, 75, 135, 0.15);
     }
     
     .result-card h3 {
-        color: #5C4D42;
-        font-weight: 600;
-        margin-bottom: 0.5rem;
+        color: #004B87;
+        font-weight: 700;
+        margin-bottom: 0.8rem;
     }
     
     .result-score {
-        color: #9C8B7A;
-        font-weight: 600;
-        font-size: 1.2rem;
+        background: linear-gradient(135deg, #FF6B35 0%, #FDB913 100%);
+        color: white;
+        font-weight: 700;
+        font-size: 1.3rem;
+        padding: 0.5rem 1.5rem;
+        border-radius: 25px;
+        display: inline-block;
+        margin-bottom: 1rem;
     }
     
     .chatbot-container {
-        background-color: #F5F3F0;
-        padding: 1.5rem;
-        border-radius: 12px;
+        background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+        padding: 2rem;
+        border-radius: 15px;
         margin-top: 3rem;
-        border: 1px solid #E8DDD3;
-    }
-    
-    .stTextArea textarea {
-        border-radius: 8px;
-        border: 1px solid #D4C4B0;
-        font-family: 'Inter', sans-serif;
-    }
-    
-    .stTextInput input {
-        border-radius: 8px;
-        border: 1px solid #D4C4B0;
-    }
-    
-    .helper-text {
-        color: #9C8B7A;
-        font-size: 0.85rem;
-        font-style: italic;
-        margin-top: 0.3rem;
+        border: 2px solid #004B87;
     }
     
     .info-box {
-        background-color: #F5F3F0;
+        background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+        padding: 1.3rem;
+        border-radius: 10px;
+        color: #2d3748;
+        margin-bottom: 1.5rem;
+        border-left: 4px solid #FF6B35;
+    }
+    
+    .welcome-section {
+        background: white;
+        padding: 2rem;
+        border-radius: 15px;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .feature-box {
+        background: linear-gradient(135deg, #f0f7ff 0%, #e3f2fd 100%);
+        padding: 1.5rem;
+        border-radius: 12px;
+        margin: 1rem 0;
+        border-left: 4px solid #004B87;
+    }
+    
+    .university-box {
+        background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
         padding: 1rem;
-        border-radius: 8px;
-        color: #6B5D52;
-        margin-bottom: 1rem;
+        border-radius: 10px;
+        margin: 0.5rem 0;
+        border-left: 3px solid #2e7d32;
     }
 </style>
 """, unsafe_allow_html=True)
 
-# Initialisation de la session
+# Matières officielles du système togolais
+MATIERES_TOGO = [
+    "Mathématiques",
+    "Physique-Chimie-Technologie (PCT)",
+    "Sciences de la Vie et de la Terre (SVT)",
+    "Français",
+    "Anglais",
+    "Histoire-Géographie",
+    "Philosophie",
+    "Économie",
+    "Éducation Civique et Morale",
+    "Arts",
+    "Éducation Physique et Sportive (EPS)",
+    "Technologie",
+    "Informatique"
+]
+
 if 'authenticated' not in st.session_state:
     st.session_state.authenticated = False
 if 'quiz_started' not in st.session_state:
@@ -154,13 +193,18 @@ if 'quiz_completed' not in st.session_state:
     st.session_state.quiz_completed = False
 if 'responses' not in st.session_state:
     st.session_state.responses = {}
+if 'recommendations' not in st.session_state:
+    st.session_state.recommendations = []
 
-# Fonction d'authentification
 def check_password():
-    """Vérifie le mot de passe"""
-    st.markdown('<div class="main-header"><h1>Kpékpé</h1><p>Découvre ton orientation scolaire et professionnelle</p></div>', unsafe_allow_html=True)
+    st.markdown('''
+    <div class="main-header">
+        <h1>KPÉKPÉ</h1>
+        <p class="slogan">Light on your way</p>
+    </div>
+    ''', unsafe_allow_html=True)
     
-    st.markdown('<div class="info-box">Cette application est en phase de test. Merci d\'entrer le code d\'accès pour continuer.</div>', unsafe_allow_html=True)
+    st.markdown('<div class="info-box">Cette application est en phase de test. Merci d\'entrer le code d\'accès.</div>', unsafe_allow_html=True)
     
     password = st.text_input("Code d'accès", type="password")
     
@@ -169,27 +213,45 @@ def check_password():
             st.session_state.authenticated = True
             st.rerun()
         else:
-            st.error("Code d'accès incorrect. Contacte l'équipe Kpékpé pour obtenir l'accès.")
+            st.error("Code incorrect. Contacte l'équipe Kpékpé.")
 
-# Page d'accueil
 def page_accueil():
-    st.markdown('<div class="main-header"><h1>Kpékpé</h1><p>Trouve ta voie, construis ton avenir</p></div>', unsafe_allow_html=True)
+    st.markdown('''
+    <div class="main-header">
+        <h1>KPÉKPÉ</h1>
+        <p class="slogan">Light on your way</p>
+    </div>
+    ''', unsafe_allow_html=True)
     
-    st.markdown("""
-    ### Bienvenue
-    
-    Kpékpé t'accompagne dans ta réflexion sur ton orientation scolaire ou professionnelle. 
-    Ce n'est pas un simple questionnaire, mais un moment pour mieux te comprendre.
-    
-    **Ce que nous allons explorer ensemble :**
-    
-    - Ce qui te passionne vraiment dans la vie
-    - Les talents et forces que tu possèdes déjà
-    - L'impact que tu souhaites avoir dans le monde
-    - Tes priorités pour ton avenir professionnel
-    
-    À la fin, tu recevras des pistes d'orientation personnalisées, adaptées au contexte togolais.
-    """)
+    st.markdown('''
+    <div class="welcome-section">
+        <h2 style="color: #004B87; text-align: center; margin-bottom: 1.5rem;">Bienvenue</h2>
+        
+        <p style="font-size: 1.1rem; text-align: center; color: #2d3748; margin-bottom: 2rem;">
+        Kpékpé t'accompagne dans ta réflexion sur ton orientation scolaire ou professionnelle.
+        </p>
+        
+        <div class="feature-box">
+            <h4 style="color: #FF6B35;">Ce qui te passionne vraiment</h4>
+            <p>Découvre ce qui fait vibrer ton cœur.</p>
+        </div>
+        
+        <div class="feature-box">
+            <h4 style="color: #FF6B35;">Tes talents naturels</h4>
+            <p>Identifie les forces que tu possèdes déjà.</p>
+        </div>
+        
+        <div class="feature-box">
+            <h4 style="color: #FF6B35;">L'impact que tu veux avoir</h4>
+            <p>Réfléchis au changement que tu souhaites apporter.</p>
+        </div>
+        
+        <div class="feature-box">
+            <h4 style="color: #FF6B35;">Tes priorités professionnelles</h4>
+            <p>Définis ce qui compte pour ton avenir.</p>
+        </div>
+    </div>
+    ''', unsafe_allow_html=True)
     
     st.markdown('<p class="section-header">Commençons par te connaître</p>', unsafe_allow_html=True)
     
@@ -207,135 +269,124 @@ def page_accueil():
             st.session_state.quiz_started = True
             st.rerun()
 
-# Quiz avec questions ouvertes
 def page_quiz():
-    st.markdown('<div class="main-header"><h1>Questionnaire d\'orientation</h1></div>', unsafe_allow_html=True)
+    st.markdown('''
+    <div class="main-header">
+        <h1>Questionnaire d'orientation</h1>
+        <p class="slogan">Light on your way</p>
+    </div>
+    ''', unsafe_allow_html=True)
     
     profil = st.session_state.profil
     profil_text = "Collégien (3ème)" if profil == "collegien" else "Lycéen/Bachelier"
     
-    st.markdown(f'<div class="info-box">Profil sélectionné : {profil_text}</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="info-box">Profil sélectionné : <strong>{profil_text}</strong></div>', unsafe_allow_html=True)
     
     st.markdown("""
+    <div class="welcome-section">
+    <p style="text-align: center;">
     Prends ton temps pour répondre. Il n'y a pas de bonne ou mauvaise réponse. 
     L'important est d'être sincère avec toi-même.
-    """)
+    </p>
+    </div>
+    """, unsafe_allow_html=True)
     
-    # Section A : Ce qui te passionne
     st.markdown('<p class="section-header">Ce qui te passionne</p>', unsafe_allow_html=True)
     
     st.markdown("""
     <div class="question-context">
-    Pense à ces moments où tu es vraiment absorbé par ce que tu fais, où le temps passe sans que tu t'en rendes compte. 
-    Qu'est-ce qui te donne cette sensation ?
+    Pense à ces moments où tu es vraiment absorbé par ce que tu fais, où le temps passe sans que tu t'en rendes compte.
     </div>
     """, unsafe_allow_html=True)
     
     passion_principale = st.text_area(
         "Décris en quelques phrases ce que tu aimes vraiment faire",
-        height=120,
-        placeholder="Par exemple : J'adore comprendre comment les choses fonctionnent, démonter des objets pour voir ce qu'il y a à l'intérieur...",
+        height=130,
+        placeholder="Exemple : J'adore comprendre comment les choses fonctionnent...",
         key="passion_principale"
     )
-    st.markdown('<p class="helper-text">Sois aussi précis que possible. Pense aux activités, aux matières, aux moments où tu te sens vraiment toi-même.</p>', unsafe_allow_html=True)
+    st.markdown('<p class="helper-text">Sois aussi précis que possible.</p>', unsafe_allow_html=True)
     
-    st.markdown("**Pour t'aider à réfléchir, coche ce qui résonne avec toi :**")
+    st.markdown("**Pour t'aider, coche ce qui résonne avec toi :**")
     
     col1, col2 = st.columns(2)
     with col1:
         matieres_preferees = st.multiselect(
-            "Matières qui t'intéressent vraiment",
-            ["Mathématiques", "Physique-Chimie", "SVT", "Français", "Anglais", 
-             "Histoire-Géographie", "Philosophie", "Économie", "Arts", "Sport", 
-             "Technologie", "Informatique"],
+            "Matières qui t'intéressent",
+            MATIERES_TOGO,
             key="matieres_preferees"
         )
     
     with col2:
         activites_favorites = st.multiselect(
-            "Types d'activités que tu apprécies",
+            "Types d'activités",
             ["Lire et écrire", "Créer et dessiner", "Calculer et analyser", "Parler et convaincre",
              "Construire et réparer", "Aider les autres", "Organiser et gérer", 
              "Utiliser l'ordinateur", "Expérimenter et tester"],
             key="activites_favorites"
         )
     
-    # Section B : Tes forces naturelles
     st.markdown('<p class="section-header">Tes forces naturelles</p>', unsafe_allow_html=True)
     
     st.markdown("""
     <div class="question-context">
-    On a tous des choses qu'on fait plus facilement que d'autres. Parfois, on ne s'en rend même pas compte parce que ça nous semble naturel.
-    Qu'est-ce que les gens autour de toi remarquent chez toi ? Qu'est-ce qu'on te demande souvent de faire ?
+    On a tous des choses qu'on fait plus facilement que d'autres. Qu'est-ce que les gens remarquent chez toi ?
     </div>
     """, unsafe_allow_html=True)
     
     forces_naturelles = st.text_area(
-        "Décris les choses pour lesquelles tu es doué, même si ça te paraît simple",
-        height=120,
-        placeholder="Par exemple : Mes amis viennent toujours me voir quand ils ont un problème à résoudre. Je suis patient et j'arrive à expliquer les choses clairement...",
+        "Décris les choses pour lesquelles tu es doué",
+        height=130,
+        placeholder="Exemple : Mes amis viennent me voir quand ils ont un problème...",
         key="forces_naturelles"
     )
-    st.markdown('<p class="helper-text">N\'hésite pas à être honnête. Ce ne sont pas des vantardises, juste des observations sur toi-même.</p>', unsafe_allow_html=True)
+    st.markdown('<p class="helper-text">Sois honnête avec tes forces.</p>', unsafe_allow_html=True)
     
     col1, col2 = st.columns(2)
     with col1:
         matieres_fortes = st.multiselect(
-            "Matières où tu réussis bien",
-            ["Mathématiques", "Physique-Chimie", "SVT", "Français", "Anglais", 
-             "Histoire-Géographie", "Philosophie", "Économie", "Arts", "Sport", 
-             "Technologie", "Informatique"],
+            "Matières où tu réussis",
+            MATIERES_TOGO,
             key="matieres_fortes"
         )
     
     with col2:
         talents = st.multiselect(
-            "Talents que tu reconnais en toi",
+            "Talents que tu reconnais",
             ["Logique et raisonnement", "Créativité", "Communication", "Habileté manuelle",
              "Leadership", "Empathie", "Organisation", "Sens technique"],
             key="talents"
         )
     
-    # Section C : Ton impact souhaité
     st.markdown('<p class="section-header">L\'impact que tu veux avoir</p>', unsafe_allow_html=True)
     
     st.markdown("""
     <div class="question-context">
-    Si tu pouvais améliorer quelque chose dans le monde, dans ton pays, dans ta communauté, ce serait quoi ?
-    Quel problème te touche particulièrement ?
+    Si tu pouvais améliorer quelque chose, ce serait quoi ?
     </div>
     """, unsafe_allow_html=True)
     
     impact_souhaite = st.text_area(
-        "Décris le changement que tu aimerais voir ou contribuer à créer",
-        height=120,
-        placeholder="Par exemple : Je vois que beaucoup de gens tombent malades à cause du manque d'accès aux soins. J'aimerais que chacun puisse se faire soigner facilement...",
+        "Décris le changement que tu aimerais créer",
+        height=130,
+        placeholder="Exemple : Je vois que beaucoup de gens tombent malades...",
         key="impact_souhaite"
     )
-    st.markdown('<p class="helper-text">Il n\'y a pas de petit ou grand impact. Ce qui compte, c\'est ce qui te parle vraiment.</p>', unsafe_allow_html=True)
     
     probleme = st.selectbox(
-        "Si tu devais choisir un domaine prioritaire",
+        "Domaine prioritaire",
         ["Santé et bien-être", "Éducation et formation", "Environnement et climat", 
          "Technologie et innovation", "Réduction de la pauvreté", "Construction et infrastructure", 
          "Commerce et économie", "Justice et droits", "Agriculture et alimentation"],
         key="probleme"
     )
     
-    # Section D : Tes priorités et contraintes
-    st.markdown('<p class="section-header">Tes priorités pour l\'avenir</p>', unsafe_allow_html=True)
-    
-    st.markdown("""
-    <div class="question-context">
-    Soyons réalistes et honnêtes. Chaque choix d'orientation a des implications pratiques.
-    Qu'est-ce qui est important pour toi dans ton futur métier ?
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown('<p class="section-header">Tes priorités</p>', unsafe_allow_html=True)
     
     priorites_personnelles = st.text_area(
-        "Décris ce qui compte vraiment pour toi dans ton futur professionnel",
+        "Ce qui compte pour ton futur professionnel",
         height=100,
-        placeholder="Par exemple : Je veux un métier qui me passionne mais aussi qui me permette d'aider ma famille. Je suis prêt à étudier longtemps si c'est nécessaire...",
+        placeholder="Exemple : Je veux un métier qui me passionne mais qui aide aussi ma famille...",
         key="priorites_personnelles"
     )
     
@@ -351,9 +402,9 @@ def page_quiz():
     
     with col2:
         contraintes = st.multiselect(
-            "Tes contraintes actuelles",
+            "Tes contraintes",
             ["Budget limité pour les études", "Besoin de travailler rapidement",
-             "Possibilité de faire de longues études", "Préférence pour des études courtes et pratiques"],
+             "Possibilité de faire de longues études", "Préférence pour des études courtes"],
             key="contraintes"
         )
     
@@ -384,48 +435,51 @@ def page_quiz():
                 st.session_state.quiz_completed = True
                 st.rerun()
             else:
-                st.warning("Merci de répondre aux trois questions principales en texte libre pour obtenir des recommandations personnalisées.")
+                st.warning("Merci de répondre aux trois questions principales en texte libre.")
 
-# Page de résultats
 def page_resultats():
-    st.markdown('<div class="main-header"><h1>Tes résultats personnalisés</h1></div>', unsafe_allow_html=True)
+    st.markdown('''
+    <div class="main-header">
+        <h1>Tes résultats</h1>
+        <p class="slogan">Light on your way</p>
+    </div>
+    ''', unsafe_allow_html=True)
     
     profil = st.session_state.profil
     responses = st.session_state.responses
     
-    # Calculer les recommandations
     if profil == "collegien":
         recommandations = calculer_recommandations_texte_libre(responses, SERIES_DATA, profil)
-        titre = "Séries recommandées pour toi"
+        titre = "Séries recommandées"
     else:
         recommandations = calculer_recommandations_texte_libre(responses, METIERS_DATA, profil)
         titre = "Métiers et filières recommandés"
+    
+    st.session_state.recommendations = recommandations
     
     st.markdown(f'<p class="section-header">{titre}</p>', unsafe_allow_html=True)
     
     st.markdown("""
     <div class="info-box">
-    Ces recommandations sont basées sur ce que tu nous as partagé. Ce sont des pistes pour t'aider à réfléchir, 
-    pas des décisions définitives. Prends le temps d'explorer chaque option.
+    Ces recommandations sont basées sur ton profil. Ce sont des pistes pour t'aider à réfléchir.
     </div>
     """, unsafe_allow_html=True)
     
-    # Afficher les recommandations
     for i, rec in enumerate(recommandations[:3], 1):
         st.markdown(f"""
         <div class="result-card">
             <h3>{i}. {rec['nom']}</h3>
-            <p class="result-score">Correspondance : {rec['score']}%</p>
+            <span class="result-score">Correspondance : {rec['score']}%</span>
         </div>
         """, unsafe_allow_html=True)
         
         col1, col2 = st.columns(2)
         
         with col1:
-            st.markdown("**Pourquoi cette recommandation ?**")
+            st.markdown("**Pourquoi cette recommandation**")
             st.write(rec['explication'])
             
-            st.markdown("**Compétences à développer**")
+            st.markdown("**Compétences nécessaires**")
             for comp in rec['competences'][:3]:
                 st.write(f"• {comp}")
         
@@ -436,30 +490,74 @@ def page_resultats():
             
             st.markdown("**Durée d'études**")
             st.write(rec['duree'])
+            
+            # Universités recommandées
+            if profil == "lyceen":
+                st.markdown("**Où étudier au Togo**")
+                domaine_map = {
+                    "Santé": ["médecin", "pharmacien", "infirmier", "sage"],
+                    "Technologie/Innovation": ["informatique", "ingénieur", "développeur"],
+                    "Commerce/Économie": ["comptable", "commercial", "gestion", "finance"],
+                    "Construction/Infrastructure": ["génie civil", "btp", "architecte"],
+                    "Agriculture/Alimentation": ["agronome", "agriculture"],
+                    "Éducation": ["professeur", "enseignant"],
+                    "Justice/Droit": ["avocat", "droit"]
+                }
+                
+                nom_lower = rec['nom'].lower()
+                ecoles_trouvees = []
+                
+                for domaine, mots_cles in domaine_map.items():
+                    if any(mot in nom_lower for mot in mots_cles):
+                        ecoles = trouver_ecoles_par_domaine(domaine)
+                        if ecoles:
+                            ecoles_trouvees = ecoles[:2]
+                            break
+                
+                if ecoles_trouvees:
+                    for ecole in ecoles_trouvees:
+                        st.markdown(f"""
+                        <div class="university-box">
+                        <strong>{ecole['nom']}</strong><br>
+                        Type: {ecole['type']} | Coût: {ecole['cout']}
+                        </div>
+                        """, unsafe_allow_html=True)
+                else:
+                    st.markdown("""
+                    <div class="university-box">
+                    <strong>Université de Lomé</strong><br>
+                    Type: Public | Coût: 50 000-100 000 FCFA/an
+                    </div>
+                    """, unsafe_allow_html=True)
         
         st.markdown("---")
     
-    # Bouton recommencer
     if st.button("Recommencer le questionnaire"):
         st.session_state.quiz_completed = False
         st.session_state.quiz_started = False
         st.session_state.responses = {}
+        st.session_state.recommendations = []
         st.rerun()
     
-    # Chatbot
-    afficher_chatbot(profil)
+    afficher_chatbot()
 
-# Chatbot enrichi
-def afficher_chatbot(profil):
+def afficher_chatbot():
     st.markdown('<p class="section-header">Des questions ?</p>', unsafe_allow_html=True)
     
     st.markdown('<div class="chatbot-container">', unsafe_allow_html=True)
     
-    st.markdown("""
-    Tu peux poser tes questions ici. Je ferai de mon mieux pour t'aider à mieux comprendre tes options.
-    """)
+    # Questions contextuelles selon les recommandations
+    if st.session_state.recommendations:
+        st.markdown("**Questions sur tes recommandations :**")
+        
+        for rec in st.session_state.recommendations[:3]:
+            nom = rec['nom']
+            if st.button(f"Quelles universités pour {nom} ?", key=f"univ_{nom}"):
+                st.info(f"Pour {nom}, je te recommande de consulter les établissements affichés ci-dessus. Si tu veux plus de détails, sélectionne une question générale en dessous.")
     
-    # Questions fréquentes enrichies
+    st.markdown("---")
+    st.markdown("**Questions générales :**")
+    
     questions_frequentes = list(CHATBOT_RESPONSES.keys())
     
     question = st.selectbox(
@@ -470,11 +568,10 @@ def afficher_chatbot(profil):
     
     question_personnalisee = st.text_input("Ou pose ta propre question")
     
-    if st.button("Envoyer ma question"):
+    if st.button("Envoyer"):
         reponse = None
         
         if question_personnalisee:
-            # Chercher une réponse correspondante
             question_lower = question_personnalisee.lower()
             for q, r in CHATBOT_RESPONSES.items():
                 if any(mot in question_lower for mot in q.lower().split()[:3]):
@@ -482,7 +579,7 @@ def afficher_chatbot(profil):
                     break
             
             if not reponse:
-                reponse = "Je ne suis pas sûr de comprendre ta question. Peux-tu la reformuler ou choisir parmi les questions fréquentes ?"
+                reponse = "Je ne comprends pas ta question. Peux-tu la reformuler ou choisir parmi les questions fréquentes ?"
         
         elif question != "Choisis une question...":
             reponse = CHATBOT_RESPONSES.get(question)
@@ -492,7 +589,6 @@ def afficher_chatbot(profil):
     
     st.markdown('</div>', unsafe_allow_html=True)
 
-# Application principale
 def main():
     if not st.session_state.authenticated:
         check_password()
@@ -506,5 +602,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
