@@ -1,448 +1,707 @@
-"""
-Données des métiers et filières accessibles après le BAC
-"""
-
 METIERS_DATA = {
-    # SANTÉ
+    # SANTÉ (1-8)
     "Médecin": {
-        "nom": "Médecin",
-        "badge": "⚕️",
+        "nom": "Médecin Généraliste/Spécialiste",
         "domaine": "Santé",
         "series_recommandees": ["D", "C"],
         "matieres_importantes": ["SVT", "Physique-Chimie", "Mathématiques"],
-        "competences": [
-            "Excellence en sciences",
-            "Empathie et écoute",
-            "Résistance au stress",
-            "Rigueur scientifique"
-        ],
-        "duree_etudes": "7-10 ans (BAC+7 minimum)",
+        "competences": ["Sciences", "Empathie", "Résistance stress", "Rigueur"],
+        "duree_etudes": "7-12 ans (BAC+7 à +12)",
         "debouches_togo": "Très demandé",
         "salaire": "Élevé",
-        "niveau_requis": "BAC+7",
-        "explication": "Tu as un excellent niveau scientifique et tu veux soigner les gens. La médecine demande beaucoup d'études mais offre un métier gratifiant et respecté.",
-        "debouches_concrets": [
-            "Hôpitaux publics (CHU Sylvanus Olympio)",
-            "Cliniques privées (Biasa, Afia...)",
-            "Médecin de brousse (zones rurales)"
-        ]
+        "niveau_requis": "BAC+7 minimum",
+        "explication": "Formation à la Faculté des Sciences de la Santé (UL). Besoins énormes en médecins ruraux et spécialistes.",
+        "debouches_concrets": ["CHU Lomé", "Cliniques privées", "ONG santé", "Libéral"]
     },
-    
+
     "Pharmacien": {
-        "nom": "Pharmacien",
-        "badge": "💊",
+        "nom": "Pharmacien d'Officine/Hospitalier",
         "domaine": "Santé",
         "series_recommandees": ["D", "C"],
-        "matieres_importantes": ["SVT", "Physique-Chimie", "Mathématiques"],
-        "competences": [
-            "Bon en chimie et biologie",
-            "Rigueur et précision",
-            "Sens du commerce",
-            "Conseil client"
-        ],
+        "matieres_importantes": ["SVT", "Chimie", "Mathématiques"],
+        "competences": ["Chimie", "Conseil", "Commerce", "Précision"],
         "duree_etudes": "6 ans (BAC+6)",
         "debouches_togo": "Très demandé",
         "salaire": "Élevé",
         "niveau_requis": "BAC+6",
-        "explication": "Tu aimes la chimie et tu veux travailler dans le domaine de la santé avec une dimension commerce. Possibilité d'ouvrir ta propre pharmacie.",
-        "debouches_concrets": [
-            "Pharmacien d'officine (création possible)",
-            "Pharmacien hospitalier",
-            "Industrie pharmaceutique"
-        ]
+        "explication": "Ouverture d'officine facile. Secteur en croissance avec importations pharma.",
+        "debouches_concrets": ["Pharmacies privées", "Hôpitaux", "Distribution"]
     },
-    
+
     "Infirmier": {
-        "nom": "Infirmier/Infirmière",
-        "badge": "🩺",
+        "nom": "Infirmier/Infirmière d'État",
         "domaine": "Santé",
         "series_recommandees": ["D", "C"],
-        "matieres_importantes": ["SVT", "Physique-Chimie"],
-        "competences": [
-            "Empathie et patience",
-            "Résistance physique",
-            "Travail d'équipe",
-            "Réactivité"
-        ],
+        "matieres_importantes": ["SVT", "Physique"],
+        "competences": ["Soins", "Empathie", "Travail équipe", "Réactivité"],
         "duree_etudes": "3 ans (BAC+3)",
         "debouches_togo": "Très demandé",
         "salaire": "Moyen",
         "niveau_requis": "BAC+3",
-        "explication": "Tu veux soigner et aider les gens avec des études plus courtes que médecine. Métier humain avec recrutement garanti au Togo.",
-        "debouches_concrets": [
-            "Hôpitaux et cliniques",
-            "Centres de santé publics",
-            "ONG médicales (MSF, Croix-Rouge)"
-        ]
+        "explication": "Formations ENI ou privées. Recrutement public massif.",
+        "debouches_concrets": ["Hôpitaux", "Centres santé", "ONG"]
     },
-    
+
     "Sage-femme": {
         "nom": "Sage-femme",
-        "badge": "🤱",
         "domaine": "Santé",
         "series_recommandees": ["D", "C"],
-        "matieres_importantes": ["SVT", "Physique-Chimie"],
-        "competences": [
-            "Empathie",
-            "Gestion du stress",
-            "Connaissances médicales",
-            "Accompagnement"
-        ],
-        "duree_etudes": "3-4 ans (BAC+3/4)",
+        "matieres_importantes": ["SVT", "Physique"],
+        "competences": ["Accompagnement", "Stress", "Médical"],
+        "duree_etudes": "4 ans (BAC+4)",
         "debouches_togo": "Très demandé",
         "salaire": "Moyen",
-        "niveau_requis": "BAC+3/4",
-        "explication": "Tu veux accompagner les femmes et les bébés. Métier gratifiant et très recherché dans les zones rurales togolaises.",
-        "debouches_concrets": [
-            "Maternités publiques",
-            "Cliniques privées",
-            "ONG santé maternelle"
-        ]
+        "niveau_requis": "BAC+4",
+        "explication": "Priorité santé maternelle-infantile.",
+        "debouches_concrets": ["Maternités", "Cliniques", "Programmes nationaux"]
     },
-    
-    # INGÉNIERIE
+
+    "Kinésithérapeute": {
+        "nom": "Kinésithérapeute",
+        "domaine": "Santé",
+        "series_recommandees": ["D", "C"],
+        "matieres_importantes": ["SVT", "Anatomie"],
+        "competences": ["Rééducation", "Contact", "Physique"],
+        "duree_etudes": "4 ans (BAC+4)",
+        "debouches_togo": "Demandé",
+        "salaire": "Moyen à Élevé",
+        "niveau_requis": "BAC+4",
+        "explication": "Croissance avec sport et accidents.",
+        "debouches_concrets": ["Cabinets", "Hôpitaux", "Sport"]
+    },
+
+    "Dentiste": {
+        "nom": "Chirurgien-Dentiste",
+        "domaine": "Santé",
+        "series_recommandees": ["D", "C"],
+        "matieres_importantes": ["SVT", "Chimie"],
+        "competences": ["Précision", "Manuel", "Empathie"],
+        "duree_etudes": "7 ans (BAC+7)",
+        "debouches_togo": "Demandé",
+        "salaire": "Élevé",
+        "niveau_requis": "BAC+7",
+        "explication": "Cabinets privés rentables.",
+        "debouches_concrets": ["Cabinets Lomé", "Cliniques"]
+    },
+
+    "Laborantin": {
+        "nom": "Technicien de Laboratoire Médical",
+        "domaine": "Santé",
+        "series_recommandees": ["D", "C"],
+        "matieres_importantes": ["SVT", "Chimie"],
+        "competences": ["Analyse", "Précision", "Hygiène"],
+        "duree_etudes": "3 ans (BAC+3)",
+        "debouches_togo": "Demandé",
+        "salaire": "Moyen",
+        "niveau_requis": "BAC+3",
+        "explication": "Essentiel pour diagnostics.",
+        "debouches_concrets": ["Labs hôpitaux", "Privés"]
+    },
+
+    "Auxiliaire Soins": {
+        "nom": "Auxiliaire de Soins/Aide-Soignant",
+        "domaine": "Santé",
+        "series_recommandees": ["Toutes"],
+        "matieres_importantes": ["SVT"],
+        "competences": ["Aide patients", "Hygiène", "Empathie"],
+        "duree_etudes": "1-2 ans (formation courte)",
+        "debouches_togo": "Demandé",
+        "salaire": "Bas à Moyen",
+        "niveau_requis": "Formation certifiante",
+        "explication": "Accès rapide, besoins en soins à domicile.",
+        "debouches_concrets": ["Hôpitaux", "Domicile", "ONG"]
+    },
+
+    # AGRICULTURE (9-14)
+    "Agronome": {
+        "nom": "Ingénieur Agronome",
+        "domaine": "Agriculture",
+        "series_recommandees": ["D", "C"],
+        "matieres_importantes": ["SVT", "Maths"],
+        "competences": ["Innovation", "Terrain", "Gestion"],
+        "duree_etudes": "5 ans (BAC+5)",
+        "debouches_togo": "Très demandé",
+        "salaire": "Moyen à Élevé",
+        "niveau_requis": "BAC+5",
+        "explication": "ESA-UL ou INFA. Agrobusiness prioritaire.",
+        "debouches_concrets": ["Fermes", "Ministère", "Coopératives"]
+    },
+
+    "Technicien Agricole": {
+        "nom": "Technicien Agricole/Élevage",
+        "domaine": "Agriculture",
+        "series_recommandees": ["D", "F"],
+        "matieres_importantes": ["SVT", "Techno"],
+        "competences": ["Machinisme", "Gestion ferme"],
+        "duree_etudes": "2-3 ans (BT)",
+        "debouches_togo": "Très demandé",
+        "salaire": "Moyen",
+        "niveau_requis": "BAC+2",
+        "explication": "IFAD ou apprentissage.",
+        "debouches_concrets": ["Exploitations", "Projets ruraux"]
+    },
+
+    "Pisciculteur": {
+        "nom": "Pisciculteur/Aquaculteur",
+        "domaine": "Agriculture",
+        "series_recommandees": ["D"],
+        "matieres_importantes": ["SVT"],
+        "competences": ["Élevage poissons", "Eau", "Commerce"],
+        "duree_etudes": "2-4 ans",
+        "debouches_togo": "Émergent",
+        "salaire": "Moyen",
+        "niveau_requis": "Formation spécialisée",
+        "explication": "Secteur en croissance.",
+        "debouches_concrets": ["Étangs", "Export"]
+    },
+
+    "Éleveur": {
+        "nom": "Éleveur (volailles, bovins)",
+        "domaine": "Agriculture",
+        "series_recommandees": ["Toutes"],
+        "matieres_importantes": ["SVT"],
+        "competences": ["Gestion animaux", "Entrepreneuriat"],
+        "duree_etudes": "Variable (apprentissage)",
+        "debouches_togo": "Demandé",
+        "salaire": "Variable",
+        "niveau_requis": "Variable",
+        "explication": "Aviculture boom.",
+        "debouches_concrets": ["Fermes privées"]
+    },
+
+    "Transformateur Agro": {
+        "nom": "Technicien Transformation Agroalimentaire",
+        "domaine": "Agriculture",
+        "series_recommandees": ["D", "F"],
+        "matieres_importantes": ["Chimie", "Techno"],
+        "competences": ["Conditionnement", "Hygiène"],
+        "duree_etudes": "2-3 ans",
+        "debouches_togo": "Demandé",
+        "salaire": "Moyen",
+        "niveau_requis": "BAC+2",
+        "explication": "Valeur ajoutée produits locaux.",
+        "debouches_concrets": ["Usines", "Entreprises"]
+    },
+
+    "Veterinaire": {
+        "nom": "Médecin Vétérinaire",
+        "domaine": "Agriculture/Santé Animale",
+        "series_recommandees": ["D", "C"],
+        "matieres_importantes": ["SVT"],
+        "competences": ["Soins animaux", "Diagnostic"],
+        "duree_etudes": "6 ans (BAC+6)",
+        "debouches_togo": "Demandé",
+        "salaire": "Élevé",
+        "niveau_requis": "BAC+6",
+        "explication": "Élevage en croissance.",
+        "debouches_concrets": ["Cliniques", "Fermes"]
+    },
+
+    # BTP / CONSTRUCTION (15-22)
     "Ingénieur Génie Civil": {
         "nom": "Ingénieur Génie Civil",
-        "badge": "🏗️",
-        "domaine": "Construction/Infrastructure",
-        "series_recommandees": ["C", "F4", "E"],
-        "matieres_importantes": ["Mathématiques", "Physique-Chimie", "Technologie"],
-        "competences": [
-            "Excellence en maths/physique",
-            "Vision spatiale",
-            "Gestion de projet",
-            "Leadership"
-        ],
+        "domaine": "BTP",
+        "series_recommandees": ["C", "E", "F4"],
+        "matieres_importantes": ["Maths", "Physique"],
+        "competences": ["Projet", "Leadership"],
         "duree_etudes": "5 ans (BAC+5)",
         "debouches_togo": "Très demandé",
         "salaire": "Élevé",
         "niveau_requis": "BAC+5",
-        "explication": "Tu excelles en maths/physique et tu aimes construire. Le Togo a d'énormes besoins en infrastructures (routes, ponts, bâtiments).",
-        "debouches_concrets": [
-            "Bureaux d'études (BNETD, SCET-Togo)",
-            "Entreprises BTP (Ebomaf, Maisons du Monde)",
-            "Projets gouvernementaux"
-        ]
+        "explication": "ENSI-UL. Boom infrastructures.",
+        "debouches_concrets": ["Chantiers", "Bureaux études"]
     },
-    
+
+    "Architecte": {
+        "nom": "Architecte",
+        "domaine": "BTP",
+        "series_recommandees": ["C", "F4"],
+        "matieres_importantes": ["Maths", "Dessin"],
+        "competences": ["Créativité", "Technique"],
+        "duree_etudes": "6 ans (BAC+6)",
+        "debouches_togo": "Demandé",
+        "salaire": "Élevé",
+        "niveau_requis": "BAC+6",
+        "explication": "EAMAU. Immobilier en hausse.",
+        "debouches_concrets": ["Cabinets", "Promotion"]
+    },
+
+    "Maçon": {
+        "nom": "Maçon/Carreleur",
+        "domaine": "BTP/Artisanat",
+        "series_recommandees": ["F1", "Sans bac"],
+        "matieres_importantes": ["Techno"],
+        "competences": ["Manuel", "Plans"],
+        "duree_etudes": "1-3 ans (CAP)",
+        "debouches_togo": "Très demandé",
+        "salaire": "Moyen",
+        "niveau_requis": "CAP",
+        "explication": "CRETFP. Chantiers partout.",
+        "debouches_concrets": ["Entreprises BTP", "Indépendant"]
+    },
+
+    "Plombier": {
+        "nom": "Plombier/Chauffagiste",
+        "domaine": "BTP",
+        "series_recommandees": ["F3"],
+        "matieres_importantes": ["Techno"],
+        "competences": ["Installation", "Réparation"],
+        "duree_etudes": "2 ans (CAP)",
+        "debouches_togo": "Demandé",
+        "salaire": "Moyen",
+        "niveau_requis": "CAP",
+        "explication": "Besoins construction.",
+        "debouches_concrets": ["Chantiers", "Maintenance"]
+    },
+
+    "Électricien Bâtiment": {
+        "nom": "Électricien Bâtiment",
+        "domaine": "BTP",
+        "series_recommandees": ["F3", "E"],
+        "matieres_importantes": ["Physique", "Techno"],
+        "competences": ["Électricité", "Sécurité"],
+        "duree_etudes": "2 ans (CAP)",
+        "debouches_togo": "Très demandé",
+        "salaire": "Moyen",
+        "niveau_requis": "CAP",
+        "explication": "Électrification rurale.",
+        "debouches_concrets": ["CEET", "Chantiers"]
+    },
+
+    "Menuisier": {
+        "nom": "Menuisier/Charpentier",
+        "domaine": "BTP/Artisanat",
+        "series_recommandees": ["F"],
+        "matieres_importantes": ["Techno"],
+        "competences": ["Bois", "Fabrication"],
+        "duree_etudes": "2-3 ans",
+        "debouches_togo": "Demandé",
+        "salaire": "Moyen",
+        "niveau_requis": "CAP",
+        "explication": "Meubles et construction.",
+        "debouches_concrets": ["Ateliers", "Indépendant"]
+    },
+
+    "Conducteur Engins": {
+        "nom": "Conducteur d'Engins de Chantier",
+        "domaine": "BTP",
+        "series_recommandees": ["F"],
+        "matieres_importantes": ["Techno"],
+        "competences": ["Machinerie", "Sécurité"],
+        "duree_etudes": "1-2 ans (permis)",
+        "debouches_togo": "Demandé",
+        "salaire": "Moyen",
+        "niveau_requis": "Formation certifiante",
+        "explication": "Grands projets routiers.",
+        "debouches_concrets": ["Chantiers nationaux"]
+    },
+
+    "Peintre Bâtiment": {
+        "nom": "Peintre en Bâtiment",
+        "domaine": "BTP/Artisanat",
+        "series_recommandees": ["Sans bac"],
+        "matieres_importantes": ["Techno"],
+        "competences": ["Finition", "Précision"],
+        "duree_etudes": "1-2 ans",
+        "debouches_togo": "Demandé",
+        "salaire": "Moyen",
+        "niveau_requis": "Apprentissage",
+        "explication": "Finitions immobilières.",
+        "debouches_concrets": ["Chantiers", "Indépendant"]
+    },
+
+    # NUMÉRIQUE / TECH (23-30)
+    "Développeur": {
+        "nom": "Développeur Web/Mobile",
+        "domaine": "Numérique",
+        "series_recommandees": ["C", "E"],
+        "matieres_importantes": ["Maths", "Info"],
+        "competences": ["Programmation", "Créativité"],
+        "duree_etudes": "2-5 ans",
+        "debouches_togo": "Émergent (forte croissance)",
+        "salaire": "Moyen à Élevé",
+        "niveau_requis": "BAC+2/5",
+        "explication": "Bootcamps ou UL. Digitalisation.",
+        "debouches_concrets": ["Startups", "Freelance international"]
+    },
+
+    "Administrateur Réseaux": {
+        "nom": "Administrateur Réseaux/Sécurité",
+        "domaine": "Numérique",
+        "series_recommandees": ["C", "E"],
+        "matieres_importantes": ["Info", "Maths"],
+        "competences": ["Réseaux", "Cybersécurité"],
+        "duree_etudes": "3-5 ans",
+        "debouches_togo": "Émergent",
+        "salaire": "Élevé",
+        "niveau_requis": "BAC+3/5",
+        "explication": "Télécoms et banques.",
+        "debouches_concrets": ["Togocel", "Entreprises"]
+    },
+
+    "Technicien Informatique": {
+        "nom": "Technicien Maintenance Informatique",
+        "domaine": "Numérique",
+        "series_recommandees": ["F2", "E"],
+        "matieres_importantes": ["Techno", "Info"],
+        "competences": ["Dépannage", "Installation"],
+        "duree_etudes": "2 ans (BT)",
+        "debouches_togo": "Très demandé",
+        "salaire": "Moyen",
+        "niveau_requis": "BAC+2",
+        "explication": "Réparation téléphones/PC.",
+        "debouches_concrets": ["Ateliers", "Entreprises"]
+    },
+
+    "Community Manager": {
+        "nom": "Community Manager/Marketing Digital",
+        "domaine": "Numérique/Communication",
+        "series_recommandees": ["G3", "A4"],
+        "matieres_importantes": ["Français", "Info"],
+        "competences": ["Réseaux sociaux", "Créativité"],
+        "duree_etudes": "3 ans (BAC+3)",
+        "debouches_togo": "Émergent",
+        "salaire": "Moyen",
+        "niveau_requis": "BAC+3",
+        "explication": "Entreprises se digitalisent.",
+        "debouches_concrets": ["Agences", "Freelance"]
+    },
+
     "Ingénieur Informatique": {
         "nom": "Ingénieur Informatique",
-        "badge": "💻",
-        "domaine": "Technologie/Innovation",
+        "domaine": "Numérique",
         "series_recommandees": ["C", "E"],
-        "matieres_importantes": ["Mathématiques", "Physique-Chimie", "Informatique"],
-        "competences": [
-            "Logique mathématique",
-            "Programmation",
-            "Résolution de problèmes",
-            "Créativité technique"
-        ],
+        "matieres_importantes": ["Maths", "Physique"],
+        "competences": ["Systèmes", "Programmation"],
         "duree_etudes": "5 ans (BAC+5)",
-        "debouches_togo": "Émergent (forte croissance)",
+        "debouches_togo": "Émergent",
         "salaire": "Élevé",
         "niveau_requis": "BAC+5",
-        "explication": "Tu adores l'informatique et les maths. Secteur en plein boom au Togo avec la digitalisation. Possibilité de travailler à l'international.",
-        "debouches_concrets": [
-            "Startups tech togolaises (PayDunya, CinetPay)",
-            "Banques (développement apps)",
-            "Freelance développement"
-        ]
+        "explication": "UL ou privées.",
+        "debouches_concrets": ["Banques", "Startups"]
     },
-    
-    "Ingénieur Électrique": {
-        "nom": "Ingénieur Électrique/Électrotechnique",
-        "badge": "⚡",
-        "domaine": "Technologie/Innovation",
-        "series_recommandees": ["C", "F3", "E"],
-        "matieres_importantes": ["Mathématiques", "Physique-Chimie", "Technologie"],
-        "competences": [
-            "Maths/physique",
-            "Électricité",
-            "Résolution problèmes techniques",
-            "Innovation"
-        ],
-        "duree_etudes": "5 ans (BAC+5)",
-        "debouches_togo": "Demandé",
+
+    "Data Analyst": {
+        "nom": "Analyste de Données",
+        "domaine": "Numérique",
+        "series_recommandees": ["C"],
+        "matieres_importantes": ["Maths", "Stats"],
+        "competences": ["Données", "Outils"],
+        "duree_etudes": "3-5 ans",
+        "debouches_togo": "Émergent",
         "salaire": "Élevé",
-        "niveau_requis": "BAC+5",
-        "explication": "Tu es fort en sciences et tu t'intéresses à l'électricité et l'énergie. Secteur d'avenir avec les énergies renouvelables au Togo.",
-        "debouches_concrets": [
-            "CEET (Compagnie Énergie Électrique)",
-            "Projets solaires",
-            "Industries"
-        ]
-    },
-    
-    # INFORMATIQUE / TECH
-    "Développeur Web": {
-        "nom": "Développeur Web/Mobile",
-        "badge": "👨‍💻",
-        "domaine": "Technologie/Innovation",
-        "series_recommandees": ["C", "E", "G2"],
-        "matieres_importantes": ["Mathématiques", "Informatique"],
-        "competences": [
-            "Programmation",
-            "Logique",
-            "Créativité",
-            "Autodidacte"
-        ],
-        "duree_etudes": "2-3 ans (BAC+2/3) ou autodidacte",
-        "debouches_togo": "Émergent (forte demande)",
-        "salaire": "Moyen à Élevé",
-        "niveau_requis": "BAC+2/3",
-        "explication": "Tu aimes coder et créer des applications. Métier accessible rapidement, forte demande au Togo. Possibilité de freelance international.",
-        "debouches_concrets": [
-            "Agences digitales (Lomé)",
-            "Création de startups",
-            "Freelance (clients internationaux)"
-        ]
-    },
-    
-    # COMMERCE / MANAGEMENT
-    "Manager Commercial": {
-        "nom": "Manager/Responsable Commercial",
-        "badge": "📊",
-        "domaine": "Commerce/Économie",
-        "series_recommandees": ["G3", "G2", "A4"],
-        "matieres_importantes": ["Économie", "Français", "Mathématiques"],
-        "competences": [
-            "Communication",
-            "Leadership",
-            "Négociation",
-            "Gestion d'équipe"
-        ],
-        "duree_etudes": "3-5 ans (BAC+3/5)",
-        "debouches_togo": "Demandé",
-        "salaire": "Moyen à Élevé",
         "niveau_requis": "BAC+3/5",
-        "explication": "Tu es bon communicant et tu aimes manager. Toutes les entreprises ont besoin de commerciaux qualifiés au Togo.",
-        "debouches_concrets": [
-            "Grandes entreprises (Ecobank, Togocel)",
-            "PME togolaises",
-            "Distribution (Carrefour Market, Orca)"
-        ]
+        "explication": "Big data en croissance.",
+        "debouches_concrets": ["Fintech", "ONG"]
     },
-    
+
+    "Cybersecurité": {
+        "nom": "Spécialiste Cybersécurité",
+        "domaine": "Numérique",
+        "series_recommandees": ["C", "E"],
+        "matieres_importantes": ["Info"],
+        "competences": ["Protection", "Analyse risques"],
+        "duree_etudes": "4-5 ans",
+        "debouches_togo": "Émergent",
+        "salaire": "Élevé",
+        "niveau_requis": "BAC+5",
+        "explication": "Menaces croissantes.",
+        "debouches_concrets": ["Banques", "Gouvernement"]
+    },
+
+    "Infographiste": {
+        "nom": "Infographiste/Designer Graphique",
+        "domaine": "Numérique/Communication",
+        "series_recommandees": ["A4", "G3"],
+        "matieres_importantes": ["Arts", "Info"],
+        "competences": ["Création visuelle", "Outils"],
+        "duree_etudes": "2-3 ans",
+        "debouches_togo": "Demandé",
+        "salaire": "Moyen",
+        "niveau_requis": "BAC+2",
+        "explication": "Pub et médias.",
+        "debouches_concrets": ["Agences", "Freelance"]
+    },
+
+    # ARTISANAT / MANUELS (31-40)
+    "Couturier": {
+        "nom": "Couturier/Tailleur",
+        "domaine": "Artisanat",
+        "series_recommandees": ["G3", "Sans bac"],
+        "matieres_importantes": ["Dessin"],
+        "competences": ["Couture", "Créativité"],
+        "duree_etudes": "1-3 ans (apprentissage)",
+        "debouches_togo": "Demandé",
+        "salaire": "Moyen (indépendant)",
+        "niveau_requis": "CAP",
+        "explication": "Mode locale forte.",
+        "debouches_concrets": ["Ateliers", "Marchés"]
+    },
+
+    "Coiffeur": {
+        "nom": "Coiffeur/Styliste",
+        "domaine": "Artisanat/Services",
+        "series_recommandees": ["Sans bac"],
+        "matieres_importantes": ["Pratique"],
+        "competences": ["Techniques", "Client"],
+        "duree_etudes": "1-2 ans",
+        "debouches_togo": "Très demandé",
+        "salaire": "Moyen",
+        "niveau_requis": "Apprentissage",
+        "explication": "Salons partout.",
+        "debouches_concrets": ["Salons indépendants"]
+    },
+
+    "Mécanicien Auto": {
+        "nom": "Mécanicien Automobile",
+        "domaine": "Artisanat",
+        "series_recommandees": ["F2"],
+        "matieres_importantes": ["Techno"],
+        "competences": ["Réparation", "Diagnostic"],
+        "duree_etudes": "2 ans (CAP)",
+        "debouches_togo": "Très demandé",
+        "salaire": "Moyen",
+        "niveau_requis": "CAP",
+        "explication": "Parc auto croissant.",
+        "debouches_concrets": ["Garages"]
+    },
+
+    "Soudeur": {
+        "nom": "Soudeur/Métallier",
+        "domaine": "Artisanat/BTP",
+        "series_recommandees": ["F"],
+        "matieres_importantes": ["Techno"],
+        "competences": ["Soudure", "Métal"],
+        "duree_etudes": "1-2 ans",
+        "debouches_togo": "Demandé",
+        "salaire": "Moyen",
+        "niveau_requis": "CAP",
+        "explication": "Industrie et construction.",
+        "debouches_concrets": ["Ateliers", "Chantiers"]
+    },
+
+    "Cuisinier": {
+        "nom": "Cuisinier/Traiteur",
+        "domaine": "Restauration/Artisanat",
+        "series_recommandees": ["G3"],
+        "matieres_importantes": ["Techno alimentaire"],
+        "competences": ["Cuisine", "Hygiène"],
+        "duree_etudes": "1-3 ans",
+        "debouches_togo": "Demandé",
+        "salaire": "Moyen",
+        "niveau_requis": "CAP",
+        "explication": "Tourisme et maquis.",
+        "debouches_concrets": ["Hôtels", "Indépendant"]
+    },
+
+    "Pâtissier": {
+        "nom": "Pâtissier/Boulanger",
+        "domaine": "Artisanat/Alimentation",
+        "series_recommandees": ["Sans bac"],
+        "matieres_importantes": ["Pratique"],
+        "competences": ["Pâtisserie", "Créativité"],
+        "duree_etudes": "2 ans",
+        "debouches_togo": "Demandé",
+        "salaire": "Moyen",
+        "niveau_requis": "CAP",
+        "explication": "Boulangeries locales.",
+        "debouches_concrets": ["Boulangeries", "Traiteur"]
+    },
+
+    "Esthéticienne": {
+        "nom": "Esthéticienne/Soins Beauté",
+        "domaine": "Artisanat/Services",
+        "series_recommandees": ["Sans bac"],
+        "matieres_importantes": ["Pratique"],
+        "competences": ["Soins", "Client"],
+        "duree_etudes": "1-2 ans",
+        "debouches_togo": "Demandé",
+        "salaire": "Moyen",
+        "niveau_requis": "Formation",
+        "explication": "Salons beauté.",
+        "debouches_concrets": ["Instituts", "Indépendant"]
+    },
+
+    "Cordonnier": {
+        "nom": "Cordonnier/Réparateur Chaussures",
+        "domaine": "Artisanat",
+        "series_recommandees": ["Sans bac"],
+        "matieres_importantes": ["Manuel"],
+        "competences": ["Réparation", "Cuir"],
+        "duree_etudes": "Apprentissage",
+        "debouches_togo": "Demandé",
+        "salaire": "Bas à Moyen",
+        "niveau_requis": "Apprentissage",
+        "explication": "Marchés locaux.",
+        "debouches_concrets": ["Ateliers marchés"]
+    },
+
+    "Tisseur": {
+        "nom": "Tisseur/Pagne Traditionnel",
+        "domaine": "Artisanat",
+        "series_recommandees": ["Sans bac"],
+        "matieres_importantes": ["Tradition"],
+        "competences": ["Tissage", "Motifs"],
+        "duree_etudes": "Apprentissage familial",
+        "debouches_togo": "Demandé",
+        "salaire": "Variable",
+        "niveau_requis": "Apprentissage",
+        "explication": "Patrimoine culturel.",
+        "debouches_concrets": ["Marchés", "Tourisme"]
+    },
+
+    "Sculpteur": {
+        "nom": "Sculpteur/Bois ou Pierre",
+        "domaine": "Artisanat d'Art",
+        "series_recommandees": ["Sans bac"],
+        "matieres_importantes": ["Arts"],
+        "competences": ["Sculpture", "Créativité"],
+        "duree_etudes": "Apprentissage",
+        "debouches_togo": "Touristique",
+        "salaire": "Variable",
+        "niveau_requis": "Apprentissage",
+        "explication": "Art togolais (Kpalimé).",
+        "debouches_concrets": ["Village artisanal", "Export"]
+    },
+
+    # COMMERCE / SERVICES / AUTRES (41-50)
+    "Commercial": {
+        "nom": "Responsable Commercial/Vendeur",
+        "domaine": "Commerce",
+        "series_recommandees": ["G2", "G3"],
+        "matieres_importantes": ["Économie", "Français"],
+        "competences": ["Négociation", "Client"],
+        "duree_etudes": "2-5 ans",
+        "debouches_togo": "Très demandé",
+        "salaire": "Moyen à Élevé",
+        "niveau_requis": "BAC+2/5",
+        "explication": "Toutes entreprises.",
+        "debouches_concrets": ["Banques", "Distribution"]
+    },
+
     "Comptable": {
-        "nom": "Comptable/Expert-comptable",
-        "badge": "📚",
-        "domaine": "Commerce/Économie",
+        "nom": "Comptable/Gestionnaire",
+        "domaine": "Commerce",
         "series_recommandees": ["G2", "C"],
-        "matieres_importantes": ["Mathématiques", "Économie"],
-        "competences": [
-            "Rigueur",
-            "Précision",
-            "Analyse de chiffres",
-            "Organisation"
-        ],
-        "duree_etudes": "3-5 ans (BAC+3/5)",
+        "matieres_importantes": ["Maths", "Éco"],
+        "competences": ["Chiffres", "Rigueur"],
+        "duree_etudes": "3-5 ans",
         "debouches_togo": "Très demandé",
         "salaire": "Moyen à Élevé",
         "niveau_requis": "BAC+3/5",
-        "explication": "Tu es rigoureux et tu aimes les chiffres. Métier stable, toutes les entreprises ont besoin de comptables. Possibilité d'ouvrir son cabinet.",
-        "debouches_concrets": [
-            "Cabinets comptables (Lomé)",
-            "Services comptables entreprises",
-            "Cabinet indépendant"
-        ]
+        "explication": "Cabinets indépendants.",
+        "debouches_concrets": ["Entreprises", "Cabinets"]
     },
-    
-    # DROIT
-    "Avocat": {
-        "nom": "Avocat",
-        "badge": "⚖️",
-        "domaine": "Justice/Droit",
-        "series_recommandees": ["A4"],
-        "matieres_importantes": ["Français", "Philosophie", "Histoire-Géographie"],
-        "competences": [
-            "Éloquence",
-            "Argumentation",
-            "Mémoire",
-            "Analyse"
-        ],
-        "duree_etudes": "5-6 ans (BAC+5/6)",
+
+    "Banquier": {
+        "nom": "Chargé de Clientèle Bancaire",
+        "domaine": "Banque/Finance",
+        "series_recommandees": ["G2", "C"],
+        "matieres_importantes": ["Éco", "Maths"],
+        "competences": ["Finance", "Client"],
+        "duree_etudes": "3-5 ans",
+        "debouches_togo": "Très demandé",
+        "salaire": "Élevé",
+        "niveau_requis": "BAC+3/5",
+        "explication": "Bancarisation croissante.",
+        "debouches_concrets": ["Ecobank", "Orabank"]
+    },
+
+    "Logisticien": {
+        "nom": "Logisticien/Transport",
+        "domaine": "Logistique",
+        "series_recommandees": ["G2", "E"],
+        "matieres_importantes": ["Éco", "Gestion"],
+        "competences": ["Organisation", "Chaîne appro"],
+        "duree_etudes": "3-5 ans",
         "debouches_togo": "Demandé",
         "salaire": "Moyen à Élevé",
-        "niveau_requis": "BAC+5/6",
-        "explication": "Tu aimes débattre et défendre des causes. Métier prestigieux au Togo. Possibilité d'ouvrir son cabinet après quelques années.",
-        "debouches_concrets": [
-            "Barreau de Lomé",
-            "Cabinets d'avocats",
-            "Services juridiques entreprises"
-        ]
+        "niveau_requis": "BAC+3/5",
+        "explication": "Hub portuaire Lomé.",
+        "debouches_concrets": ["Port autonome", "Entreprises"]
     },
-    
-    # ENSEIGNEMENT
-    "Professeur": {
-        "nom": "Professeur (Collège/Lycée)",
-        "badge": "👨‍🏫",
+
+    "Guide Touristique": {
+        "nom": "Guide/Agent Tourisme",
+        "domaine": "Tourisme",
+        "series_recommandees": ["A4", "G3"],
+        "matieres_importantes": ["Histoire", "Langues"],
+        "competences": ["Accueil", "Patrimoine"],
+        "duree_etudes": "2-3 ans",
+        "debouches_togo": "Émergent",
+        "salaire": "Moyen",
+        "niveau_requis": "BAC+2",
+        "explication": "Écotourisme en hausse.",
+        "debouches_concrets": ["Hôtels", "Agences"]
+    },
+
+    "Hôtelier": {
+        "nom": "Gestionnaire Hôtelier/Réceptionniste",
+        "domaine": "Tourisme/Hôtellerie",
+        "series_recommandees": ["G3"],
+        "matieres_importantes": ["Langues", "Gestion"],
+        "competences": ["Accueil", "Gestion"],
+        "duree_etudes": "2-3 ans",
+        "debouches_togo": "Demandé",
+        "salaire": "Moyen",
+        "niveau_requis": "BAC+2",
+        "explication": "Hôtels Lomé.",
+        "debouches_concrets": ["Hôtels", "Restaurants"]
+    },
+
+    "Chauffeur": {
+        "nom": "Chauffeur Routier/Taxi",
+        "domaine": "Transport",
+        "series_recommandees": ["Sans bac"],
+        "matieres_importantes": ["Conduite"],
+        "competences": ["Permis", "Sécurité"],
+        "duree_etudes": "Permis professionnel",
+        "debouches_togo": "Demandé",
+        "salaire": "Moyen",
+        "niveau_requis": "Permis",
+        "explication": "Transport marchandises.",
+        "debouches_concrets": ["Entreprises", "Indépendant"]
+    },
+
+    "Enseignant": {
+        "nom": "Professeur Collège/Lycée",
         "domaine": "Éducation",
-        "series_recommandees": ["A4", "C", "D"],
-        "matieres_importantes": ["Varie selon spécialité"],
-        "competences": [
-            "Pédagogie",
-            "Communication",
-            "Patience",
-            "Passion de transmettre"
-        ],
-        "duree_etudes": "4-5 ans (BAC+4/5)",
+        "series_recommandees": ["Toutes selon matière"],
+        "matieres_importantes": ["Spécialité"],
+        "competences": ["Pédagogie", "Transmission"],
+        "duree_etudes": "4-5 ans",
         "debouches_togo": "Très demandé",
         "salaire": "Moyen",
         "niveau_requis": "BAC+4/5",
-        "explication": "Tu aimes expliquer et transmettre. Le Togo manque cruellement d'enseignants qualifiés. Métier stable avec vacances scolaires.",
-        "debouches_concrets": [
-            "Collèges/lycées publics",
-            "Établissements privés (bien payés)",
-            "Cours particuliers (complément)"
-        ]
+        "explication": "Manque enseignants.",
+        "debouches_concrets": ["Public", "Privé"]
     },
-    
-    # ARCHITECTURE
-    "Architecte": {
-        "nom": "Architecte",
-        "badge": "🏛️",
-        "domaine": "Construction/Infrastructure",
-        "series_recommandees": ["C", "F4"],
-        "matieres_importantes": ["Mathématiques", "Arts", "Physique-Chimie"],
-        "competences": [
-            "Créativité",
-            "Vision spatiale",
-            "Dessin technique",
-            "Maths/physique"
-        ],
-        "duree_etudes": "5-6 ans (BAC+5/6)",
+
+    "Avocat": {
+        "nom": "Avocat",
+        "domaine": "Droit",
+        "series_recommandees": ["A4"],
+        "matieres_importantes": ["Français", "Philo"],
+        "competences": ["Éloquence", "Analyse"],
+        "duree_etudes": "5-6 ans",
         "debouches_togo": "Demandé",
         "salaire": "Élevé",
         "niveau_requis": "BAC+5/6",
-        "explication": "Tu es créatif et tu aimes dessiner/construire. Boom immobilier au Togo = forte demande d'architectes. Métier valorisant et bien payé.",
-        "debouches_concrets": [
-            "Cabinets d'architecture (Lomé)",
-            "Promotion immobilière",
-            "Cabinet indépendant"
-        ]
+        "explication": "Affaires et foncier.",
+        "debouches_concrets": ["Barreau", "Cabinets"]
     },
-    
-    # COMMUNICATION
-    "Journaliste": {
-        "nom": "Journaliste/Communicateur",
-        "badge": "📰",
-        "domaine": "Éducation",
-        "series_recommandees": ["A4"],
-        "matieres_importantes": ["Français", "Histoire-Géographie"],
-        "competences": [
-            "Écriture",
-            "Investigation",
-            "Communication",
-            "Curiosité"
-        ],
-        "duree_etudes": "3 ans (BAC+3)",
-        "debouches_togo": "Demandé",
-        "salaire": "Moyen",
-        "niveau_requis": "BAC+3",
-        "explication": "Tu aimes écrire et informer. Médias togolais en développement (TV, radio, presse en ligne). Métier dynamique et varié.",
-        "debouches_concrets": [
-            "Médias nationaux (TVT, Radio Lomé)",
-            "Presse en ligne",
-            "Communication d'entreprise"
-        ]
-    },
-    
-    # AGRICULTURE
-    "Agronome": {
-        "nom": "Ingénieur Agronome",
-        "badge": "🌾",
-        "domaine": "Agriculture/Alimentation",
-        "series_recommandees": ["D", "C"],
-        "matieres_importantes": ["SVT", "Physique-Chimie", "Mathématiques"],
-        "competences": [
-            "Sciences naturelles",
-            "Innovation",
-            "Entrepreneuriat",
-            "Terrain"
-        ],
-        "duree_etudes": "5 ans (BAC+5)",
-        "debouches_togo": "Très demandé",
-        "salaire": "Moyen à Élevé",
-        "niveau_requis": "BAC+5",
-        "explication": "Tu aimes la nature et l'innovation. Agriculture moderne = secteur d'avenir au Togo. Possibilité de créer son exploitation.",
-        "debouches_concrets": [
-            "Ministère de l'Agriculture",
-            "ONG développement rural",
-            "Agribusiness (création ferme moderne)"
-        ]
-    },
-    
-    # ENTREPRENEURIAT
+
     "Entrepreneur": {
-        "nom": "Entrepreneur/Chef d'entreprise",
-        "badge": "🚀",
-        "domaine": "Commerce/Économie",
-        "series_recommandees": ["G3", "G2", "Toutes"],
-        "matieres_importantes": ["Économie", "Mathématiques"],
-        "competences": [
-            "Prise de risque",
-            "Leadership",
-            "Créativité",
-            "Persévérance"
-        ],
-        "duree_etudes": "Variable (0-5 ans)",
+        "nom": "Entrepreneur/Chef d'Entreprise",
+        "domaine": "Toutes",
+        "series_recommandees": ["Toutes"],
+        "matieres_importantes": ["Gestion", "Éco"],
+        "competences": ["Initiative", "Risque"],
+        "duree_etudes": "Variable",
         "debouches_togo": "Émergent",
         "salaire": "Variable",
         "niveau_requis": "Variable",
-        "explication": "Tu as l'esprit d'initiative et tu veux créer ta propre activité. Le Togo encourage l'entrepreneuriat jeune. Liberté et autonomie.",
-        "debouches_concrets": [
-            "Startups (tech, services)",
-            "Commerce (import/export)",
-            "Artisanat valorisé"
-        ]
-    },
-    
-    # TECHNICIENS
-    "Technicien BTP": {
-        "nom": "Technicien BTP",
-        "badge": "🔨",
-        "domaine": "Construction/Infrastructure",
-        "series_recommandees": ["F4", "F1"],
-        "matieres_importantes": ["Technologie", "Mathématiques"],
-        "competences": [
-            "Travail manuel",
-            "Lecture de plans",
-            "Organisation",
-            "Technique"
-        ],
-        "duree_etudes": "2-3 ans (BAC+2/3)",
-        "debouches_togo": "Très demandé",
-        "salaire": "Moyen",
-        "niveau_requis": "BAC+2/3",
-        "explication": "Tu es pratique et tu aimes le terrain. Secteur BTP en forte croissance au Togo. Insertion rapide et possibilité d'évolution.",
-        "debouches_concrets": [
-            "Entreprises BTP",
-            "Chantiers nationaux",
-            "Création entreprise artisanale"
-        ]
-    },
-    
-    "Technicien Électronique": {
-        "nom": "Technicien Électronique/Informatique",
-        "badge": "🔌",
-        "domaine": "Technologie/Innovation",
-        "series_recommandees": ["F2", "E"],
-        "matieres_importantes": ["Technologie", "Mathématiques", "Informatique"],
-        "competences": [
-            "Dépannage",
-            "Électronique",
-            "Résolution problèmes",
-            "Manuel"
-        ],
-        "duree_etudes": "2-3 ans (BAC+2/3)",
-        "debouches_togo": "Très demandé",
-        "salaire": "Moyen",
-        "niveau_requis": "BAC+2/3",
-        "explication": "Tu aimes réparer et comprendre la technologie. Forte demande pour réparation téléphones, ordinateurs, électronique. Possibilité d'ouvrir son atelier.",
-        "debouches_concrets": [
-            "Ateliers réparation (Grand Marché)",
-            "SAV entreprises tech",
-            "Atelier indépendant"
-        ]
+        "explication": "Soutien startups jeunes.",
+        "debouches_concrets": ["PME", "Commerce", "Tech"]
     }
 }
