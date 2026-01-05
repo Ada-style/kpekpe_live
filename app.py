@@ -20,11 +20,17 @@ st.set_page_config(
 )
 
 # CSS avec les couleurs du logo
+# CSS avec les couleurs du logo (bleu #004B87, orange #FF6B35, jaune #FDB913)
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-* { font-family: 'Poppins', sans-serif; }
-.main { background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); }
+
+* {
+    font-family: 'Poppins', sans-serif;
+}
+.main {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
 .main-header {
     background: linear-gradient(135deg, #004B87 0%, #0066b3 100%);
     padding: 3rem 2rem;
@@ -39,6 +45,7 @@ st.markdown("""
     font-weight: 700;
     margin: 0;
     font-size: 3.5rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
 }
 .main-header .slogan {
     color: #FDB913;
@@ -72,7 +79,6 @@ st.markdown("""
     font-weight: 600;
     margin-bottom: 1.5rem;
     box-shadow: 0 4px 15px rgba(0, 75, 135, 0.3);
-    cursor: pointer;
 }
 .result-card {
     background: white;
@@ -94,7 +100,6 @@ st.markdown("""
 }
 </style>
 """, unsafe_allow_html=True)
-
 # États
 if 'authenticated' not in st.session_state:
     st.session_state.authenticated = False
@@ -420,4 +425,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
