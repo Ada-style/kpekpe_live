@@ -1,4 +1,4 @@
-# 🎓 Kpékpé - Application d'Orientation Scolaire et Professionnelle
+[# 🎓 Kpékpé - Application d'Orientation Scolaire et Professionnelle
 
 **Kpékpé** est une application web d'orientation destinée aux jeunes togolais (collégiens et lycéens) pour les aider à choisir leur série ou leur métier grâce à un quiz personnalisé basé sur le concept Ikigaï.
 
@@ -458,8 +458,8 @@ Pour contribuer au projet :
 ## 📞 Contact
 
 Pour toute question ou suggestion sur **Kpékpé**, contacte l'équipe via :
-- Email : [adadossi24@gmail.com]
-- Téléphone : [71162394]
+- Email : [kpekpelearnia@gmail.com]
+- Téléphone : [79653179]
 
 ---
 
@@ -476,3 +476,4 @@ Ce projet est développé dans le cadre de l'initiative **Kpékpé** pour l'orie
 Merci à tous ceux qui contribuent à améliorer l'orientation des jeunes togolais !
 
 **Ensemble, construisons l'avenir du Togo ! 🇹🇬🚀**
+ 
