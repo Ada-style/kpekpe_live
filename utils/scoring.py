@@ -1,3 +1,22 @@
+# utils/scoring.py
+
+from typing import Dict, List
+import re
+
+def nettoyer_texte(texte: str) -> str:
+    if not texte:
+        return ""
+    texte = texte.lower()
+    texte = re.sub(r'[^\w\s]', ' ', texte)
+    return ' '.join(texte.split())
+
+def calculer_similarite_mots_cles(user_list: List[str], item_list: List[str]) -> int:
+    if not user_list or not item_list:
+        return 0
+    user_set = set(x.lower() for x in user_list)
+    item_set = set(x.lower() for x in item_list)
+    return len(user_set & item_set)
+
 def calculer_recommandations_texte_libre(responses: Dict, data: Dict, profil: str) -> List[Dict]:
     recommandations = []
     
@@ -20,32 +39,27 @@ def calculer_recommandations_texte_libre(responses: Dict, data: Dict, profil: st
     for key, item in data.items():
         score = 0
         
-        # Matching matières
         mat_match = calculer_similarite_mots_cles(
             matieres_fortes + matieres_pref,
             item.get('matieres_importantes', [])
         )
         score += mat_match * 10
         
-        # Matching compétences
         comp_match = calculer_similarite_mots_cles(
             talents + activites,
             item.get('competences', [])
         )
         score += comp_match * 8
         
-        # Similarité texte
         item_texte = nettoyer_texte(
             item.get('explication', '') + ' ' + ' '.join(item.get('competences', []))
         )
         mots_communs = len(set(texte_net.split()) & set(item_texte.split()))
         score += mots_communs * 3
         
-        # Domaine prioritaire
         if domaine_prioritaire and domaine_prioritaire.lower() in item.get('domaine', '').lower():
             score += 20
         
-        # Contraintes et priorités
         duree = item.get('duree_etudes', '')
         if "courtes" in ' '.join(contraintes).lower() or "travailler rapidement" in ' '.join(contraintes).lower():
             if any(mot in duree.lower() for mot in ["2", "3", "bts", "cap", "bt"]):
@@ -63,7 +77,7 @@ def calculer_recommandations_texte_libre(responses: Dict, data: Dict, profil: st
         score_normalise = min(score, 100)
         
         recommandations.append({
-            'nom': item['nom'],
+            'nom': item.get('nom', key),
             'score': score_normalise,
             'explication': item.get('explication', 'Non défini'),
             'competences': item.get('competences', []),
