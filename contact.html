@@ -83,28 +83,34 @@
 
                 <!-- Formulaire Colonne -->
                 <div style="background: white; padding: 2rem; border-radius: 16px; box-shadow: var(--shadow-sm);">
-                    <form style="display: flex; flex-direction: column; gap: 1rem;">
+                    <form action="https://formsubmit.co/kpekpelearnia@gmail.com" method="POST"
+                        style="display: flex; flex-direction: column; gap: 1rem;">
+                        <!-- Configuration Formsubmit -->
+                        <input type="hidden" name="_subject" value="Nouveau message via Kpékpé Contact">
+                        <input type="hidden" name="_captcha" value="false">
+                        <input type="hidden" name="_template" value="table">
+                        <input type="hidden" name="_next"
+                            value="https://ada-style.github.io/kpekpe-website/contact.html">
+
                         <div>
                             <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Ton Nom</label>
-                            <input type="text" placeholder="Kofi..."
+                            <input type="text" name="name" placeholder="Kofi..." required
                                 style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
                         </div>
 
                         <div>
                             <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Ton Email</label>
-                            <input type="email" placeholder="kofi@exemple.com"
+                            <input type="email" name="email" placeholder="kofi@exemple.com" required
                                 style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
                         </div>
 
                         <div>
                             <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Message</label>
-                            <textarea rows="5" placeholder="Bonjour, j'aimerais savoir..."
+                            <textarea name="message" rows="5" placeholder="Bonjour, j'aimerais savoir..." required
                                 style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;"></textarea>
                         </div>
 
-                        <button type="submit" class="btn btn-primary"
-                            onclick="event.preventDefault(); alert('Message envoyé ! Nous te répondrons vite.');">Envoyer
-                            le message</button>
+                        <button type="submit" class="btn btn-primary">Envoyer le message</button>
                     </form>
                 </div>
 

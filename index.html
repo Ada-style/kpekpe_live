@@ -241,9 +241,12 @@
                     et plus encore. Lancement prévu T2 2026.
                 </p>
 
-                <form onsubmit="event.preventDefault(); alert('Merci ! Tu seras notifié.');"
+                <form action="https://formsubmit.co/kpekpelearnia@gmail.com" method="POST"
                     style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
-                    <input type="email" placeholder="Ton email..." required
+                    <input type="hidden" name="_subject" value="Nouvel inscrit Newsletter Kpékpé">
+                    <input type="hidden" name="_next" value="https://ada-style.github.io/kpekpe-website/index.html">
+
+                    <input type="email" name="email" placeholder="Ton email..." required
                         style="padding: 12px 20px; border-radius: 50px; border: none; min-width: 250px;">
                     <button type="submit" class="btn btn-secondary">Me notifier</button>
                 </form>
