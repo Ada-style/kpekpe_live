@@ -1,0 +1,22 @@
+# System files
+Thumbs.db
+Desktop.ini
+
+# Logs
+*.log
+
+# Dependencies (if any in future)
+node_modules/
+.npm/
+
+# IDE
+.vscode/
+.idea/
+
+# Environment variables
+.env
+
+# Build artifacts (if any)
+dist/
+build/
+*.zip
