@@ -12,6 +12,7 @@ from data.debouches_secteurs import DEBOUCHES_PAR_SECTEUR
 from data.matieres_togo import MATIERES_TOGO
 from utils.scoring import calculer_recommandations_texte_libre
 
+# Configuration de la page
 st.set_page_config(
     page_title="Kpékpé - Light on your way",
     page_icon="🌟",
@@ -19,15 +20,17 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# CSS avec couleurs du logo (bleu, orange, jaune)
+# CSS mis à jour avec couleurs du logo/site
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
-* { font-family: 'Poppins', sans-serif; }
-
-.main { background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); }
-
+* {
+    font-family: 'Poppins', sans-serif;
+}
+.main {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
 .main-header {
     background: linear-gradient(135deg, #004B87 0%, #0066b3 100%);
     padding: 3rem 2rem;
@@ -37,7 +40,6 @@ st.markdown("""
     box-shadow: 0 4px 15px rgba(0, 75, 135, 0.2);
     border: 4px solid #FF6B35;
 }
-
 .main-header h1 {
     color: white;
     font-weight: 700;
@@ -45,7 +47,6 @@ st.markdown("""
     font-size: 3.5rem;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
 }
-
 .main-header .slogan {
     color: #FDB913;
     font-weight: 500;
@@ -53,7 +54,6 @@ st.markdown("""
     font-style: italic;
     margin-top: 0.5rem;
 }
-
 .stButton>button {
     background: linear-gradient(135deg, #FF6B35 0%, #ff8c5a 100%);
     color: white;
@@ -64,13 +64,11 @@ st.markdown("""
     font-size: 1.1rem;
     box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
 }
-
 .stButton>button:hover {
     background: linear-gradient(135deg, #e55a2b 0%, #ff6b35 100%);
     box-shadow: 0 6px 20px rgba(255, 107, 53, 0.5);
     transform: translateY(-2px);
 }
-
 .case-box {
     background: linear-gradient(135deg, #004B87 0%, #0066b3 100%);
     padding: 2rem;
@@ -82,7 +80,6 @@ st.markdown("""
     margin-bottom: 1.5rem;
     box-shadow: 0 4px 15px rgba(0, 75, 135, 0.3);
 }
-
 .result-card {
     background: white;
     padding: 2rem;
@@ -91,7 +88,6 @@ st.markdown("""
     margin-bottom: 2rem;
     box-shadow: 0 4px 15px rgba(0, 75, 135, 0.15);
 }
-
 .result-score {
     background: linear-gradient(135deg, #FF6B35 0%, #FDB913 100%);
     color: white;
@@ -106,32 +102,18 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # États de session
-if 'authenticated' not in st.session_state:
-    st.session_state.authenticated = False
 if 'profil' not in st.session_state:
     st.session_state.profil = None
 if 'responses' not in st.session_state:
     st.session_state.responses = {}
-if 'quiz_completed' not in st.session_state:
-    st.session_state.quiz_completed = False
 if 'recommendations' not in st.session_state:
     st.session_state.recommendations = []
 
-def check_password():
-    st.markdown("<div class='main-header'><h1>KPÉKPÉ</h1><p class='slogan'>Light on your way</p></div>", unsafe_allow_html=True)
-    st.info("Application en phase de test. Entre le code d'accès.")
-    password = st.text_input("Code d'accès", type="password")
-    if st.button("Accéder à l'application"):
-        if password == "kpekpe2025":
-            st.session_state.authenticated = True
-            st.rerun()
-        else:
-            st.error("Code incorrect.")
-
+# Page accueil - choix du profil
 def page_accueil():
     st.markdown("<div class='main-header'><h1>KPÉKPÉ</h1><p class='slogan'>Light on your way</p></div>", unsafe_allow_html=True)
     st.markdown("## Bienvenue")
-    st.write("Kpékpé t’accompagne dans ton orientation scolaire et professionnelle.")
+    st.write("Kpékpé t’accompagne dans ta réflexion sur ton orientation scolaire et professionnelle.")
     
     st.subheader("Choisis ton profil")
     col1, col2 = st.columns(2)
@@ -144,6 +126,7 @@ def page_accueil():
             st.session_state.profil = "lyceen"
             st.rerun()
 
+# Page questionnaire avec les 4 cases cliquables
 def page_questionnaire():
     st.markdown("<div class='main-header'><h1>Questionnaire d'orientation</h1><p class='slogan'>Light on your way</p></div>", unsafe_allow_html=True)
     
@@ -151,76 +134,77 @@ def page_questionnaire():
     st.info(f"Profil sélectionné : {profil_text}")
     st.write("Réponds avec sincérité. Il n’y a pas de mauvaise réponse.")
 
-    # Case 1
+    # Case 1 - Passion
     st.markdown("<div class='case-box'>Ce qui te passionne vraiment - Découvre ce qui fait vibrer ton cœur.</div>", unsafe_allow_html=True)
     with st.expander("Ce qui te passionne vraiment", expanded=False):
-        st.session_state.responses['passion_principale'] = st.text_area("Décris ce que tu aimes vraiment faire", height=130, key="passion")
+        st.session_state.responses['passion_principale'] = st.text_area("Décris ce que tu aimes vraiment faire", height=130, key="p1")
         col1, col2 = st.columns(2)
         with col1:
-            st.session_state.responses['matieres_preferees'] = st.multiselect("Matières qui t’intéressent", MATIERES_TOGO, key="mat_pref")
+            st.session_state.responses['matieres_preferees'] = st.multiselect("Matières qui t’intéressent", MATIERES_TOGO, key="mp1")
         with col2:
             st.session_state.responses['activites_favorites'] = st.multiselect("Activités favorites", [
                 "Lire et écrire", "Créer et dessiner", "Calculer et analyser", "Parler et convaincre",
                 "Construire et réparer", "Aider les autres", "Organiser et gérer", "Utiliser l’ordinateur", "Expérimenter"
-            ], key="act_fav")
+            ], key="af1")
 
-    # Case 2
+    # Case 2 - Talents
     st.markdown("<div class='case-box'>Tes talents naturels - Identifie les forces que tu possèdes déjà.</div>", unsafe_allow_html=True)
     with st.expander("Tes talents naturels", expanded=False):
-        st.session_state.responses['forces_naturelles'] = st.text_area("Ce pour quoi tu es naturellement doué", height=130, key="forces")
+        st.session_state.responses['forces_naturelles'] = st.text_area("Ce pour quoi tu es naturellement doué", height=130, key="f1")
         col1, col2 = st.columns(2)
         with col1:
-            st.session_state.responses['matieres_fortes'] = st.multiselect("Matières où tu réussis", MATIERES_TOGO, key="mat_fortes")
+            st.session_state.responses['matieres_fortes'] = st.multiselect("Matières où tu réussis", MATIERES_TOGO, key="mf1")
         with col2:
             st.session_state.responses['talents'] = st.multiselect("Tes talents", [
                 "Logique et raisonnement", "Créativité", "Communication", "Habileté manuelle",
                 "Leadership", "Empathie", "Organisation", "Sens technique"
-            ], key="talents_list")
+            ], key="t1")
 
-    # Case 3
+    # Case 3 - Impact
     st.markdown("<div class='case-box'>L’impact que tu veux avoir - Réfléchis au changement que tu souhaites apporter.</div>", unsafe_allow_html=True)
     with st.expander("L’impact que tu veux avoir", expanded=False):
-        st.session_state.responses['impact_souhaite'] = st.text_area("Le changement que tu veux créer", height=130, key="impact")
+        st.session_state.responses['impact_souhaite'] = st.text_area("Le changement que tu veux créer", height=130, key="i1")
         st.session_state.responses['probleme'] = st.selectbox("Domaine prioritaire", [
             "Santé et bien-être", "Éducation et formation", "Environnement et climat",
             "Technologie et innovation", "Réduction de la pauvreté", "Construction et infrastructure",
             "Commerce et économie", "Justice et droits", "Agriculture et alimentation"
-        ], key="domaine")
+        ], key="d1")
 
-    # Case 4
+    # Case 4 - Priorités
     st.markdown("<div class='case-box'>Tes priorités professionnelles - Définit ce qui compte pour ton avenir.</div>", unsafe_allow_html=True)
     with st.expander("Tes priorités professionnelles", expanded=False):
-        st.session_state.responses['priorites_personnelles'] = st.text_area("Ce qui compte pour toi", height=100, key="priorites")
+        st.session_state.responses['priorites_personnelles'] = st.text_area("Ce qui compte pour toi", height=100, key="pr1")
         col1, col2 = st.columns(2)
         with col1:
             st.session_state.responses['priorite'] = st.selectbox("Priorité principale", [
                 "Un bon salaire", "Faire ce qui me passionne", "Équilibre passion/salaire",
                 "Avoir un impact social", "Avoir un emploi stable"
-            ], key="priorite_select")
+            ], key="ps1")
         with col2:
             st.session_state.responses['contraintes'] = st.multiselect("Tes contraintes", [
                 "Budget limité pour les études", "Besoin de travailler rapidement",
                 "Possibilité de faire de longues études", "Préférence pour des études courtes"
-            ], key="contraintes_list")
+            ], key="c1")
 
     st.markdown("---")
     if st.button("Voir mes recommandations", use_container_width=True):
         required = ['passion_principale', 'forces_naturelles', 'impact_souhaite']
         if all(st.session_state.responses.get(k) for k in required):
-            # Calcul des recommandations
-            data = SERIES_DATA if st.session_state.profil == "collegien" else METIERS_DATA
-            recommandations = calculer_recommandations_texte_libre(st.session_state.responses, data, st.session_state.profil)
-            st.session_state.recommendations = recommandations
-            st.session_state.quiz_completed = True
+            st.session_state.recommendations = ["trigger"]  # déclenche le passage
             st.rerun()
         else:
             st.warning("Merci de remplir au moins les trois premières sections en texte libre.")
 
+# Page résultats
 def page_resultats():
     st.markdown("<div class='main-header'><h1>Tes résultats</h1><p class='slogan'>Light on your way</p></div>", unsafe_allow_html=True)
     
-    recommandations = st.session_state.recommendations
+    responses = st.session_state.responses
     profil = st.session_state.profil
+    
+    data = SERIES_DATA if profil == "collegien" else METIERS_DATA
+    recommandations = calculer_recommandations_texte_libre(responses, data, profil)
+    st.session_state.recommendations = recommandations
     
     titre = "Séries recommandées" if profil == "collegien" else "Métiers et filières recommandés"
     st.subheader(titre)
@@ -246,10 +230,10 @@ def page_resultats():
         
         with col2:
             st.markdown("**Débouchés concrets**")
-            for d in rec['debouches'][:3]:
+            for d in rec.get('debouches', [])[:3]:
                 st.write(f"• {d}")
             st.markdown("**Durée d’études**")
-            st.write(rec['duree'])
+            st.write(rec.get('duree_etudes', 'Non défini'))
             
             if profil == "lyceen":
                 st.markdown("**Où étudier au Togo**")
@@ -265,7 +249,6 @@ def page_resultats():
         st.session_state.responses = {}
         st.session_state.recommendations = []
         st.session_state.profil = None
-        st.session_state.quiz_completed = False
         st.rerun()
     
     st.subheader("Une question ?")
@@ -286,11 +269,9 @@ def page_resultats():
             st.info(CHATBOT_RESPONSES[question])
 
 def main():
-    if not st.session_state.authenticated:
-        check_password()
-    elif st.session_state.profil is None:
+    if st.session_state.profil is None:
         page_accueil()
-    elif not st.session_state.quiz_completed:
+    elif not st.session_state.recommendations or st.session_state.recommendations == ["trigger"]:
         page_questionnaire()
     else:
         page_resultats()
