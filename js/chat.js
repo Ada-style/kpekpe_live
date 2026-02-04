@@ -187,10 +187,10 @@ function handleUserResponse(text) {
     }
 
     // 3. CHAT LOOP
+    // 3. CHAT LOOP
     if (STATE.screen === 'chat_intro') {
         STATE.screen = 'chat_loop';
-        askChatQuestion();
-        return;
+        // Fall through to process the answer
     }
 
     if (STATE.screen === 'chat_loop') {
