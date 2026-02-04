@@ -1,0 +1,357 @@
+/**
+ * Kpékpé - Chat Engine & Logic
+ */
+
+// --- STATE MANAGEMENT ---
+const STATE = {
+    screen: 'onboarding', // onboarding, personality_test, chat_intro, chat_loop, results
+    user: {
+        name: '',
+        age: '',
+        status: '', // Collégien, Lycéen, etc.
+        personality_scores: { A: 0, B: 0 },
+        personality_type: null, // ANALYTIQUE, CREATIF, etc.
+        answers_log: [],
+        extracted_tags: [] // Tags from chat for matching
+    },
+    test_question_index: 0,
+    chat_turn: 0
+};
+
+// --- PERSONALITY TEST QUESTIONS (15 Fixed) ---
+const TEST_QUESTIONS = [
+    { q: "En groupe, tu préfères :", a: "A) Écouter et observer", b: "B) Être au centre" },
+    { q: "Pour une décision importante :", a: "A) Logique et faits", b: "B) Intuition et émotions" },
+    { q: "Tes activités sont plutôt :", a: "A) Organisées et planifiées", b: "B) Spontanées" },
+    { q: "Face à un problème :", a: "A) Solutions pratiques", b: "B) Idées créatives" },
+    { q: "Tu es plus à l'aise avec :", a: "A) Des règles claires", b: "B) La liberté" },
+    { q: "Tes amis te décrivent comme :", a: "A) Réservé(e) et réfléchi(e)", b: "B) Sociable et énergique" },
+    { q: "Tu apprends mieux en :", a: "A) Pratiquant", b: "B) Lisant et écoutant" },
+    { q: "Dans un projet, tu :", a: "A) Coordonnes et organises", b: "B) Génères les idées" },
+    { q: "Tu préfères un travail :", a: "A) Stable et sécurisé", b: "B) Varié et stimulant" },
+    { q: "En cas de désaccord, tu :", a: "A) Argumentes avec logique", b: "B) Cherches un compromis" },
+    { q: "Tu es motivé(e) par :", a: "A) Le succès personnel", b: "B) L'impact sur les autres" },
+    { q: "Tu préfères travailler :", a: "A) Seul(e) au calme", b: "B) En équipe" },
+    { q: "Ton emploi du temps est :", a: "A) Structuré et fixe", b: "B) Flexible" },
+    { q: "Tu es plutôt :", a: "A) Prudent(e)", b: "B) Aventureux(se)" },
+    { q: "Tu es attiré(e) par :", a: "A) Sciences et Technique", b: "B) Arts et Relations" }
+];
+
+// --- CHATBOT QUESTIONS (Flow) ---
+const CHAT_QUESTIONS = [
+    "Dis-moi, quelles sont tes matières préférées à l’école ou celles où tu es le plus à l’aise ?",
+    "Et en dehors des cours, qu’est-ce que tu aimes faire qui te fait vibrer ? (Sport, musique, bricolage...)",
+    "Si tu pouvais résoudre un problème au Togo ou dans ton entourage, ce serait quoi ?",
+    "Pour ton avenir, qu’est-ce qui compte le plus : la passion, un bon salaire, aider les autres, ou la stabilité ?",
+    "As-tu des contraintes particulières ? (Budget études, envie de travailler vite, ou prêt pour de longues études ?)"
+];
+
+// --- DOM ELEMENTS ---
+const elements = {
+    chatBox: document.getElementById('chat-box'),
+    inputArea: document.getElementById('input-area'),
+    userInput: document.getElementById('user-input'),
+    sendBtn: document.getElementById('send-btn'),
+    typingIndicator: document.getElementById('typing-indicator')
+};
+
+// --- INITIALIZATION ---
+function initApp() {
+    // Start with Onboarding
+    addMessage("bot", "Salut ! Je suis Kpékpé, ton guide personnel. 👋<br>Je suis là pour t'aider à trouver ta voie au Togo. Pour commencer, comment t'appelles-tu ?");
+    STATE.screen = 'onboarding_name';
+}
+
+// --- CORE UTILS ---
+function addMessage(sender, text, quickReplies = null) {
+    const chatBox = document.getElementById('chat-box');
+    const msgDiv = document.createElement('div');
+    msgDiv.classList.add('message', sender === 'bot' ? 'bot-message' : 'user-message');
+
+    // Avatar for bot
+    if (sender === 'bot') {
+        const avatar = document.createElement('div');
+        avatar.classList.add('message-avatar');
+        avatar.innerHTML = '<i class="fa-solid fa-lightbulb"></i>';
+        msgDiv.appendChild(avatar);
+    }
+
+    const contentDiv = document.createElement('div');
+    contentDiv.classList.add('message-content');
+    contentDiv.innerHTML = text; // Allow HTML
+    msgDiv.appendChild(contentDiv);
+
+    chatBox.appendChild(msgDiv);
+
+    // Handle Quick Replies (Buttons)
+    if (quickReplies && sender === 'bot') {
+        const qrDiv = document.createElement('div');
+        qrDiv.classList.add('quick-replies');
+        quickReplies.forEach(qr => {
+            const btn = document.createElement('button');
+            btn.classList.add('qr-btn');
+            btn.innerText = qr.text;
+            btn.onclick = () => handleUserResponse(qr.value || qr.text);
+            qrDiv.appendChild(btn);
+        });
+        chatBox.appendChild(qrDiv);
+    }
+
+    // Scroll to bottom
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+function showTyping() {
+    const typing = document.getElementById('typing-indicator');
+    typing.style.display = 'flex';
+    document.getElementById('chat-box').scrollTop = document.getElementById('chat-box').scrollHeight;
+}
+
+function hideTyping() {
+    document.getElementById('typing-indicator').style.display = 'none';
+}
+
+async function botReply(text, delay = 1000, quickReplies = null) {
+    showTyping();
+    await new Promise(r => setTimeout(r, delay));
+    hideTyping();
+    addMessage('bot', text, quickReplies);
+}
+
+// --- INPUT HANDLING ---
+document.getElementById('send-btn').addEventListener('click', () => {
+    const input = document.getElementById('user-input');
+    const text = input.value.trim();
+    if (text) {
+        handleUserResponse(text);
+        input.value = '';
+    }
+});
+
+document.getElementById('user-input').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') document.getElementById('send-btn').click();
+});
+
+// --- MAIN CONTROLLER ---
+function handleUserResponse(text) {
+    addMessage('user', text);
+
+    // 1. ONBOARDING
+    if (STATE.screen === 'onboarding_name') {
+        STATE.user.name = text;
+        STATE.screen = 'onboarding_status';
+        botReply(`Enchanté ${STATE.user.name} ! 😊<br>Quelle est ta situation actuelle ?`, 1000, [
+            { text: "Collégien (3ème)", value: "Collégien" },
+            { text: "Lycéen", value: "Lycéen" },
+            { text: "Bachelier", value: "Bachelier" },
+            { text: "Étudiant", value: "Étudiant" }
+        ]);
+        return;
+    }
+
+    if (STATE.screen === 'onboarding_status') {
+        STATE.user.status = text;
+        STATE.screen = 'personality_intro';
+        botReply(`Ça marche. Avant de discuter de tes rêves, faisons un petit test rapide pour cerner ta personnalité (15 questions).<br>C'est parti ? 🚀`, 1200, [
+            { text: "C'est parti !", value: "GO" }
+        ]);
+        return;
+    }
+
+    // 2. PERSONALITY TEST
+    if (STATE.screen === 'personality_intro' || STATE.screen === 'personality_test') {
+        if (text !== "GO" && STATE.screen === 'personality_intro') return; // Wait for GO
+
+        // Save previous answer if inside loop
+        if (STATE.screen === 'personality_test') {
+            const isA = text.startsWith("A)");
+            if (isA) STATE.user.personality_scores.A++;
+            else STATE.user.personality_scores.B++;
+            STATE.test_question_index++;
+        }
+
+        STATE.screen = 'personality_test';
+
+        // Check if finished
+        if (STATE.test_question_index >= TEST_QUESTIONS.length) {
+            calculateProfile();
+            return;
+        }
+
+        const q = TEST_QUESTIONS[STATE.test_question_index];
+        botReply(q.q, 600, [
+            { text: q.a, value: q.a },
+            { text: q.b, value: q.b }
+        ]);
+        return;
+    }
+
+    // 3. CHAT LOOP
+    if (STATE.screen === 'chat_intro') {
+        STATE.screen = 'chat_loop';
+        askChatQuestion();
+        return;
+    }
+
+    if (STATE.screen === 'chat_loop') {
+        // Collect data
+        STATE.user.answers_log.push(text);
+        STATE.user.extracted_tags = [...STATE.user.extracted_tags, ...extractKeywords(text)];
+
+        STATE.chat_turn++;
+        if (STATE.chat_turn >= CHAT_QUESTIONS.length) {
+            finishChat();
+        } else {
+            // Little feedback before next question
+            const encouragements = ["Super !", "Intéressant.", "Je vois.", "C'est noté !", "Top !"];
+            const randEnc = encouragements[Math.floor(Math.random() * encouragements.length)];
+
+            botReply(`${randEnc} ${CHAT_QUESTIONS[STATE.chat_turn]}`, 1000);
+        }
+    }
+}
+
+// --- LOGIC FUNCTIONS ---
+function calculateProfile() {
+    const scores = STATE.user.personality_scores;
+    let mainProfile = "";
+
+    // Simple Heuristic as per prompt
+    // A = Analytique logic / Methode | B = Créatif / Social
+    // Question logic mapping is implicit in the prompt's grouping
+    // Refinement: Prompts says Majority A/B determines logic/creative vs methodic/social?
+    // Let's use the exact prompt rules:
+    // A=Logique/Structuré, B=Intuitif/Social
+
+    // We need 4 buckets actually to map to the 4 profiles?
+    // Prompt rules were:
+    // - Maj A + logique -> ANALYTIQUE
+    // - Maj B + créatif -> CREATIF
+    // - Maj A + social -> METHODIQUE (Wait, A is usually logic, implies Methodique is A-heavy but social?)
+    // Let's simplify: A = Left Brain (Order), B = Right Brain (Flexibility)
+
+    if (scores.A > scores.B) {
+        // More structured
+        // If question 1 (Group) or 6 (Friends) said 'Social', maybe Methodique?
+        // Let's randomize slightly for prototype or purely based on score
+        mainProfile = "ANALYTIQUE";
+        // Hack: check if social questions were B
+        // Assume pure A = Analytique, Mixed A = Methodique
+    } else {
+        mainProfile = "CREATIF";
+        if (Math.random() > 0.5) mainProfile = "SOCIAL"; // Simplify for prototype logic
+    }
+
+    // Override with proper logic if we mapped questions carefully.
+    // Let's stick to the Prompt's explicit mappings:
+    // "Calculer le profil à la fin (majorité A/B)"
+    // Let's assign explicitly based on score count for robustness
+    if (scores.A >= 10) mainProfile = "ANALYTIQUE";
+    else if (scores.A >= 8) mainProfile = "METHODIQUE";
+    else if (scores.B >= 10) mainProfile = "CREATIF";
+    else mainProfile = "SOCIAL";
+
+    STATE.user.personality_type = mainProfile;
+    const profileData = PERSONALITY_PROFILES[mainProfile];
+
+    STATE.screen = 'chat_intro';
+    botReply(`Ton profil est : <strong>${profileData.label}</strong> 🎯<br>${profileData.desc}<br>Génial ! On va utiliser ça pour te guider.`, 1500);
+    setTimeout(() => {
+        botReply(`Maintenant, passons aux choses sérieuses. ${CHAT_QUESTIONS[0]}`, 2000);
+    }, 2000);
+}
+
+function askChatQuestion() {
+    // Current question is handled in loop logic
+}
+
+function extractKeywords(text) {
+    // Basic Keyword matching for prototype
+    const lower = text.toLowerCase();
+    const tags = [];
+
+    // Map words to tags in JOBS_DATA
+    if (lower.includes("math") || lower.includes("calcul")) tags.push("maths");
+    if (lower.includes("dessin") || lower.includes("art")) tags.push("art", "dessin", "création");
+    if (lower.includes("ens") || lower.includes("aider")) tags.push("aider", "social", "contact");
+    if (lower.includes("ordinateur") || lower.includes("code")) tags.push("informatique", "code");
+    if (lower.includes("biologie") || lower.includes("svt")) tags.push("biologie", "santé");
+    if (lower.includes("argent") || lower.includes("salaire")) tags.push("argent", "business");
+    if (lower.includes("entrepr")) tags.push("entreprise", "gestion");
+
+    return tags;
+}
+
+function finishChat() {
+    STATE.screen = 'results';
+    botReply("Merci pour tes réponses ! Laisse-moi analyser tout ça avec mes données sur le Togo... 🇹🇬", 1000);
+
+    setTimeout(() => {
+        showRecommendations();
+    }, 2500);
+}
+
+function showRecommendations() {
+    // SCORING ALGORITHM
+    const profile = PERSONALITY_PROFILES[STATE.user.personality_type];
+    const userTags = STATE.user.extracted_tags;
+
+    // Score each job
+    const scores = JOBS_DATA.map(job => {
+        let score = 0;
+
+        // 1. Personality Match
+        if (job.profiles.includes(STATE.user.personality_type)) score += 5;
+
+        // 2. Interest Tags Match
+        userTags.forEach(tag => {
+            if (job.tags.some(t => t.includes(tag) || tag.includes(t))) score += 3;
+        });
+
+        return { job, score };
+    });
+
+    // Sort and take Top 3
+    scores.sort((a, b) => b.score - a.score);
+    const top3 = scores.slice(0, 3);
+
+    // Generate HTML
+    let html = `Voici 3 pistes qui te correspondent à merveille, ${STATE.user.name} :<br><br>`;
+
+    top3.forEach((item, idx) => {
+        const job = item.job;
+        // Lookup schools dynamically
+        const recommendedSchools = getSchoolsForJob(job.tags);
+        const schoolText = recommendedSchools.length > 0 ? recommendedSchools.join(", ") : "Universités publiques ou privées du Togo";
+
+        html += `
+        <div class="job-card">
+            <h4>${idx + 1}. ${job.title} (${job.category})</h4>
+            <div class="job-details">
+                <p><strong>Pourquoi toi ?</strong> ${job.desc}</p>
+                <p><strong>Écoles :</strong> ${schoolText}</p>
+                <p><strong>Débouchés :</strong> ${job.recruiters.join(", ")}</p>
+                <div class="job-meta">
+                    <span class="badge">Salaire: ${job.salary_indice}</span>
+                    <span class="badge">Études: ${job.studies}</span>
+                </div>
+            </div>
+        </div>`;
+    });
+
+    html += `<br>Qu'en penses-tu ? Ça te parle ?`;
+
+    botReply(html, 500, [
+        { text: "En savoir plus", value: "MORE" },
+        { text: "Recommencer", value: "RESTART" },
+        { text: "Télécharger PDF", value: "PDF" }
+    ]);
+}
+
+// SURVEY LOGIC (Placeholder)
+function triggerSurvey() {
+    // Implementation for survey flow
+}
+
+// Start
+window.onload = initApp;
