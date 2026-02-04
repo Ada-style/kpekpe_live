@@ -1,5 +1,4 @@
 # utils/scoring.py
-
 from typing import Dict, List
 import re
 
@@ -20,6 +19,7 @@ def calculer_similarite_mots_cles(user_list: List[str], item_list: List[str]) ->
 def calculer_recommandations_texte_libre(responses: Dict, data: Dict, profil: str) -> List[Dict]:
     recommandations = []
     
+    # Texte libre concaténé (moins pondéré que les matières)
     texte_libre = ' '.join([
         responses.get('passion_principale', ''),
         responses.get('forces_naturelles', ''),
@@ -28,6 +28,7 @@ def calculer_recommandations_texte_libre(responses: Dict, data: Dict, profil: st
     ])
     texte_net = nettoyer_texte(texte_libre)
     
+    # Listes utilisateur clés
     matieres_fortes = responses.get('matieres_fortes', [])
     matieres_pref = responses.get('matieres_preferees', [])
     talents = responses.get('talents', [])
@@ -36,45 +37,58 @@ def calculer_recommandations_texte_libre(responses: Dict, data: Dict, profil: st
     priorite = responses.get('priorite', '')
     contraintes = responses.get('contraintes', [])
     
+    # Liste complète des matières importantes de l'utilisateur
+    matieres_user = matieres_fortes + matieres_pref
+    
     for key, item in data.items():
         score = 0
         
-        mat_match = calculer_similarite_mots_cles(
-            matieres_fortes + matieres_pref,
-            item.get('matieres_importantes', [])
-        )
-        score += mat_match * 10
+        # 1. MATCH MATIERES → poids TRÈS FORT (priorité absolue)
+        mat_match = calculer_similarite_mots_cles(matieres_user, item.get('matieres_importantes', []))
+        score += mat_match * 25  # ← AUGMENTÉ DE 10 → 25 : les matières comptent énormément
         
-        comp_match = calculer_similarite_mots_cles(
-            talents + activites,
-            item.get('competences', [])
-        )
-        score += comp_match * 8
+        # Bonus si plusieurs matières matchent
+        if mat_match >= 2:
+            score += 15
         
+        # 2. MATCH COMPÉTENCES / TALENTS / ACTIVITÉS
+        comp_match = calculer_similarite_mots_cles(talents + activites, item.get('competences', []))
+        score += comp_match * 10
+        
+        # 3. Similarité texte libre (moins important que les matières)
         item_texte = nettoyer_texte(
             item.get('explication', '') + ' ' + ' '.join(item.get('competences', []))
         )
         mots_communs = len(set(texte_net.split()) & set(item_texte.split()))
-        score += mots_communs * 3
+        score += mots_communs * 4
         
+        # 4. Domaine prioritaire → gros bonus
         if domaine_prioritaire and domaine_prioritaire.lower() in item.get('domaine', '').lower():
-            score += 20
+            score += 35
         
-        duree = item.get('duree_etudes', '')
+        # 5. Contraintes et priorités
+        duree = item.get('duree_etudes', '').lower()
         if "courtes" in ' '.join(contraintes).lower() or "travailler rapidement" in ' '.join(contraintes).lower():
-            if any(mot in duree.lower() for mot in ["2", "3", "bts", "cap", "bt"]):
-                score += 15
+            if any(mot in duree for mot in ["2", "3", "bts", "cap", "bt", "courte"]):
+                score += 20
         if "longues études" in ' '.join(contraintes).lower():
-            if any(mot in duree.lower() for mot in ["5", "6", "7", "8", "10"]):
-                score += 10
-        if "bon salaire" in priorite.lower():
-            if "élevé" in item.get('salaire', '').lower():
-                score += 12
-        if "impact social" in priorite.lower():
-            if "demandé" in item.get('debouches_togo', '').lower():
+            if any(mot in duree for mot in ["5", "6", "7", "8", "10", "longue"]):
                 score += 15
         
-        score_normalise = min(score, 100)
+        if "bon salaire" in priorite.lower():
+            salaire = item.get('salaire', '').lower()
+            if "élevé" in salaire or "très demandé" in item.get('debouches_togo', ''):
+                score += 18
+        
+        if "impact social" in priorite.lower():
+            if "demandé" in item.get('debouches_togo', '').lower() or "très demandé" in item.get('debouches_togo', ''):
+                score += 20
+        
+        # Pénalité si très peu de match matières (évite de proposer médecine si zéro SVT/Math)
+        if mat_match == 0 and "Santé" in item.get('domaine', ''):
+            score -= 30
+        
+        score_normalise = max(0, min(score, 100))
         
         recommandations.append({
             'nom': item.get('nom', key),
