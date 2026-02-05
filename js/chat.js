@@ -151,8 +151,26 @@ function handleUserResponse(text) {
 
     if (STATE.screen === 'onboarding_status') {
         STATE.user.status = text;
+        if (text === "Lycéen") {
+            STATE.screen = 'onboarding_series';
+            let options = [];
+            Object.values(SERIES_DATA).forEach(family => {
+                family.forEach(s => options.push({ text: s.code, value: s.code }));
+            });
+            botReply("Super ! Quelle est ta série actuelle (ou celle que tu envisages) ?", 1000, options);
+        } else {
+            STATE.screen = 'personality_intro';
+            botReply(`Ça marche. Avant de discuter de tes rêves, faisons un petit test rapide pour cerner ta personnalité (15 questions).<br>C'est parti ? 🚀`, 1200, [
+                { text: "C'est parti !", value: "GO" }
+            ]);
+        }
+        return;
+    }
+
+    if (STATE.screen === 'onboarding_series') {
+        STATE.user.series = text;
         STATE.screen = 'personality_intro';
-        botReply(`Ça marche. Avant de discuter de tes rêves, faisons un petit test rapide pour cerner ta personnalité (15 questions).<br>C'est parti ? 🚀`, 1200, [
+        botReply(`Noté pour la série ${text}.<br>Passons maintenant au test de personnalité ! C'est parti ? 🚀`, 1000, [
             { text: "C'est parti !", value: "GO" }
         ]);
         return;
@@ -300,13 +318,24 @@ function showRecommendations() {
     const scores = JOBS_DATA.map(job => {
         let score = 0;
 
-        // 1. Personality Match
+        // 1. Interest Keywords Match (WEIGHT 15 - Main Driver)
+        userTags.forEach(tag => {
+            if (job.tags.some(t => t.toLowerCase() === tag.toLowerCase())) score += 15;
+            else if (job.tags.some(t => t.toLowerCase().includes(tag.toLowerCase()))) score += 7;
+        });
+
+        // 2. Personality Match (WEIGHT 5)
         if (job.profiles.includes(STATE.user.personality_type)) score += 5;
 
-        // 2. Interest Tags Match
-        userTags.forEach(tag => {
-            if (job.tags.some(t => t.includes(tag) || tag.includes(t))) score += 3;
-        });
+        // 3. Series Match (WEIGHT 15 - Career Compatibility)
+        const userSeries = STATE.user.series;
+        if (userSeries) {
+            if (job.series.includes("Toutes") || job.series.includes(userSeries)) {
+                score += 15;
+            }
+        } else {
+            score += 5; // Default compatibility
+        }
 
         return { job, score };
     });
