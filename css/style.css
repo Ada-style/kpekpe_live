@@ -55,6 +55,13 @@
     padding: 0;
 }
 
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
 body {
     font-family: var(--font-body);
     color: var(--color-text-main);
@@ -280,13 +287,11 @@ footer {
    ========================================= */
 
 body.chat-mode {
-    height: 100vh;
+    height: 100%;
     height: 100dvh;
-    /* Dynamic viewport height for mobile browser bars */
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    /* Prevent body scroll */
     background-color: var(--color-bg-chat);
 }
 
@@ -296,31 +301,26 @@ body.chat-mode {
 
 .chat-interface {
     flex: 1;
+    display: grid;
+    grid-template-rows: 1fr auto;
     overflow: hidden;
     position: relative;
-    display: flex;
-    flex-direction: column;
 }
 
-.chat-container {
-    width: 100%;
-    max-width: 800px;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-}
+/* .chat-container removed (v9.0) */
 
 .chat-box {
-    flex: 1;
     overflow-y: auto;
     padding: 1rem 0;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
     scroll-behavior: smooth;
-    min-height: 0;
-    /* Important for flex-shrink in some browsers */
+}
+
+.chat-box .container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
 }
 
 /* Messages */
@@ -419,12 +419,10 @@ body.chat-mode {
 
 /* Input Area */
 .input-area {
-    position: relative;
-    padding: 15px 0 20px 0;
-    background: var(--color-bg-chat);
-    /* Solid background to overlay scroll if needed */
-    z-index: 10;
-    flex-shrink: 0;
+    background: white;
+    border-top: 1px solid #e0e0e0;
+    padding: 10px 0 20px 0;
+    z-index: 100;
 }
 
 .input-wrapper {

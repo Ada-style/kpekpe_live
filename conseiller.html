@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <!-- CSS -->
-    <link rel="stylesheet" href="css/style.css?v=8.0">
+    <link rel="stylesheet" href="css/style.css?v=9.0">
 </head>
 
 <body class="chat-mode">
@@ -36,10 +36,9 @@
 
     <!-- Main Chat Interface -->
     <main class="chat-interface">
-        <div class="container chat-container">
-
-            <!-- Messages Area -->
-            <div id="chat-box" class="chat-box">
+        <!-- Messages Area -->
+        <div id="chat-box" class="chat-box">
+            <div class="container">
                 <!-- Messages will appear here -->
 
                 <!-- Typing Indicator -->
@@ -50,9 +49,11 @@
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Input Area -->
-            <div class="input-area" id="input-area">
+        <!-- Input Area -->
+        <div class="input-area" id="input-area">
+            <div class="container">
                 <div class="input-wrapper">
                     <input type="text" id="user-input" placeholder="Écris ta réponse ici..." autocomplete="off">
                     <button id="send-btn" class="btn-send">
@@ -60,13 +61,12 @@
                     </button>
                 </div>
             </div>
-
         </div>
     </main>
 
     <!-- Scripts -->
-    <script src="js/data.js?v=8.0"></script>
-    <script src="js/chat.js?v=8.0"></script>
+    <script src="js/data.js?v=9.0"></script>
+    <script src="js/chat.js?v=9.0"></script>
 </body>
 
 </html>
