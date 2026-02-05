@@ -226,154 +226,174 @@ function handleUserResponse(text) {
 
             botReply(`${randEnc} ${CHAT_QUESTIONS[STATE.chat_turn]}`, 1000);
         }
-    }
-}
-
-// --- LOGIC FUNCTIONS ---
-function calculateProfile() {
-    const scores = STATE.user.personality_scores;
-    let mainProfile = "";
-
-    // Simple Heuristic as per prompt
-    // A = Analytique logic / Methode | B = Créatif / Social
-    // Question logic mapping is implicit in the prompt's grouping
-    // Refinement: Prompts says Majority A/B determines logic/creative vs methodic/social?
-    // Let's use the exact prompt rules:
-    // A=Logique/Structuré, B=Intuitif/Social
-
-    // We need 4 buckets actually to map to the 4 profiles?
-    // Prompt rules were:
-    // - Maj A + logique -> ANALYTIQUE
-    // - Maj B + créatif -> CREATIF
-    // - Maj A + social -> METHODIQUE (Wait, A is usually logic, implies Methodique is A-heavy but social?)
-    // Let's simplify: A = Left Brain (Order), B = Right Brain (Flexibility)
-
-    if (scores.A > scores.B) {
-        // More structured
-        // If question 1 (Group) or 6 (Friends) said 'Social', maybe Methodique?
-        // Let's randomize slightly for prototype or purely based on score
-        mainProfile = "ANALYTIQUE";
-        // Hack: check if social questions were B
-        // Assume pure A = Analytique, Mixed A = Methodique
-    } else {
-        mainProfile = "CREATIF";
-        if (Math.random() > 0.5) mainProfile = "SOCIAL"; // Simplify for prototype logic
-    }
-
-    // Override with proper logic if we mapped questions carefully.
-    // Let's stick to the Prompt's explicit mappings:
-    // "Calculer le profil à la fin (majorité A/B)"
-    // Let's assign explicitly based on score count for robustness
-    if (scores.A >= 10) mainProfile = "ANALYTIQUE";
-    else if (scores.A >= 8) mainProfile = "METHODIQUE";
-    else if (scores.B >= 10) mainProfile = "CREATIF";
-    else mainProfile = "SOCIAL";
-
-    STATE.user.personality_type = mainProfile;
-    const profileData = PERSONALITY_PROFILES[mainProfile];
-
-    STATE.screen = 'chat_intro';
-    botReply(`Ton profil est : <strong>${profileData.label}</strong> 🎯<br>${profileData.desc}<br>Génial ! On va utiliser ça pour te guider.`, 1500);
-    setTimeout(() => {
-        botReply(`Maintenant, passons aux choses sérieuses. ${CHAT_QUESTIONS[0]}`, 2000);
-    }, 2000);
-}
-
-function askChatQuestion() {
-    // Current question is handled in loop logic
-}
-
-function extractKeywords(text) {
-    const lower = text.toLowerCase();
-    const tags = [];
-
-    // Subjects & Science
-    if (lower.includes("math")) tags.push("maths");
-    if (lower.includes("physique") || lower.includes("chimie")) tags.push("physique", "chimie");
-    if (lower.includes("bio") || lower.includes("svt") || lower.includes("nature")) tags.push("biologie", "nature");
-    if (lower.includes("géo")) tags.push("géographie");
-    if (lower.includes("hist")) tags.push("histoire");
-    if (lower.includes("langue") || lower.includes("anglais") || lower.includes("fran")) tags.push("langues", "parler", "écriture");
-    if (lower.includes("éco") || lower.includes("argent")) tags.push("économie", "argent", "business");
-    if (lower.includes("justice") || lower.includes("loi")) tags.push("loi", "justice");
-
-    // Arts & Media
-    if (lower.includes("dessin") || lower.includes("art")) tags.push("art", "dessin", "création");
-    if (lower.includes("ciné") || lower.includes("film") || lower.includes("réalisa")) tags.push("cinéma", "vidéo", "image", "réalisateur");
-    if (lower.includes("théâtre") || lower.includes("acteur") || lower.includes("comédien")) tags.push("théâtre", "spectacle", "expression", "acteur");
-    if (lower.includes("musique") || lower.includes("chanter") || lower.includes("son")) tags.push("musique", "spectacle");
-    if (lower.includes("photo")) tags.push("photo", "image");
-
-    // Crafts & Manual
-    if (lower.includes("cuisine") || lower.includes("manger") || lower.includes("plat")) tags.push("cuisine", "nourriture");
-    if (lower.includes("bois") || lower.includes("menuis")) tags.push("bois", "menuiserie", "manuel");
-    if (lower.includes("vêtement") || lower.includes("mode") || lower.includes("couture") || lower.includes("stylis")) tags.push("mode", "vêtement", "couture", "art");
-    if (lower.includes("répa") || lower.includes("manuel") || lower.includes("main")) tags.push("manuel", "technique", "réparation");
-
-    // Interests & Togo Specifics
-    if (lower.includes("aide") || lower.includes("social")) tags.push("aider", "social");
-    if (lower.includes("voyage") || lower.includes("découv")) tags.push("voyage");
-    if (lower.includes("ordi") || lower.includes("code") || lower.includes("info")) tags.push("informatique", "code", "internet");
-    if (lower.includes("climat") || lower.includes("météo")) tags.push("climat", "météo", "environnement");
-    if (lower.includes("reportage") || lower.includes("info")) tags.push("reportage", "communication");
-
-    return [...new Set(tags)]; // Unique tags
-}
-
-function finishChat() {
-    STATE.screen = 'results';
-    botReply("Merci pour tes réponses ! Laisse-moi analyser tout ça avec mes données sur le Togo... 🇹🇬", 1000);
-
-    setTimeout(() => {
-        showRecommendations();
-    }, 2500);
-}
-
-function showRecommendations() {
-    // SCORING ALGORITHM
-    const profile = PERSONALITY_PROFILES[STATE.user.personality_type];
-    const userTags = STATE.user.extracted_tags;
-
-    // Score each job
-    const scores = JOBS_DATA.map(job => {
-        let score = 0;
-
-        // 1. Interest Keywords Match (WEIGHT 15 - Main Driver)
-        userTags.forEach(tag => {
-            if (job.tags.some(t => t.toLowerCase() === tag.toLowerCase())) score += 15;
-            else if (job.tags.some(t => t.toLowerCase().includes(tag.toLowerCase()))) score += 7;
-        });
-
-        // 2. Personality Match (WEIGHT 5)
-        if (job.profiles.includes(STATE.user.personality_type)) score += 5;
-
-        // 3. Series Match (WEIGHT 15 - Career Compatibility)
-        const userSeries = STATE.user.series;
-        if (userSeries) {
-            if (job.series.includes("Toutes") || job.series.includes(userSeries)) {
-                score += 15;
+        if (STATE.screen === 'results') {
+            if (text === "RESTART") {
+                location.reload(); // Simplest way to reset everything
+                return;
             }
+            if (text === "MORE") {
+                botReply("Kpékpé sera bientôt disponible sur mobile grâce à ton avis sur le site web ! 📱✨<br><br>Souhaites-tu retourner à l'accueil pour laisser ton avis ?", 1000, [
+                    { text: "Donner mon avis", value: "FEEDBACK" },
+                    { text: "Recommencer", value: "RESTART" }
+                ]);
+                return;
+            }
+            if (text === "FEEDBACK") {
+                window.location.href = "index.html#contact"; // Redirect to contact/feedback section
+                return;
+            }
+            if (text === "PDF") {
+                botReply("La génération PDF est en cours de développement. Cette fonctionnalité sera disponible dans la version finale ! 📄⏳", 800);
+                return;
+            }
+        }
+    }
+
+    // --- LOGIC FUNCTIONS ---
+    function calculateProfile() {
+        const scores = STATE.user.personality_scores;
+        let mainProfile = "";
+
+        // Simple Heuristic as per prompt
+        // A = Analytique logic / Methode | B = Créatif / Social
+        // Question logic mapping is implicit in the prompt's grouping
+        // Refinement: Prompts says Majority A/B determines logic/creative vs methodic/social?
+        // Let's use the exact prompt rules:
+        // A=Logique/Structuré, B=Intuitif/Social
+
+        // We need 4 buckets actually to map to the 4 profiles?
+        // Prompt rules were:
+        // - Maj A + logique -> ANALYTIQUE
+        // - Maj B + créatif -> CREATIF
+        // - Maj A + social -> METHODIQUE (Wait, A is usually logic, implies Methodique is A-heavy but social?)
+        // Let's simplify: A = Left Brain (Order), B = Right Brain (Flexibility)
+
+        if (scores.A > scores.B) {
+            // More structured
+            // If question 1 (Group) or 6 (Friends) said 'Social', maybe Methodique?
+            // Let's randomize slightly for prototype or purely based on score
+            mainProfile = "ANALYTIQUE";
+            // Hack: check if social questions were B
+            // Assume pure A = Analytique, Mixed A = Methodique
         } else {
-            score += 5; // Default compatibility
+            mainProfile = "CREATIF";
+            if (Math.random() > 0.5) mainProfile = "SOCIAL"; // Simplify for prototype logic
         }
 
-        return { job, score };
-    });
+        // Override with proper logic if we mapped questions carefully.
+        // Let's stick to the Prompt's explicit mappings:
+        // "Calculer le profil à la fin (majorité A/B)"
+        // Let's assign explicitly based on score count for robustness
+        if (scores.A >= 10) mainProfile = "ANALYTIQUE";
+        else if (scores.A >= 8) mainProfile = "METHODIQUE";
+        else if (scores.B >= 10) mainProfile = "CREATIF";
+        else mainProfile = "SOCIAL";
 
-    // Sort and take Top 3
-    scores.sort((a, b) => b.score - a.score);
-    const top3 = scores.slice(0, 3);
+        STATE.user.personality_type = mainProfile;
+        const profileData = PERSONALITY_PROFILES[mainProfile];
 
-    // Generate HTML
-    let html = `Voici 3 pistes qui te correspondent à merveille, ${STATE.user.name} :<br><br>`;
+        STATE.screen = 'chat_intro';
+        botReply(`Ton profil est : <strong>${profileData.label}</strong> 🎯<br>${profileData.desc}<br>Génial ! On va utiliser ça pour te guider.`, 1500);
+        setTimeout(() => {
+            botReply(`Maintenant, passons aux choses sérieuses. ${CHAT_QUESTIONS[0]}`, 2000);
+        }, 2000);
+    }
 
-    top3.forEach((item, idx) => {
-        const job = item.job;
-        // Lookup schools dynamically
-        const recommendedSchools = getSchoolsForJob(job.tags);
-        const schoolText = recommendedSchools.length > 0 ? recommendedSchools.join(", ") : "Universités publiques ou privées du Togo";
+    function askChatQuestion() {
+        // Current question is handled in loop logic
+    }
 
-        html += `
+    function extractKeywords(text) {
+        const lower = text.toLowerCase();
+        const tags = [];
+
+        // Subjects & Science
+        if (lower.includes("math")) tags.push("maths");
+        if (lower.includes("physique") || lower.includes("chimie")) tags.push("physique", "chimie");
+        if (lower.includes("bio") || lower.includes("svt") || lower.includes("nature")) tags.push("biologie", "nature");
+        if (lower.includes("géo")) tags.push("géographie");
+        if (lower.includes("hist")) tags.push("histoire");
+        if (lower.includes("langue") || lower.includes("anglais") || lower.includes("fran")) tags.push("langues", "parler", "écriture");
+        if (lower.includes("éco") || lower.includes("argent")) tags.push("économie", "argent", "business");
+        if (lower.includes("justice") || lower.includes("loi")) tags.push("loi", "justice");
+
+        // Arts & Media
+        if (lower.includes("dessin") || lower.includes("art")) tags.push("art", "dessin", "création");
+        if (lower.includes("ciné") || lower.includes("film") || lower.includes("réalisa")) tags.push("cinéma", "vidéo", "image", "réalisateur");
+        if (lower.includes("théâtre") || lower.includes("acteur") || lower.includes("comédien")) tags.push("théâtre", "spectacle", "expression", "acteur");
+        if (lower.includes("musique") || lower.includes("chanter") || lower.includes("son")) tags.push("musique", "spectacle");
+        if (lower.includes("photo")) tags.push("photo", "image");
+
+        // Crafts & Manual
+        if (lower.includes("cuisine") || lower.includes("manger") || lower.includes("plat")) tags.push("cuisine", "nourriture");
+        if (lower.includes("bois") || lower.includes("menuis")) tags.push("bois", "menuiserie", "manuel");
+        if (lower.includes("vêtement") || lower.includes("mode") || lower.includes("couture") || lower.includes("stylis")) tags.push("mode", "vêtement", "couture", "art");
+        if (lower.includes("répa") || lower.includes("manuel") || lower.includes("main")) tags.push("manuel", "technique", "réparation");
+
+        // Interests & Togo Specifics
+        if (lower.includes("aide") || lower.includes("social")) tags.push("aider", "social");
+        if (lower.includes("voyage") || lower.includes("découv")) tags.push("voyage");
+        if (lower.includes("ordi") || lower.includes("code") || lower.includes("info")) tags.push("informatique", "code", "internet");
+        if (lower.includes("climat") || lower.includes("météo")) tags.push("climat", "météo", "environnement");
+        if (lower.includes("reportage") || lower.includes("info")) tags.push("reportage", "communication");
+
+        return [...new Set(tags)]; // Unique tags
+    }
+
+    function finishChat() {
+        STATE.screen = 'results';
+        botReply("Merci pour tes réponses ! Laisse-moi analyser tout ça avec mes données sur le Togo... 🇹🇬", 1000);
+
+        setTimeout(() => {
+            showRecommendations();
+        }, 2500);
+    }
+
+    function showRecommendations() {
+        // SCORING ALGORITHM
+        const profile = PERSONALITY_PROFILES[STATE.user.personality_type];
+        const userTags = STATE.user.extracted_tags;
+
+        // Score each job
+        const scores = JOBS_DATA.map(job => {
+            let score = 0;
+
+            // 1. Interest Keywords Match (WEIGHT 15 - Main Driver)
+            userTags.forEach(tag => {
+                if (job.tags.some(t => t.toLowerCase() === tag.toLowerCase())) score += 15;
+                else if (job.tags.some(t => t.toLowerCase().includes(tag.toLowerCase()))) score += 7;
+            });
+
+            // 2. Personality Match (WEIGHT 5)
+            if (job.profiles.includes(STATE.user.personality_type)) score += 5;
+
+            // 3. Series Match (WEIGHT 15 - Career Compatibility)
+            const userSeries = STATE.user.series;
+            if (userSeries) {
+                if (job.series.includes("Toutes") || job.series.includes(userSeries)) {
+                    score += 15;
+                }
+            } else {
+                score += 5; // Default compatibility
+            }
+
+            return { job, score };
+        });
+
+        // Sort and take Top 3
+        scores.sort((a, b) => b.score - a.score);
+        const top3 = scores.slice(0, 3);
+
+        // Generate HTML
+        let html = `Voici 3 pistes qui te correspondent à merveille, ${STATE.user.name} :<br><br>`;
+
+        top3.forEach((item, idx) => {
+            const job = item.job;
+            // Lookup schools dynamically
+            const recommendedSchools = getSchoolsForJob(job.tags);
+            const schoolText = recommendedSchools.length > 0 ? recommendedSchools.join(", ") : "Universités publiques ou privées du Togo";
+
+            html += `
         <div class="job-card">
             <h4>${idx + 1}. ${job.title} (${job.category})</h4>
             <div class="job-details">
@@ -386,21 +406,21 @@ function showRecommendations() {
                 </div>
             </div>
         </div>`;
-    });
+        });
 
-    html += `<br>Qu'en penses-tu ? Ça te parle ?`;
+        html += `<br>Qu'en penses-tu ? Ça te parle ?`;
 
-    botReply(html, 500, [
-        { text: "En savoir plus", value: "MORE" },
-        { text: "Recommencer", value: "RESTART" },
-        { text: "Télécharger PDF", value: "PDF" }
-    ]);
-}
+        botReply(html, 500, [
+            { text: "En savoir plus", value: "MORE" },
+            { text: "Recommencer", value: "RESTART" },
+            { text: "Télécharger PDF", value: "PDF" }
+        ]);
+    }
 
-// SURVEY LOGIC (Placeholder)
-function triggerSurvey() {
-    // Implementation for survey flow
-}
+    // SURVEY LOGIC (Placeholder)
+    function triggerSurvey() {
+        // Implementation for survey flow
+    }
 
-// Start
-window.onload = initApp;
+    // Start
+    window.onload = initApp;
