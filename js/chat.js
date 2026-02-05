@@ -243,7 +243,7 @@ function handleUserResponse(text) {
             return;
         }
         if (text === "FEEDBACK") {
-            window.location.href = "index.html#contact";
+            window.location.href = "https://ada-style.github.io/kpekpe_live/index.html#contact";
             return;
         }
         if (text === "PDF") {
