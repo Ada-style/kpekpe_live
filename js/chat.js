@@ -284,20 +284,40 @@ function askChatQuestion() {
 }
 
 function extractKeywords(text) {
-    // Basic Keyword matching for prototype
     const lower = text.toLowerCase();
     const tags = [];
 
-    // Map words to tags in JOBS_DATA
-    if (lower.includes("math") || lower.includes("calcul")) tags.push("maths");
-    if (lower.includes("dessin") || lower.includes("art")) tags.push("art", "dessin", "création");
-    if (lower.includes("ens") || lower.includes("aider")) tags.push("aider", "social", "contact");
-    if (lower.includes("ordinateur") || lower.includes("code")) tags.push("informatique", "code");
-    if (lower.includes("biologie") || lower.includes("svt")) tags.push("biologie", "santé");
-    if (lower.includes("argent") || lower.includes("salaire")) tags.push("argent", "business");
-    if (lower.includes("entrepr")) tags.push("entreprise", "gestion");
+    // Subjects & Science
+    if (lower.includes("math")) tags.push("maths");
+    if (lower.includes("physique") || lower.includes("chimie")) tags.push("physique", "chimie");
+    if (lower.includes("bio") || lower.includes("svt") || lower.includes("nature")) tags.push("biologie", "nature");
+    if (lower.includes("géo")) tags.push("géographie");
+    if (lower.includes("hist")) tags.push("histoire");
+    if (lower.includes("langue") || lower.includes("anglais") || lower.includes("fran")) tags.push("langues", "parler", "écriture");
+    if (lower.includes("éco") || lower.includes("argent")) tags.push("économie", "argent", "business");
+    if (lower.includes("justice") || lower.includes("loi")) tags.push("loi", "justice");
 
-    return tags;
+    // Arts & Media
+    if (lower.includes("dessin") || lower.includes("art")) tags.push("art", "dessin", "création");
+    if (lower.includes("ciné") || lower.includes("film") || lower.includes("réalisa")) tags.push("cinéma", "vidéo", "image", "réalisateur");
+    if (lower.includes("théâtre") || lower.includes("acteur") || lower.includes("comédien")) tags.push("théâtre", "spectacle", "expression", "acteur");
+    if (lower.includes("musique") || lower.includes("chanter") || lower.includes("son")) tags.push("musique", "spectacle");
+    if (lower.includes("photo")) tags.push("photo", "image");
+
+    // Crafts & Manual
+    if (lower.includes("cuisine") || lower.includes("manger") || lower.includes("plat")) tags.push("cuisine", "nourriture");
+    if (lower.includes("bois") || lower.includes("menuis")) tags.push("bois", "menuiserie", "manuel");
+    if (lower.includes("vêtement") || lower.includes("mode") || lower.includes("couture") || lower.includes("stylis")) tags.push("mode", "vêtement", "couture", "art");
+    if (lower.includes("répa") || lower.includes("manuel") || lower.includes("main")) tags.push("manuel", "technique", "réparation");
+
+    // Interests & Togo Specifics
+    if (lower.includes("aide") || lower.includes("social")) tags.push("aider", "social");
+    if (lower.includes("voyage") || lower.includes("découv")) tags.push("voyage");
+    if (lower.includes("ordi") || lower.includes("code") || lower.includes("info")) tags.push("informatique", "code", "internet");
+    if (lower.includes("climat") || lower.includes("météo")) tags.push("climat", "météo", "environnement");
+    if (lower.includes("reportage") || lower.includes("info")) tags.push("reportage", "communication");
+
+    return [...new Set(tags)]; // Unique tags
 }
 
 function finishChat() {
