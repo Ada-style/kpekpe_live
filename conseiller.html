@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kpékpé - Ton Conseiller Intelligent</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css?v=4.4">
+</head>
+
+<body class="chat-mode">
+
+    <header class="header chat-header">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <i class="fa-solid fa-lightbulb text-accent"></i> Kpékpé <span
+                    style="font-size: 0.8em; opacity: 0.8; font-weight: 400; margin-left: 5px;">| Prototype</span>
+            </a>
+            <div class="header-right">
+                <a href="index.html" class="btn btn-sm btn-outline">Quitter</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Chat Interface -->
+    <main class="chat-interface">
+        <div class="container chat-container">
+
+            <!-- Messages Area -->
+            <div id="chat-box" class="chat-box">
+                <!-- Messages will appear here -->
+
+                <!-- Typing Indicator -->
+                <div id="typing-indicator" class="message bot-message" style="display: none;">
+                    <div class="message-avatar"><i class="fa-solid fa-lightbulb"></i></div>
+                    <div class="typing-buble">
+                        <span></span><span></span><span></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Input Area -->
+            <div class="input-area" id="input-area">
+                <div class="input-wrapper">
+                    <input type="text" id="user-input" placeholder="Dis-moi tout..." autocomplete="off">
+                    <button id="send-btn" class="btn-send">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="js/data.js?v=4.4"></script>
+    <script src="js/chat.js?v=4.4" defer></script>
+</body>
+
+</html>

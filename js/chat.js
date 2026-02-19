@@ -238,7 +238,7 @@ function handleUserResponse(text) {
     if (STATE.screen === 'onboarding_status') {
         STATE.user.status = text;
         STATE.screen = 'personality_intro';
-        botReply(`Ça marche. Avant de discuter de tes rêves, faisons un petit test rapide pour cerner ta personnalité (15 questions).<br>C'est parti ? 🚀`, 1200, [
+        botReply(`Ça marche. Avant de discuter de tes rêves, faisons un petit test rapide pour cerner ta personnalité (5 questions).<br>C'est parti ? 🚀`, 1200, [
             { text: "C'est parti !", value: "GO" }
         ]);
         return;
