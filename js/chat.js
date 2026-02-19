@@ -18,7 +18,8 @@ const STATE = {
         personality_history: [], // For 'Revenir' button
         personality_type: null,
         answers_log: [],
-        extracted_tags: [] // Tags from chat for matching
+        extracted_tags: [], // Tags from chat for matching
+        weak_subjects: [] // Subjects the user is not good at
     },
     test_question_index: 0,
     chat_turn: 0
@@ -433,6 +434,19 @@ function extractKeywords(text) {
     // Quick entry to workforce
     if (lower.includes("vite") || lower.includes("rapide") || lower.includes("court") || lower.includes("immédiat")) tags.push("court");
 
+    // Negative Detection (Weaknesses)
+    const words = lower.split(/\s+/);
+    const negativeKeywords = ["pas", "déteste", "nul", "mauvais", "difficile", "horreur", "aime pas"];
+
+    const isNegative = negativeKeywords.some(nk => lower.includes(nk));
+
+    if (isNegative) {
+        if (lower.includes("math")) STATE.user.weak_subjects.push("maths");
+        if (lower.includes("physique")) STATE.user.weak_subjects.push("physique");
+        if (lower.includes("bio") || lower.includes("svt")) STATE.user.weak_subjects.push("biologie");
+        if (lower.includes("langue") || lower.includes("anglais") || lower.includes("fran")) STATE.user.weak_subjects.push("littérature");
+    }
+
     return [...new Set(tags)]; // Unique tags
 }
 
@@ -499,13 +513,22 @@ function showRecommendations() {
         // Logic for Students vs Others
         const isStudent = (STATE.user.status === "Collégien" || STATE.user.status === "Lycéen");
 
-        let pathDetails = "";
+        // Filtering Incompatible Series (Academic Orientation Logic)
+        let filteredSeries = job.series;
+        if (isStudent && STATE.user.weak_subjects.includes("maths")) {
+            // If weak in math, remove Series C, E, G2 if possible
+            filteredSeries = job.series.filter(s => !["C", "E", "G2"].includes(s));
+            // Ensure we still have something to recommend
+            if (filteredSeries.length === 0) filteredSeries = ["A4", "D", "G3", "G1"];
+        }
+
+        let pathInfo = "";
         if (isStudent) {
-            pathDetails = `<p><strong>Série à suivre :</strong> ${job.series.join(", ")}</p>`;
+            pathInfo = `<p><strong>Série conseillée :</strong> ${filteredSeries.slice(0, 3).join(", ")}</p>`;
         } else {
             const recommendedSchools = getSchoolsForJob(job.tags);
             const schoolText = recommendedSchools.length > 0 ? recommendedSchools.join(", ") : "Universités publiques ou privées du Togo";
-            pathDetails = `<p><strong>Écoles recommandées :</strong> ${schoolText}</p>`;
+            pathInfo = `<p><strong>Écoles recommandées :</strong> ${schoolText}</p>`;
         }
 
         html += `
@@ -513,7 +536,7 @@ function showRecommendations() {
             <h4>${idx + 1}. ${job.title} (${job.category})</h4>
             <div class="job-details">
                 <p><strong>Pourquoi toi ?</strong> ${job.desc}</p>
-                ${pathDetails}
+                ${pathInfo}
                 <p><strong>Débouchés :</strong> ${job.recruiters.join(", ")}</p>
                 <div class="job-meta">
                     <span class="badge">Salaire: ${job.salary_indice}</span>

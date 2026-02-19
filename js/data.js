@@ -27,36 +27,82 @@ const PERSONALITY_PROFILES = {
     }
 };
 
-// 2. Séries du BAC Togolais (Enrichies)
+// 2. Séries du BAC Togolais (Enrichies et Précises)
 const SERIES_DATA = {
+    // ENSEIGNEMENT GÉNÉRAL
+    "A4": {
+        name: "Série A4 (Lettres & Sciences Humaines)",
+        domain: "Littéraire / Sciences Humaines",
+        desc: "Philosophie, histoire-géographie, langues, littérature.",
+        keywords: ["littérature", "langues", "philo", "histoire", "géographie", "social", "droit", "communication"]
+    },
     "C": {
-        name: "Série C (Mathématiques & Physique)",
-        desc: "La voie royale pour les sciences dures et l'ingénierie.",
-        keywords: ["maths", "logique", "ingénieur", "informatique", "physique", "architecture"]
+        name: "Série C (Mathématiques & Sciences Physiques)",
+        domain: "Sciences Dures",
+        desc: "Mathématiques et physique-chimie intensives.",
+        keywords: ["maths", "physique", "chimie", "logique", "ingénierie", "recherche"]
     },
     "D": {
-        name: "Série D (Sciences de la Vie)",
-        desc: "Idéal pour la santé, l'agriculture et la biologie.",
-        keywords: ["biologie", "santé", "médecine", "pharmacie", "svt", "nature", "agriculture"]
+        name: "Série D (Mathématiques & SVT)",
+        domain: "Sciences Expérimentales",
+        desc: "Biologie, médecine, agriculture, environnement.",
+        keywords: ["biologie", "svt", "santé", "médecine", "nature", "agriculture", "chimie"]
     },
-    "A4": {
-        name: "Série A4 (Littéraire)",
-        desc: "Pour les passionnés de lettres, langues, droit et communication.",
-        keywords: ["littérature", "langues", "philosophie", "droit", "communication", "journalisme", "enseignement"]
+    // ENSEIGNEMENT TECHNIQUE
+    "G1": {
+        name: "Série G1 (Techniques Administratives)",
+        domain: "Gestion Administrative",
+        desc: "Secrétariat, bureautique, organisation.",
+        keywords: ["administration", "bureau", "organisation", "secrétariat"]
+    },
+    "G2": {
+        name: "Série G2 (Techniques Quantitatives de Gestion)",
+        domain: "Finance & Comptabilité",
+        desc: "Comptabilité, finance, économie.",
+        keywords: ["comptabilité", "finance", "économie", "chiffres", "banque"]
+    },
+    "G3": {
+        name: "Série G3 (Techniques Commerciales)",
+        domain: "Commerce & Marketing",
+        desc: "Marketing, vente, gestion d'entreprise.",
+        keywords: ["commerce", "marketing", "vente", "gestion", "business"]
+    },
+    "F1": {
+        name: "Série F1 (Génie Mécanique)",
+        domain: "Industrie & Mécanique",
+        desc: "Mécanique générale, maintenance industrielle.",
+        keywords: ["mécanique", "industrie", "maintenance", "technique"]
+    },
+    "F2": {
+        name: "Série F2 (Électronique)",
+        domain: "Électronique & Automatisme",
+        desc: "Circuits électroniques, robots, automatisation.",
+        keywords: ["électronique", "robotique", "automatisme", "technique"]
+    },
+    "F3": {
+        name: "Série F3 (Électrotechnique)",
+        domain: "Électricité",
+        desc: "Installations électriques, réseaux d'énergie.",
+        keywords: ["électricité", "énergie", "installation", "maintenance"]
+    },
+    "F4": {
+        name: "Série F4 (Génie Civil)",
+        domain: "Bâtiment & Travaux Publics",
+        desc: "Construction, architecture, dessin technique.",
+        keywords: ["construction", "btp", "architecture", "dessin", "chantier"]
     },
     "E": {
-        name: "Série E (Maths & Techno)",
-        desc: "L'excellence technique et mathématique.",
-        keywords: ["technologie", "mécanique", "conception", "ingénierie", "informatique"]
+        name: "Série E (Sciences et Techniques)",
+        domain: "Sciences Appliquées",
+        desc: "Approche généraliste des sciences et techniques.",
+        keywords: ["technologie", "innovation", "conception", "ingénierie"]
     },
-    "F1": { name: "F1 (Mécanique Générale)", keywords: ["mécanique", "industrie", "usine", "construction"] },
-    "F2": { name: "F2 (Électronique)", keywords: ["électronique", "circuits", "réparation", "informatique"] },
-    "F3": { name: "F3 (Électrotechnique)", keywords: ["électricité", "énergie", "installation", "bâtiment"] },
-    "F4": { name: "F4 (Génie Civil)", keywords: ["bâtiment", "construction", "architecture", "dessin", "chantier"] },
-    "G1": { name: "G1 (Administration)", keywords: ["administration", "bureau", "secrétariat"] },
-    "G2": { name: "G2 (Gestion/Compta)", keywords: ["comptabilité", "gestion", "chiffres", "banque", "finance"] },
-    "G3": { name: "G3 (Commerce)", keywords: ["commerce", "vente", "marketing", "logistique"] },
-    "TI": { name: "TI (Info)", keywords: ["informatique", "ordinateur", "réseaux", "programmation"] }
+    "TI/1": {
+        name: "Série TI/1 (Techniques Industrielles)",
+        domain: "Industrie Spécialisée",
+        desc: "Chaudronnerie, tuyauterie, métallurgie.",
+        keywords: ["soudure", "métal", "usine", "chaudronnerie"]
+    }
 };
 
 // 3. Établissements (Liste étendue et consolidée)
@@ -145,7 +191,7 @@ const JOBS_DATA = [
     // --- ARTS & MÉDIAS (8) ---
     { id: "journaliste", title: "Journaliste / Reporter", category: "Média", tags: ["parler", "écriture", "reportage", "voyage", "géographie", "histoire"], profiles: ["CREATIF", "SOCIAL"], series: ["A4", "G"], studies: "3 ans", recruiters: ["TV", "Radio", "Web"], desc: "Informer le public.", salary_indice: "Moyen" },
     { id: "acteur", title: "Acteur / Comédien", category: "Arts", tags: ["spectacle", "théâtre", "cinéma", "expression", "art"], profiles: ["CREATIF", "SOCIAL"], series: ["Toutes"], studies: "École d'art", recruiters: ["Compagnies", "Freelance"], desc: "Interprétation de rôles.", salary_indice: "Variable" },
-    { id: "realisateur", title: "Réalisateur / Monteur", category: "Arts", tags: ["cinéma", "vidéo", "image", "reportage", "technique"], profiles: ["CREATIF", "ANALYTIQUE"], series: ["A4", "F", "TI"], studies: "2-3 ans", recruiters: ["Studios", "Freelance"], desc: "Création de contenus audiovisuels.", salary_indice: "Moyen" },
+    { id: "realisateur", title: "Réalisateur / Monteur", category: "Arts", tags: ["cinéma", "vidéo", "image", "reportage", "technique"], profiles: ["CREATIF", "ANALYTIQUE"], series: ["A4", "F2", "TI/1"], studies: "2-3 ans", recruiters: ["Studios", "Freelance"], desc: "Création de contenus audiovisuels.", salary_indice: "Moyen" },
     { id: "styliste", title: "Styliste / Designer Mode", category: "Arts", tags: ["mode", "vêtement", "dessin", "création", "art", "couture", "stylisme", "court"], profiles: ["CREATIF", "METHODIQUE"], series: ["Toutes"], studies: "École de mode (2-3 ans)", recruiters: ["Ateliers", "Marques", "Indépendant"], desc: "Conception et création de collections de mode.", salary_indice: "Variable" },
     { id: "graphiste", title: "Graphiste / UX Designer", category: "Numérique", tags: ["dessin", "ordinateur", "image", "création", "art"], profiles: ["CREATIF", "METHODIQUE"], series: ["Toutes"], studies: "2 ans", recruiters: ["Agences", "Startups"], desc: "Communication visuelle numérique.", salary_indice: "Moyen" },
     { id: "photographe", title: "Photographe Pro", category: "Arts", tags: ["image", "photo", "art", "voyage", "technique"], profiles: ["CREATIF", "SOCIAL"], series: ["Toutes"], studies: "Expérience/Formation", recruiters: ["Studios", "Events"], desc: "Capture d'images.", salary_indice: "Variable" },
@@ -158,18 +204,18 @@ const JOBS_DATA = [
     { id: "electricien", title: "Électricien", category: "Technique", tags: ["électricité", "courant", "manuel", "réparation", "sécurité"], profiles: ["METHODIQUE", "ANALYTIQUE"], series: ["F3", "Sans Bac"], studies: "BT/BTS", recruiters: ["État", "Ateliers"], desc: "Installations électriques.", salary_indice: "Moyen" },
     { id: "mecanicien", title: "Mécanicien Auto", category: "Technique", tags: ["voiture", "moteur", "réparation", "manuel", "technique"], profiles: ["METHODIQUE", "ANALYTIQUE"], series: ["F1", "Sans Bac"], studies: "Apprentissage", recruiters: ["Garages"], desc: "Entretien de véhicules.", salary_indice: "Moyen" },
     { id: "cuisinier", title: "Cuisinier / Chef", category: "Artisanat", tags: ["cuisine", "nourriture", "restaurant", "manuel", "art"], profiles: ["CREATIF", "METHODIQUE"], series: ["Toutes"], studies: "CAP/Hôtellerie", recruiters: ["Hôtels", "Restos"], desc: "Gastronomie et service.", salary_indice: "Moyen" },
-    { id: "soudure", title: "Soudeur / Ferronnier", category: "Artisanat", tags: ["fer", "métal", "manuel", "construction", "artisanat"], profiles: ["METHODIQUE", "CREATIF"], series: ["F1", "Sans Bac"], studies: "Apprentissage", recruiters: ["PME", "Indépendant"], desc: "Travail du métal.", salary_indice: "Moyen" },
+    { id: "soudure", title: "Soudeur / Ferronnier", category: "Artisanat", tags: ["fer", "métal", "manuel", "construction", "artisanat"], profiles: ["METHODIQUE", "CREATIF"], series: ["F1", "TI/1"], studies: "Apprentissage", recruiters: ["PME", "Indépendant"], desc: "Travail du métal.", salary_indice: "Moyen" },
     { id: "couturier", title: "Couturier / Tailleur", category: "Artisanat", tags: ["mode", "tissu", "couture", "manuel", "vêtement"], profiles: ["METHODIQUE", "CREATIF"], series: ["Toutes", "Sans Bac"], studies: "Apprentissage", recruiters: ["Ateliers"], desc: "Confection de vêtements.", salary_indice: "Variable" },
     { id: "plombier", title: "Plombier", category: "Artisanat", tags: ["eau", "tuyau", "manuel", "réparation", "maison"], profiles: ["METHODIQUE"], series: ["Sans Bac"], studies: "Apprentissage", recruiters: ["Indépendant", "BTP"], desc: "Installations sanitaires.", salary_indice: "Moyen" },
 
     // --- NUMÉRIQUE & INGÉNIERIE (7) ---
-    { id: "dev_web", title: "Développeur Full-Stack", category: "Numérique", tags: ["informatique", "code", "internet", "création", "logique"], profiles: ["ANALYTIQUE", "CREATIF"], series: ["C", "E", "TI", "F2"], studies: "2-5 ans", recruiters: ["Startups (Lomé)", "Gozem", "Semoa"], desc: "Créer des sites et applis.", salary_indice: "Élevé" },
+    { id: "dev_web", title: "Développeur Full-Stack", category: "Numérique", tags: ["informatique", "code", "internet", "création", "logique"], profiles: ["ANALYTIQUE", "CREATIF"], series: ["C", "E", "TI/1", "F2"], studies: "2-5 ans", recruiters: ["Startups (Lomé)", "Gozem", "Semoa"], desc: "Créer des sites et applis.", salary_indice: "Élevé" },
     { id: "data_analyst", title: "Data Analyst", category: "Numérique", tags: ["données", "chiffres", "maths", "analyse", "informatique"], profiles: ["ANALYTIQUE", "METHODIQUE"], series: ["C", "E"], studies: "3-5 ans", recruiters: ["Togocom", "Moov Africa", "Banques"], desc: "Analyse des données.", salary_indice: "Élevé" },
-    { id: "cybersecurite", title: "Expert Cyber-sécurité", category: "Numérique", tags: ["sécurité", "informatique", "code", "réseaux", "protection"], profiles: ["ANALYTIQUE", "METHODIQUE"], series: ["C", "E", "TI"], studies: "5 ans", recruiters: ["Banques", "État (CINA)"], desc: "Protection des systèmes.", salary_indice: "Élevé" },
+    { id: "cybersecurite", title: "Expert Cyber-sécurité", category: "Numérique", tags: ["sécurité", "informatique", "code", "réseaux", "protection"], profiles: ["ANALYTIQUE", "METHODIQUE"], series: ["C", "E", "TI/1"], studies: "5 ans", recruiters: ["Banques", "État (CINA)"], desc: "Protection des systèmes.", salary_indice: "Élevé" },
     { id: "ing_civil", title: "Ingénieur Génie Civil", category: "BTP", tags: ["construction", "chantier", "calcul", "technique", "physique"], profiles: ["ANALYTIQUE", "METHODIQUE"], series: ["C", "E", "F4"], studies: "5 ans", recruiters: ["Ebomaf", "CECO", "Sogea Satom"], desc: "Grands projets BTP.", salary_indice: "Élevé" },
     { id: "architecte", title: "Architecte / Urbaniste", category: "BTP", tags: ["maison", "dessin", "art", "plans", "géographie"], profiles: ["CREATIF", "ANALYTIQUE"], series: ["C", "D", "F4"], studies: "5-6 ans", recruiters: ["EAMAU", "Cabinets privés"], desc: "Conception de bâtiments et villes.", salary_indice: "Élevé" },
     { id: "electromec", title: "Ingénieur Électroméca", category: "Technique", tags: ["usine", "machine", "énergie", "technique", "physique"], profiles: ["ANALYTIQUE", "METHODIQUE"], series: ["E", "C", "F1", "F3"], studies: "5 ans", recruiters: ["WACEM", "T-Energy", "CIMTOGO"], desc: "Maintenance industrielle.", salary_indice: "Élevé" },
-    { id: "res_reseaux", title: "Admin Réseaux & Télécoms", category: "Numérique", tags: ["ordinateur", "internet", "connexion", "technique"], profiles: ["METHODIQUE", "ANALYTIQUE"], series: ["TI", "F2", "C", "E"], studies: "3 ans", recruiters: ["Togocom", "Moov", "CAFÉ Informatique"], desc: "Gestion des parcs informatiques.", salary_indice: "Moyen" },
+    { id: "res_reseaux", title: "Admin Réseaux & Télécoms", category: "Numérique", tags: ["ordinateur", "internet", "connexion", "technique"], profiles: ["METHODIQUE", "ANALYTIQUE"], series: ["TI/1", "F2", "C", "E"], studies: "3 ans", recruiters: ["Togocom", "Moov", "CAFÉ Informatique"], desc: "Gestion des parcs informatiques.", salary_indice: "Moyen" },
 
     // --- DROIT, GESTION & SOCIAL (12) ---
     { id: "avocat", title: "Avocat / Juriste", category: "Droit", tags: ["loi", "défendre", "parler", "justice", "histoire", "politique"], profiles: ["ANALYTIQUE", "SOCIAL"], series: ["A4"], studies: "5 ans", recruiters: ["Barreau du Togo", "Entreprises"], desc: "Défense et conseil juridique.", salary_indice: "Élevé" },
