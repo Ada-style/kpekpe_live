@@ -9,8 +9,14 @@ const STATE = {
         name: '',
         age: '',
         status: '', // Collégien, Lycéen, etc.
-        personality_scores: { A: 0, B: 0 },
-        personality_type: null, // ANALYTIQUE, CREATIF, etc.
+        personality_scores: {
+            ANALYTIQUE: 0,
+            METHODIQUE: 0,
+            CREATIF: 0,
+            SOCIAL: 0
+        },
+        personality_history: [], // For 'Revenir' button
+        personality_type: null,
         answers_log: [],
         extracted_tags: [] // Tags from chat for matching
     },
@@ -20,21 +26,51 @@ const STATE = {
 
 // --- PERSONALITY TEST QUESTIONS (15 Fixed) ---
 const TEST_QUESTIONS = [
-    { q: "En groupe, tu préfères :", a: "A) Écouter et observer", b: "B) Être au centre" },
-    { q: "Pour une décision importante :", a: "A) Logique et faits", b: "B) Intuition et émotions" },
-    { q: "Tes activités sont plutôt :", a: "A) Organisées et planifiées", b: "B) Spontanées" },
-    { q: "Face à un problème :", a: "A) Solutions pratiques", b: "B) Idées créatives" },
-    { q: "Tu es plus à l'aise avec :", a: "A) Des règles claires", b: "B) La liberté" },
-    { q: "Tes amis te décrivent comme :", a: "A) Réservé(e) et réfléchi(e)", b: "B) Sociable et énergique" },
-    { q: "Tu apprends mieux en :", a: "A) Pratiquant", b: "B) Lisant et écoutant" },
-    { q: "Dans un projet, tu :", a: "A) Coordonnes et organises", b: "B) Génères les idées" },
-    { q: "Tu préfères un travail :", a: "A) Stable et sécurisé", b: "B) Varié et stimulant" },
-    { q: "En cas de désaccord, tu :", a: "A) Argumentes avec logique", b: "B) Cherches un compromis" },
-    { q: "Tu es motivé(e) par :", a: "A) Le succès personnel", b: "B) L'impact sur les autres" },
-    { q: "Tu préfères travailler :", a: "A) Seul(e) au calme", b: "B) En équipe" },
-    { q: "Ton emploi du temps est :", a: "A) Structuré et fixe", b: "B) Flexible" },
-    { q: "Tu es plutôt :", a: "A) Prudent(e)", b: "B) Aventureux(se)" },
-    { q: "Tu es attiré(e) par :", a: "A) Sciences et Technique", b: "B) Arts et Relations" }
+    {
+        q: "Face à une nouvelle tâche compliquée, comment réagis-tu ?",
+        options: [
+            { text: "A) Je l'analyse en détail avant de commencer", value: "ANALYTIQUE" },
+            { text: "B) Je prépare un plan d'action ordonné", value: "METHODIQUE" },
+            { text: "C) Je cherche une façon originale de la faire", value: "CREATIF" },
+            { text: "D) Je demande à quelqu'un de me montrer", value: "SOCIAL" }
+        ]
+    },
+    {
+        q: "Qu’est-ce qui te motive le plus dans un projet ?",
+        options: [
+            { text: "A) Résoudre un problème logique", value: "ANALYTIQUE" },
+            { text: "B) Voir le projet fini et bien rangé", value: "METHODIQUE" },
+            { text: "C) Créer quelque chose de nouveau", value: "CREATIF" },
+            { text: "D) Aider les autres et collaborer", value: "SOCIAL" }
+        ]
+    },
+    {
+        q: "Ton environnement de travail idéal est :",
+        options: [
+            { text: "A) Calme et propice à la réflexion", value: "ANALYTIQUE" },
+            { text: "B) Structuré avec des règles claires", value: "METHODIQUE" },
+            { text: "C) Libre et sans trop de contraintes", value: "CREATIF" },
+            { text: "D) Animé avec beaucoup d'échanges", value: "SOCIAL" }
+        ]
+    },
+    {
+        q: "Quand tu dois prendre une décision, tu te fies à :",
+        options: [
+            { text: "A) La logique et les faits froids", value: "ANALYTIQUE" },
+            { text: "B) Tes expériences passées et l'ordre", value: "METHODIQUE" },
+            { text: "C) Ton instinct et ton imagination", value: "CREATIF" },
+            { text: "D) L'impact que ça aura sur les gens", value: "SOCIAL" }
+        ]
+    },
+    {
+        q: "Tes amis disent souvent de toi que tu es :",
+        options: [
+            { text: "A) Le cerveau de l'équipe", value: "ANALYTIQUE" },
+            { text: "B) La personne sur qui on peut compter", value: "METHODIQUE" },
+            { text: "C) L'artiste du groupe", value: "CREATIF" },
+            { text: "D) L'ami(e) toujours à l'écoute", value: "SOCIAL" }
+        ]
+    }
 ];
 
 // --- CHATBOT QUESTIONS (Flow) ---
@@ -69,7 +105,7 @@ function initApp() {
     }
 
     // Start with Onboarding
-    addMessage("bot", "Salut ! Je suis Kpékpé, ton guide personnel. 👋<br>Je suis là pour t'aider à trouver ta voie au Togo. Pour commencer, comment t'appelles-tu ?");
+    addMessage("bot", "Salut ! Je suis Kpékpé, ton guide personnel. Je suis là pour t'aider à trouver ta voie scolaire et professionnelle au Togo. Pour commencer comment t'appelles-tu ?");
     STATE.screen = 'onboarding_name';
 }
 
@@ -98,11 +134,21 @@ function addMessage(sender, text, quickReplies = null) {
     if (quickReplies && sender === 'bot') {
         const qrDiv = document.createElement('div');
         qrDiv.classList.add('quick-replies');
+        msgDiv.dataset.hasButtons = "true"; // Mark this message as having active buttons
+
         quickReplies.forEach(qr => {
             const btn = document.createElement('button');
             btn.classList.add('qr-btn');
             btn.innerText = qr.text;
-            btn.onclick = () => handleUserResponse(qr.value || qr.text);
+            btn.onclick = () => {
+                // Disable all buttons in this specific message once one is clicked
+                qrDiv.querySelectorAll('.qr-btn').forEach(b => {
+                    b.disabled = true;
+                    b.style.opacity = "0.6";
+                    b.style.cursor = "default";
+                });
+                handleUserResponse(qr.value || qr.text);
+            };
             qrDiv.appendChild(btn);
         });
         chatBox.appendChild(qrDiv);
@@ -152,11 +198,33 @@ document.getElementById('user-input').addEventListener('keypress', (e) => {
 // --- MAIN CONTROLLER ---
 function handleUserResponse(text) {
     if (!text) return;
+
+    // Detect if text is a URL (for quick replies like "Donner mon avis")
+    if (text.startsWith('http')) {
+        window.open(text, '_blank');
+        return; // Don't add URL as a user message
+    }
+
     addMessage('user', text);
 
     // 1. ONBOARDING
     if (STATE.screen === 'onboarding_name') {
-        STATE.user.name = text;
+        // Smart name extraction: ignore common phrases and take last capital word if it's a phrase
+        let name = text.replace(/^(je m'appelle|je suis|mon nom est|je me nomme|m'appelle|salut|bonjour)\s+/i, '').trim();
+
+        // If it's still a sentence (more than 2 words), try to pick the most likely name
+        const words = name.split(/\s+/);
+        if (words.length > 2) {
+            // Take the last word as the name if it's capitalized, or just the last word
+            name = words[words.length - 1];
+        } else if (words.length === 2) {
+            // Likely "First Last", keep it
+        }
+
+        // Capitalize first letter
+        name = name.charAt(0).toUpperCase() + name.slice(1);
+
+        STATE.user.name = name;
         STATE.screen = 'onboarding_status';
         botReply(`Enchanté ${STATE.user.name} ! 😊<br>Quelle est ta situation actuelle ?`, 1000, [
             { text: "Collégien (3ème)", value: "Collégien" },
@@ -181,10 +249,22 @@ function handleUserResponse(text) {
         if (text !== "GO" && STATE.screen === 'personality_intro') return;
 
         if (STATE.screen === 'personality_test') {
-            const isA = text.startsWith("A)");
-            if (isA) STATE.user.personality_scores.A++;
-            else STATE.user.personality_scores.B++;
-            STATE.test_question_index++;
+            if (text === "BACK") {
+                const lastProfile = STATE.user.personality_history.pop();
+                if (lastProfile) STATE.user.personality_scores[lastProfile]--;
+                STATE.test_question_index--;
+            } else {
+                // Find which profile matches the text
+                const currentQuestion = TEST_QUESTIONS[STATE.test_question_index];
+                const matchedOption = currentQuestion.options.find(opt => opt.text === text);
+                const profile = matchedOption ? matchedOption.value : null;
+
+                if (profile) {
+                    STATE.user.personality_scores[profile]++;
+                    STATE.user.personality_history.push(profile);
+                }
+                STATE.test_question_index++;
+            }
         }
 
         STATE.screen = 'personality_test';
@@ -195,24 +275,23 @@ function handleUserResponse(text) {
         }
 
         const q = TEST_QUESTIONS[STATE.test_question_index];
-        botReply(q.q, 600, [
-            { text: q.a, value: q.a },
-            { text: q.b, value: q.b }
-        ]);
+        const options = q.options.map(opt => ({ text: opt.text, value: opt.text }));
+
+        // Add "Back" button if not the first question
+        if (STATE.test_question_index > 0) {
+            options.push({ text: "⬅️ Revenir", value: "BACK" });
+        }
+
+        botReply(q.q, 600, options);
         return;
     }
 
     // 3. CHAT LOOP
     if (STATE.screen === 'chat_intro' || STATE.screen === 'chat_loop') {
-        // If we were in intro, we are now in the loop (processing answer to first question)
         STATE.screen = 'chat_loop';
-
-        // Collect data from the answer
         STATE.user.answers_log.push(text);
         const newTags = extractKeywords(text);
         STATE.user.extracted_tags = [...STATE.user.extracted_tags, ...newTags];
-
-        // Increment to next question
         STATE.chat_turn++;
 
         if (STATE.chat_turn >= CHAT_QUESTIONS.length) {
@@ -224,47 +303,84 @@ function handleUserResponse(text) {
         }
         return;
     }
+
+    // 4. RESULTS ACTIONS
+    if (STATE.screen === 'results') {
+        if (text === 'RESTART') {
+            restartApp();
+        } else if (text === 'PDF') {
+            triggerPDFMessage();
+        } else if (text === 'MORE') {
+            triggerSurvey();
+        }
+        return;
+    }
+}
+
+function restartApp() {
+    // Reset State
+    STATE.screen = 'onboarding_name';
+    STATE.user = {
+        name: '',
+        age: '',
+        status: '',
+        personality_scores: { A: 0, B: 0 },
+        personality_type: null,
+        answers_log: [],
+        extracted_tags: []
+    };
+    STATE.test_question_index = 0;
+    STATE.chat_turn = 0;
+
+    // Clear UI
+    const chatBox = document.getElementById('chat-box');
+    chatBox.innerHTML = '';
+
+    // Add typing indicator back (it was cleared)
+    const typingDiv = document.createElement('div');
+    typingDiv.id = 'typing-indicator';
+    typingDiv.classList.add('message', 'bot-message');
+    typingDiv.style.display = 'none';
+    typingDiv.innerHTML = `
+        <div class="message-avatar"><i class="fa-solid fa-lightbulb"></i></div>
+        <div class="typing-buble">
+            <span></span><span></span><span></span>
+        </div>
+    `;
+    chatBox.appendChild(typingDiv);
+
+    // Re-init
+    initApp();
+}
+
+function triggerSurvey() {
+    botReply("Kpékpé sera bientôt disponible sur mobile grâce à ton avis. Peux-tu nous donner ton retour pour nous aider à nous améliorer ? 💡", 800, [
+        { text: "📝 Remplir le formulaire", value: "https://ada-style.github.io/kpekpe_live/#contact" },
+        { text: "🏠 Retour au début", value: "RESTART" }
+    ]);
+}
+
+function triggerPDFMessage() {
+    botReply("📄 <strong>Téléchargement PDF :</strong><br><br>Kpékpé est actuellement en phase de développement. Cette fonctionnalité sera disponible très bientôt ! 🚀<br><br>En attendant, tu peux nous aider à l'améliorer en donnant tes retours sur ce formulaire :", 800, [
+        { text: "📋 Donner mon avis", value: "https://ada-style.github.io/kpekpe_live/#contact" },
+        { text: "🔙 Revenir", value: "RESTART" }
+    ]);
 }
 
 // --- LOGIC FUNCTIONS ---
 function calculateProfile() {
     const scores = STATE.user.personality_scores;
-    let mainProfile = "";
 
-    // Simple Heuristic as per prompt
-    // A = Analytique logic / Methode | B = Créatif / Social
-    // Question logic mapping is implicit in the prompt's grouping
-    // Refinement: Prompts says Majority A/B determines logic/creative vs methodic/social?
-    // Let's use the exact prompt rules:
-    // A=Logique/Structuré, B=Intuitif/Social
+    // Find profile with max score
+    let mainProfile = "ANALYTIQUE"; // Default
+    let maxScore = -1;
 
-    // We need 4 buckets actually to map to the 4 profiles?
-    // Prompt rules were:
-    // - Maj A + logique -> ANALYTIQUE
-    // - Maj B + créatif -> CREATIF
-    // - Maj A + social -> METHODIQUE (Wait, A is usually logic, implies Methodique is A-heavy but social?)
-    // Let's simplify: A = Left Brain (Order), B = Right Brain (Flexibility)
-
-    if (scores.A > scores.B) {
-        // More structured
-        // If question 1 (Group) or 6 (Friends) said 'Social', maybe Methodique?
-        // Let's randomize slightly for prototype or purely based on score
-        mainProfile = "ANALYTIQUE";
-        // Hack: check if social questions were B
-        // Assume pure A = Analytique, Mixed A = Methodique
-    } else {
-        mainProfile = "CREATIF";
-        if (Math.random() > 0.5) mainProfile = "SOCIAL"; // Simplify for prototype logic
+    for (const [profile, score] of Object.entries(scores)) {
+        if (score > maxScore) {
+            maxScore = score;
+            mainProfile = profile;
+        }
     }
-
-    // Override with proper logic if we mapped questions carefully.
-    // Let's stick to the Prompt's explicit mappings:
-    // "Calculer le profil à la fin (majorité A/B)"
-    // Let's assign explicitly based on score count for robustness
-    if (scores.A >= 10) mainProfile = "ANALYTIQUE";
-    else if (scores.A >= 8) mainProfile = "METHODIQUE";
-    else if (scores.B >= 10) mainProfile = "CREATIF";
-    else mainProfile = "SOCIAL";
 
     STATE.user.personality_type = mainProfile;
     const profileData = PERSONALITY_PROFILES[mainProfile];
@@ -304,15 +420,18 @@ function extractKeywords(text) {
     // Crafts & Manual
     if (lower.includes("cuisine") || lower.includes("manger") || lower.includes("plat")) tags.push("cuisine", "nourriture");
     if (lower.includes("bois") || lower.includes("menuis")) tags.push("bois", "menuiserie", "manuel");
-    if (lower.includes("vêtement") || lower.includes("mode") || lower.includes("couture") || lower.includes("stylis")) tags.push("mode", "vêtement", "couture", "art");
+    if (lower.includes("vêtement") || lower.includes("mode") || lower.includes("couture") || lower.includes("stylis") || lower.includes("dessin")) tags.push("mode", "vêtement", "couture", "art", "stylisme");
     if (lower.includes("répa") || lower.includes("manuel") || lower.includes("main")) tags.push("manuel", "technique", "réparation");
 
-    // Interests
+    // Interests & Speed
     if (lower.includes("aide") || lower.includes("social")) tags.push("aider", "social");
     if (lower.includes("voyage") || lower.includes("découv")) tags.push("voyage");
     if (lower.includes("ordi") || lower.includes("code") || lower.includes("info")) tags.push("informatique", "code", "internet");
     if (lower.includes("climat") || lower.includes("météo")) tags.push("climat", "météo", "environnement");
     if (lower.includes("reportage") || lower.includes("info")) tags.push("reportage", "communication");
+
+    // Quick entry to workforce
+    if (lower.includes("vite") || lower.includes("rapide") || lower.includes("court") || lower.includes("immédiat")) tags.push("court");
 
     return [...new Set(tags)]; // Unique tags
 }
@@ -334,30 +453,42 @@ function showRecommendations() {
         let ikigaiScore = 0;
         let personalityScore = 0;
 
-        // 1. Ikigai (WEIGHT 80)
-        // Check if ANY user tag matches ANY job tag
-        const matchCount = userTags.filter(tag =>
+        // 1. Ikigai (Keywords) - Match user interests with job tags
+        const matches = userTags.filter(tag =>
             job.tags.some(t => t.toLowerCase() === tag.toLowerCase())
-        ).length;
+        );
+        const matchCount = matches.length;
 
         if (matchCount > 0) {
-            // At least one match gives the bulk of the score
-            ikigaiScore = 80;
-            // Bonus for multiple matches (up to 10 extra points)
-            ikigaiScore += Math.min(10, matchCount * 2);
+            ikigaiScore = 50 + (matchCount * 10); // Base 50 + 10 per match
         }
 
-        // 2. Personality (WEIGHT 20)
+        // 2. Personality Match (CRITICAL for "Perfect Score")
+        // If the job DOES NOT match the personality, we penalize it heavily
         if (job.profiles.includes(STATE.user.personality_type)) {
-            personalityScore = 20;
+            personalityScore = 100; // Strong bonus for profile match
+        } else {
+            personalityScore = -50; // Penalty for mismatch
+        }
+
+        // 3. Category/Tag match bonus
+        // If the category matches a keyword mentioned by the user
+        if (userTags.some(tag => job.category.toLowerCase().includes(tag.toLowerCase()))) {
+            ikigaiScore += 20;
         }
 
         return { job, score: ikigaiScore + personalityScore };
     });
 
+    // Filter to ensure we ONLY recommend jobs with a positive total score if possible
+    let topJobs = scores.filter(s => s.score > 0);
+
+    // Fallback if filtering is too strict
+    if (topJobs.length < 3) topJobs = scores;
+
     // Sort and take Top 3
-    scores.sort((a, b) => b.score - a.score);
-    const top3 = scores.slice(0, 3);
+    topJobs.sort((a, b) => b.score - a.score);
+    const top3 = topJobs.slice(0, 3);
 
     // Generate HTML
     let html = `Voici 3 pistes qui te correspondent à merveille, ${STATE.user.name} :<br><br>`;
@@ -401,10 +532,7 @@ function showRecommendations() {
     ]);
 }
 
-// SURVEY LOGIC (Placeholder)
-function triggerSurvey() {
-    // Implementation for survey flow
-}
+
 
 // Start
 window.onload = initApp;
