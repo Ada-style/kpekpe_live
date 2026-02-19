@@ -356,14 +356,14 @@ function restartApp() {
 
 function triggerSurvey() {
     botReply("Kpékpé sera bientôt disponible sur mobile grâce à ton avis. Peux-tu nous donner ton retour pour nous aider à nous améliorer ? 💡", 800, [
-        { text: "📝 Remplir le formulaire", value: "https://ada-style.github.io/kpekpe_live/#contact" },
+        { text: "📝 Remplir le formulaire", value: "contact.html" },
         { text: "🏠 Retour au début", value: "RESTART" }
     ]);
 }
 
 function triggerPDFMessage() {
     botReply("📄 <strong>Téléchargement PDF :</strong><br><br>Kpékpé est actuellement en phase de développement. Cette fonctionnalité sera disponible très bientôt ! 🚀<br><br>En attendant, tu peux nous aider à l'améliorer en donnant tes retours sur ce formulaire :", 800, [
-        { text: "📋 Donner mon avis", value: "https://ada-style.github.io/kpekpe_live/#contact" },
+        { text: "📋 Donner mon avis", value: "contact.html" },
         { text: "🔙 Revenir", value: "RESTART" }
     ]);
 }
