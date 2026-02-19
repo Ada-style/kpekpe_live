@@ -200,10 +200,10 @@ document.getElementById('user-input').addEventListener('keypress', (e) => {
 function handleUserResponse(text) {
     if (!text) return;
 
-    // Detect if text is a URL (for quick replies like "Donner mon avis")
-    if (text.startsWith('http')) {
-        window.open(text, '_blank');
-        return; // Don't add URL as a user message
+    // Detect if text is a URL or a local page (for quick replies)
+    if (text.startsWith('http') || text.endsWith('.html')) {
+        window.location.href = text;
+        return;
     }
 
     addMessage('user', text);
@@ -442,9 +442,9 @@ function extractKeywords(text) {
 
     if (isNegative) {
         if (lower.includes("math")) STATE.user.weak_subjects.push("maths");
-        if (lower.includes("physique")) STATE.user.weak_subjects.push("physique");
+        if (lower.includes("physique") || lower.includes("chimie") || lower.includes("science")) STATE.user.weak_subjects.push("sciences");
         if (lower.includes("bio") || lower.includes("svt")) STATE.user.weak_subjects.push("biologie");
-        if (lower.includes("langue") || lower.includes("anglais") || lower.includes("fran")) STATE.user.weak_subjects.push("littérature");
+        if (lower.includes("langue") || lower.includes("anglais") || lower.includes("fran") || lower.includes("lettre")) STATE.user.weak_subjects.push("littérature");
     }
 
     return [...new Set(tags)]; // Unique tags
