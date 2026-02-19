@@ -202,7 +202,8 @@ function handleUserResponse(text) {
 
     // Detect if text is a URL or a local page (for quick replies)
     if (text.startsWith('http') || text.endsWith('.html')) {
-        window.location.href = text;
+        // Use assign for same-window navigation for local files
+        window.location.assign(text);
         return;
     }
 
@@ -325,10 +326,17 @@ function restartApp() {
         name: '',
         age: '',
         status: '',
-        personality_scores: { A: 0, B: 0 },
+        personality_scores: {
+            ANALYTIQUE: 0,
+            METHODIQUE: 0,
+            CREATIF: 0,
+            SOCIAL: 0
+        },
+        personality_history: [],
         personality_type: null,
         answers_log: [],
-        extracted_tags: []
+        extracted_tags: [],
+        weak_subjects: []
     };
     STATE.test_question_index = 0;
     STATE.chat_turn = 0;
@@ -442,9 +450,9 @@ function extractKeywords(text) {
 
     if (isNegative) {
         if (lower.includes("math")) STATE.user.weak_subjects.push("maths");
-        if (lower.includes("physique") || lower.includes("chimie") || lower.includes("science")) STATE.user.weak_subjects.push("sciences");
+        if (lower.includes("physique") || lower.includes("chimie") || lower.includes("science") || lower.includes("scientifique")) STATE.user.weak_subjects.push("sciences");
         if (lower.includes("bio") || lower.includes("svt")) STATE.user.weak_subjects.push("biologie");
-        if (lower.includes("langue") || lower.includes("anglais") || lower.includes("fran") || lower.includes("lettre")) STATE.user.weak_subjects.push("littérature");
+        if (lower.includes("langue") || lower.includes("anglais") || lower.includes("fran") || lower.includes("lettre") || lower.includes("littéra")) STATE.user.weak_subjects.push("littérature");
     }
 
     return [...new Set(tags)]; // Unique tags
@@ -524,7 +532,11 @@ function showRecommendations() {
 
         let pathInfo = "";
         if (isStudent) {
-            pathInfo = `<p><strong>Série conseillée :</strong> ${filteredSeries.slice(0, 3).join(", ")}</p>`;
+            const seriesDetails = filteredSeries.slice(0, 3).map(sKey => {
+                const sData = SERIES_DATA[sKey];
+                return sData ? `<li><strong>${sData.name}</strong> : ${sData.domain}</li>` : `<li>${sKey}</li>`;
+            }).join("");
+            pathInfo = `<p><strong>Formations conseillées au Lycée :</strong></p><ul style="margin: 5px 0 10px 15px; font-size: 0.9em;">${seriesDetails}</ul>`;
         } else {
             const recommendedSchools = getSchoolsForJob(job.tags);
             const schoolText = recommendedSchools.length > 0 ? recommendedSchools.join(", ") : "Universités publiques ou privées du Togo";
