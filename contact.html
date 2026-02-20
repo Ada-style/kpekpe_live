@@ -83,28 +83,30 @@
 
                 <!-- Formulaire Colonne -->
                 <div style="background: white; padding: 2rem; border-radius: 16px; box-shadow: var(--shadow-sm);">
-                    <form style="display: flex; flex-direction: column; gap: 1rem;">
+                    <form action="https://formspree.io/f/kpekpelearnia@gmail.com" method="POST"
+                        style="display: flex; flex-direction: column; gap: 1rem;">
                         <div>
                             <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Ton Nom</label>
-                            <input type="text" placeholder="Kofi..."
+                            <input type="text" name="name" required placeholder="Kofi..."
                                 style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
                         </div>
 
                         <div>
                             <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Ton Email</label>
-                            <input type="email" placeholder="kofi@exemple.com"
+                            <input type="email" name="_replyto" required placeholder="kofi@exemple.com"
                                 style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
                         </div>
 
                         <div>
                             <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Message</label>
-                            <textarea rows="5" placeholder="Bonjour, j'aimerais savoir..."
+                            <textarea rows="5" name="message" required placeholder="Bonjour, j'aimerais savoir..."
                                 style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;"></textarea>
                         </div>
 
-                        <button type="submit" class="btn btn-primary"
-                            onclick="event.preventDefault(); alert('Message envoyé ! Nous te répondrons vite.');">Envoyer
-                            le message</button>
+                        <!-- Honey pot for spam -->
+                        <input type="text" name="_gotcha" style="display:none" />
+
+                        <button type="submit" class="btn btn-primary">Envoyer le message</button>
                     </form>
                 </div>
 
