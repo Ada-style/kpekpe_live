@@ -410,12 +410,12 @@ function extractKeywords(text) {
     const tags = [];
 
     // Subjects & Science
-    if (lower.includes("math")) tags.push("maths");
+    if (lower.includes("math")) tags.push("maths", "chiffres");
     if (lower.includes("physique") || lower.includes("chimie")) tags.push("physique", "chimie");
-    if (lower.includes("bio") || lower.includes("svt") || lower.includes("nature")) tags.push("biologie", "nature");
+    if (lower.includes("bio") || lower.includes("svt") || lower.includes("nature")) tags.push("biologie", "nature", "svt");
     if (lower.includes("géo")) tags.push("géographie");
     if (lower.includes("hist")) tags.push("histoire");
-    if (lower.includes("langue") || lower.includes("anglais") || lower.includes("fran")) tags.push("langues", "parler", "écriture");
+    if (lower.includes("langue") || lower.includes("anglais") || lower.includes("fran") || lower.includes("littéra")) tags.push("langues", "parler", "écriture", "littérature");
     if (lower.includes("éco") || lower.includes("argent")) tags.push("économie", "argent", "business");
     if (lower.includes("justice") || lower.includes("loi")) tags.push("loi", "justice");
 
@@ -472,34 +472,42 @@ function showRecommendations() {
 
     // Score each job
     const scores = JOBS_DATA.map(job => {
-        let ikigaiScore = 0;
+        let interestScore = 0;
         let personalityScore = 0;
+        let seriesBoost = 0;
 
-        // 1. Ikigai (Keywords) - Match user interests with job tags
+        // 1. Interest Score (Keywords) - Primary Driver
         const matches = userTags.filter(tag =>
             job.tags.some(t => t.toLowerCase() === tag.toLowerCase())
         );
-        const matchCount = matches.length;
+        interestScore = matches.length * 40; // 40 points per match
 
-        if (matchCount > 0) {
-            ikigaiScore = 50 + (matchCount * 10); // Base 50 + 10 per match
-        }
+        // 2. Series Boost (Togolese Academic Correlation)
+        // If the user mentioned a subject that is key to this job's series
+        job.series.forEach(sKey => {
+            const seriesInfo = SERIES_DATA[sKey];
+            if (seriesInfo) {
+                const subjectMatch = userTags.some(tag =>
+                    seriesInfo.keywords.some(k => k.toLowerCase() === tag.toLowerCase())
+                );
+                if (subjectMatch) seriesBoost += 100; // Big boost for academic alignment
+            }
+        });
 
-        // 2. Personality Match (CRITICAL for "Perfect Score")
-        // If the job DOES NOT match the personality, we penalize it heavily
+        // 3. Personality Score (Secondary Driver - 20%)
         if (job.profiles.includes(STATE.user.personality_type)) {
-            personalityScore = 100; // Strong bonus for profile match
+            personalityScore = 30;
         } else {
-            personalityScore = -50; // Penalty for mismatch
+            personalityScore = -10;
         }
 
-        // 3. Category/Tag match bonus
-        // If the category matches a keyword mentioned by the user
+        // 4. Category Bonus
         if (userTags.some(tag => job.category.toLowerCase().includes(tag.toLowerCase()))) {
-            ikigaiScore += 20;
+            interestScore += 20;
         }
 
-        return { job, score: ikigaiScore + personalityScore };
+        const totalScore = interestScore + seriesBoost + personalityScore;
+        return { job, score: totalScore };
     });
 
     // Filter to ensure we ONLY recommend jobs with a positive total score if possible

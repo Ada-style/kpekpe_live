@@ -170,7 +170,7 @@ function getSchoolsForJob(jobTags) {
 // Structure adaptée pour l'app
 const JOBS_DATA = [
     // --- SANTÉ (8) ---
-    { id: "medecin", title: "Médecin Généraliste", category: "Santé", tags: ["santé", "soin", "biologie", "sciences", "aider", "médecine"], profiles: ["ANALYTIQUE", "SOCIAL"], series: ["D", "C"], studies: "7-8 ans", recruiters: ["CHU", "Cliniques"], desc: "Diagnostic et soin des patients.", salary_indice: "Élevé" },
+    { id: "medecin", title: "Médecin Généraliste", category: "Santé", tags: ["santé", "soin", "biologie", "sciences", "aider", "médecine", "svt"], profiles: ["ANALYTIQUE", "SOCIAL"], series: ["D", "C"], studies: "7-8 ans", recruiters: ["CHU", "Cliniques"], desc: "Diagnostic et soin des patients.", salary_indice: "Élevé" },
     { id: "pharmacien", title: "Pharmacien", category: "Santé", tags: ["santé", "médicament", "chimie", "commerce"], profiles: ["ANALYTIQUE", "METHODIQUE"], series: ["D", "C"], studies: "6 ans", recruiters: ["Pharmacies", "Laboratoires"], desc: "Spécialiste du médicament.", salary_indice: "Élevé" },
     { id: "infirmier", title: "Infirmier d'État", category: "Santé", tags: ["santé", "soin", "contact", "aider"], profiles: ["SOCIAL", "METHODIQUE"], series: ["D", "A4"], studies: "3 ans", recruiters: ["Hôpitaux", "ONG"], desc: "Suivi et soins des patients.", salary_indice: "Moyen" },
     { id: "sage_femme", title: "Sage-femme", category: "Santé", tags: ["santé", "femme", "bébé", "social"], profiles: ["SOCIAL"], series: ["D"], studies: "3 ans", recruiters: ["Maternités"], desc: "Accompagnement des naissances.", salary_indice: "Moyen" },
