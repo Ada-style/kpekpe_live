@@ -49,7 +49,5 @@ function submitContactForm(event) {
     const text = `Bonjour Kpékpé !\n\n*Nouveau message de contact*\n*Nom:* ${name}\n*Email:* ${email}\n\n*Message:*\n${message}`;
 
     const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`;
-    window.open(url, '_blank');
-
-    alert("Redirection vers WhatsApp pour envoyer votre message...");
+    window.location.href = url;
 }
