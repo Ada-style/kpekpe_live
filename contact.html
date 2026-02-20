@@ -83,8 +83,7 @@
 
                 <!-- Formulaire Colonne -->
                 <div style="background: white; padding: 2rem; border-radius: 16px; box-shadow: var(--shadow-sm);">
-                    <form action="https://formspree.io/f/kpekpelearnia@gmail.com" method="POST"
-                        style="display: flex; flex-direction: column; gap: 1rem;">
+                    <form onsubmit="submitContactForm(event)" style="display: flex; flex-direction: column; gap: 1rem;">
                         <div>
                             <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Ton Nom</label>
                             <input type="text" name="name" required placeholder="Kofi..."
@@ -103,11 +102,10 @@
                                 style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;"></textarea>
                         </div>
 
-                        <!-- Honey pot for spam -->
-                        <input type="text" name="_gotcha" style="display:none" />
-
-                        <button type="submit" class="btn btn-primary">Envoyer le message</button>
+                        <button type="submit" class="btn btn-primary">Envoyer via WhatsApp</button>
                     </form>
+                    <p class="text-muted" style="font-size: 0.8em; margin-top: 1rem; text-align: center;">Note : Le
+                        message s'ouvrira dans WhatsApp pour un envoi instantané.</p>
                 </div>
 
             </div>

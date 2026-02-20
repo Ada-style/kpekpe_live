@@ -435,7 +435,7 @@ function extractKeywords(text) {
     // Interests & Speed
     if (lower.includes("aide") || lower.includes("social")) tags.push("aider", "social");
     if (lower.includes("voyage") || lower.includes("découv")) tags.push("voyage");
-    if (lower.includes("ordi") || lower.includes("code") || lower.includes("info") || lower.includes("programma") || lower.includes("dévelop") || lower.includes("logiciel") || lower.includes("appli") || lower.includes("web") || lower.includes("numérique")) tags.push("informatique", "code", "internet", "programmation", "développement");
+    if (lower.includes("ordi") || lower.includes("code") || lower.includes("info") || lower.includes("programma") || lower.includes("dévelop") || lower.includes("logiciel") || lower.includes("appli") || lower.includes("web") || lower.includes("numérique") || lower.includes("ia") || lower.includes("intelligence") || lower.includes("réseau") || lower.includes("cloud")) tags.push("informatique", "code", "internet", "programmation", "développement");
     if (lower.includes("climat") || lower.includes("météo")) tags.push("climat", "météo", "environnement");
     if (lower.includes("reportage") || lower.includes("info")) tags.push("reportage", "communication");
 
