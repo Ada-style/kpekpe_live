@@ -21,38 +21,31 @@
         :root {
             --color-primary: #006a4e;
             --color-primary-dark: #004d38;
-            --color-primary-light: #e6f0ed;
+            --color-primary-light: #f0f7f4;
             --color-accent: #fce100;
             --color-accent-hover: #e6cd00;
             --color-red: #d21034;
             --color-text-main: #1a1a1a;
-            --color-text-muted: #555555;
+            --color-text-muted: #64748b;
             --color-text-light: #ffffff;
-            --color-bg-body: #f9f9f7;
+            --color-bg-body: #f8fafc;
             --color-bg-white: #ffffff;
-            --color-bg-chat: #f4f6f8;
+            --color-bg-chat: #f1f5f9;
             --font-heading: 'Outfit', sans-serif;
             --font-body: 'Inter', sans-serif;
-            --radius-sm: 8px;
-            --radius-md: 16px;
-            --radius-lg: 24px;
+            --radius-sm: 10px;
+            --radius-md: 20px;
+            --radius-lg: 30px;
             --radius-full: 9999px;
-            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
-        }
-
-        *,
-        *::before,
-        *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
         }
 
         body {
             font-family: var(--font-body);
-            color: #1a1a1a;
-            background-color: #f4f6f8;
+            color: var(--color-text-main);
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
             line-height: 1.6;
             height: 100vh;
             height: var(--vh, 100dvh);
@@ -62,10 +55,11 @@
         }
 
         .header {
-            background: #ffffff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
             flex-shrink: 0;
-            padding: 0.8rem 0;
+            padding: 1rem 0;
             z-index: 100;
         }
 
@@ -73,46 +67,43 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
-            padding: 0 1rem;
+            padding: 0 1.5rem;
         }
 
         .logo {
             font-family: var(--font-heading);
-            font-size: 1.25rem;
+            font-size: 1.5rem;
             font-weight: 800;
-            color: #006a4e;
+            color: var(--color-primary);
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-        }
-
-        .logo i {
-            color: #fce100;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 10px 20px;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.2s;
+            gap: 0.6rem;
             text-decoration: none;
         }
 
+        .logo i {
+            color: var(--color-accent);
+            filter: drop-shadow(0 0 5px rgba(252, 225, 0, 0.4));
+        }
+
         .btn-outline {
-            border: 1.5px solid #006a4e;
-            color: #006a4e;
+            border: 2px solid var(--color-primary);
+            color: var(--color-primary);
             background: transparent;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .btn-outline:hover {
-            background: #e6f0ed;
+            background: var(--color-primary);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 106, 78, 0.2);
         }
 
         .chat-interface {

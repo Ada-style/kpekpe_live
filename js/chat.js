@@ -28,48 +28,48 @@ const STATE = {
 // --- PERSONALITY TEST QUESTIONS (15 Fixed) ---
 const TEST_QUESTIONS = [
     {
-        q: "Face à une nouvelle tâche compliquée, comment réagis-tu ?",
+        q: "Quel domaine t'attire le plus naturellement ?",
         options: [
-            { text: "A) Je l'analyse en détail avant de commencer", value: "ANALYTIQUE" },
-            { text: "B) Je prépare un plan d'action ordonné", value: "METHODIQUE" },
-            { text: "C) Je cherche une façon originale de la faire", value: "CREATIF" },
-            { text: "D) Je demande à quelqu'un de me montrer", value: "SOCIAL" }
+            { text: "A) Résoudre des équations et analyser des données (Logique)", value: "ANALYTIQUE" },
+            { text: "B) Imaginer des histoires ou créer des designs (Créatif)", value: "CREATIF" },
+            { text: "C) Écouter les autres et résoudre leurs problèmes (Social)", value: "SOCIAL" },
+            { text: "D) Démonter des machines ou coder des outils (Technique)", value: "METHODIQUE" }
         ]
     },
     {
-        q: "Qu’est-ce qui te motive le plus dans un projet ?",
+        q: "Dans quel environnement te sentirais-tu le mieux ?",
         options: [
-            { text: "A) Résoudre un problème logique", value: "ANALYTIQUE" },
-            { text: "B) Voir le projet fini et bien rangé", value: "METHODIQUE" },
-            { text: "C) Créer quelque chose de nouveau", value: "CREATIF" },
-            { text: "D) Aider les autres et collaborer", value: "SOCIAL" }
+            { text: "A) Un bureau calme avec des dossiers et de la concentration", value: "METHODIQUE" },
+            { text: "B) Un atelier, un studio ou sur le terrain au grand air", value: "CREATIF" },
+            { text: "C) Partout où il y a du monde pour échanger et collaborer", value: "SOCIAL" },
+            { text: "D) Un laboratoire technologique ou un chantier de construction", value: "ANALYTIQUE" }
         ]
     },
     {
-        q: "Ton environnement de travail idéal est :",
+        q: "Quel mode d'action préfères-tu ?",
         options: [
-            { text: "A) Calme et propice à la réflexion", value: "ANALYTIQUE" },
-            { text: "B) Structuré avec des règles claires", value: "METHODIQUE" },
-            { text: "C) Libre et sans trop de contraintes", value: "CREATIF" },
-            { text: "D) Animé avec beaucoup d'échanges", value: "SOCIAL" }
+            { text: "A) Diriger une équipe et prendre des décisions stratégiques", value: "ANALYTIQUE" },
+            { text: "B) Travailler en expert indépendant sur tes propres créations", value: "CREATIF" },
+            { text: "C) Apporter ton aide et ton support à une cause collective", value: "SOCIAL" },
+            { text: "D) Inventer de nouveaux systèmes ou explorer des technologies", value: "METHODIQUE" }
         ]
     },
     {
-        q: "Quand tu dois prendre une décision, tu te fies à :",
+        q: "Quelle est ta principale motivation dans un métier ?",
         options: [
-            { text: "A) La logique et les faits froids", value: "ANALYTIQUE" },
-            { text: "B) Tes expériences passées et l'ordre", value: "METHODIQUE" },
-            { text: "C) Ton instinct et ton imagination", value: "CREATIF" },
-            { text: "D) L'impact que ça aura sur les gens", value: "SOCIAL" }
+            { text: "A) La sécurité, le salaire et une carrière prestigieuse", value: "ANALYTIQUE" },
+            { text: "B) La liberté de créer et l'expression de soi", value: "CREATIF" },
+            { text: "C) L'impact positif sur la vie des concitoyens togolais", value: "SOCIAL" },
+            { text: "D) La maîtrise parfaite d'un savoir-faire ou d'une technologie", value: "METHODIQUE" }
         ]
     },
     {
-        q: "Tes amis disent souvent de toi que tu es :",
+        q: "Comment aimes-tu apprendre de nouvelles choses ?",
         options: [
-            { text: "A) Le cerveau de l'équipe", value: "ANALYTIQUE" },
-            { text: "B) La personne sur qui on peut compter", value: "METHODIQUE" },
-            { text: "C) L'artiste du groupe", value: "CREATIF" },
-            { text: "D) L'ami(e) toujours à l'écoute", value: "SOCIAL" }
+            { text: "A) En étudiant la théorie et en lisant des ouvrages sérieux", value: "ANALYTIQUE" },
+            { text: "B) En observant des schémas, des vidéos et en étant intuitif", value: "CREATIF" },
+            { text: "C) En discutant avec des experts et en faisant des stages", value: "SOCIAL" },
+            { text: "D) En manipulant, en faisant des erreurs et en pratiquant", value: "METHODIQUE" }
         ]
     }
 ];

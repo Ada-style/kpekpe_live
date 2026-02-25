@@ -117,6 +117,8 @@ const SCHOOLS_DB = [
     { name: "FSS (UL)", type: "Public", ville: "Lomé", domaines: ["Santé", "Médecine", "Pharmacie"] },
     { name: "EAMAU", type: "Inter-États", ville: "Lomé", domaines: ["Architecture", "Urbanisme"] },
     { name: "CIREL-VB", type: "Public", ville: "Lomé", domaines: ["Langues", "Lettres"] },
+    { name: "ENAM", type: "Public", ville: "Lomé", domaines: ["Administration", "Douane", "Impôts"] },
+    { name: "ESA (UL)", type: "Public", ville: "Lomé", domaines: ["Agronomie"] },
 
     // PRIVÉS Reconnus
     { name: "UCAO-UUT", type: "Privé", ville: "Lomé", domaines: ["Droit", "Communication", "Gestion", "Informatique"] },
@@ -136,7 +138,9 @@ const SCHOOLS_DB = [
     { name: "IFAD Building", type: "Public/Privé", ville: "Lomé", domaines: ["Bâtiment", "Construction"] },
     { name: "IFAD Elavagnon", type: "Public/Privé", ville: "Elavagnon", domaines: ["Aquaculture", "Pêche"] },
     { name: "IFAD Barkoissi", type: "Public/Privé", ville: "Barkoissi", domaines: ["Élevage"] },
-    { name: "CFMI", type: "Partenariat", ville: "Lomé", domaines: ["Industrie", "Mécanique"] }
+    { name: "CFMI", type: "Partenariat", ville: "Lomé", domaines: ["Industrie", "Mécanique"] },
+    { name: "IHERIS", type: "Privé", ville: "Lomé", domaines: ["Relations Internationales", "Diplomatie"] },
+    { name: "ESBAME", type: "Privé", ville: "Lomé", domaines: ["Mines", "Énergie"] }
 ];
 
 // Helper pour trouver des écoles par domaine
