@@ -38,23 +38,33 @@
                 style="background: linear-gradient(90deg, var(--color-accent) 0%, #ffd700 100%); padding: 6px 15px; border-radius: 50px; font-weight: 800; font-size: 0.8rem; box-shadow: 0 4px 10px rgba(252, 225, 0, 0.3); text-transform: uppercase;">Lancement
                 T2 2026</span>
             <h1 style="margin-top: 2rem; font-size: 3rem; font-family: var(--font-heading); font-weight: 800;">Kpékpé
-                <span class="text-primary">Learnia</span></h1>
+                <span class="text-primary">Learnia</span>
+            </h1>
             <p class="text-muted" style="max-width: 650px; margin: 0 auto 4rem; font-size: 1.1rem;">
                 Le pont entre l'université et le monde du travail au Togo. Maîtrisez les outils numériques concrets que
                 les recruteurs s'arrachent.
             </p>
 
-            <div style="position: relative; margin-bottom: 5rem;">
+            <div style="display: flex; gap: 1rem; justify-content: center; margin: -2rem 0 4rem;">
+                <button class="btn btn-primary btn-demo-trigger"
+                    style="background: var(--color-primary); color: white; border: none; padding: 15px 30px; border-radius: 50px; font-weight: 700; cursor: pointer; box-shadow: 0 10px 20px rgba(0,106,78,0.2);"><i
+                        class="fa-solid fa-rocket"></i> Accéder à la Démo</button>
+                <a href="#inscription" class="btn btn-outline" style="padding: 15px 30px;">S'inscrire à la liste</a>
+            </div>
+
+            <div style="position: relative; margin-bottom: 5rem;" class="landing-section">
                 <img src="assets/img/kpekpe_digital_class_1769777006219.png" alt="Classe numérique Lomé"
                     style="width: 100%; max-width: 900px; border-radius: 24px; display: block; margin: 0 auto; box-shadow: var(--shadow-lg); border: 1px solid rgba(0,0,0,0.05);">
                 <div
                     style="position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); background: white; padding: 15px 30px; border-radius: 50px; box-shadow: var(--shadow-md); display: flex; gap: 20px; width: max-content;">
                     <div
                         style="display: flex; align-items: center; gap: 8px; font-weight: 700; color: var(--color-primary);">
-                        <i class="fa-solid fa-users"></i> 500+ Étudiants</div>
+                        <i class="fa-solid fa-users"></i> 500+ Étudiants
+                    </div>
                     <div
                         style="display: flex; align-items: center; gap: 8px; font-weight: 700; color: var(--color-primary);">
-                        <i class="fa-solid fa-star text-accent"></i> 4.9/5 Avis</div>
+                        <i class="fa-solid fa-star text-accent"></i> 4.9/5 Avis
+                    </div>
                 </div>
             </div>
 
@@ -66,7 +76,8 @@
                     onmouseout="this.style.transform='translateY(0)'">
                     <div
                         style="width: 50px; height: 50px; background: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; box-shadow: var(--shadow-sm);">
-                        <i class="fa-brands fa-google text-primary" style="font-size: 1.5rem;"></i></div>
+                        <i class="fa-brands fa-google text-primary" style="font-size: 1.5rem;"></i>
+                    </div>
                     <h3 style="font-family: var(--font-heading); margin-bottom: 1rem;">Google Workspace Pro</h3>
                     <p style="color: var(--color-text-muted); font-size: 0.95rem;">Maîtrisez la collaboration nuagique
                         (Drive, Docs, Sheets, Slides) pour devenir indispensable en entreprise.</p>
@@ -77,7 +88,8 @@
                     onmouseout="this.style.transform='translateY(0)'">
                     <div
                         style="width: 50px; height: 50px; background: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; box-shadow: var(--shadow-sm);">
-                        <i class="fa-solid fa-wand-magic-sparkles text-primary" style="font-size: 1.5rem;"></i></div>
+                        <i class="fa-solid fa-wand-magic-sparkles text-primary" style="font-size: 1.5rem;"></i>
+                    </div>
                     <h3 style="font-family: var(--font-heading); margin-bottom: 1rem;">IA Générative</h3>
                     <p style="color: var(--color-text-muted); font-size: 0.95rem;">Exploitez la puissance de ChatGPT,
                         Gemini et Midjourney pour décupler votre productivité au quotidien.</p>
@@ -88,7 +100,8 @@
                     onmouseout="this.style.transform='translateY(0)'">
                     <div
                         style="width: 50px; height: 50px; background: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; box-shadow: var(--shadow-sm);">
-                        <i class="fa-solid fa-briefcase text-primary" style="font-size: 1.5rem;"></i></div>
+                        <i class="fa-solid fa-briefcase text-primary" style="font-size: 1.5rem;"></i>
+                    </div>
                     <h3 style="font-family: var(--font-heading); margin-bottom: 1rem;">Soft Skills & CV</h3>
                     <p style="color: var(--color-text-muted); font-size: 0.95rem;">Apprenez à rédiger un CV percutant
                         pour le marché togolais et à réussir vos entretiens d'embauche.</p>
@@ -120,6 +133,70 @@
         </div>
     </section>
 
+    <!-- SECTION DÉMO : DASHBOARD (Hidden by default) -->
+    <section id="demo-dashboard" class="demo-section" style="background: #f1f5f9;">
+        <div class="container">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3rem;">
+                <div>
+                    <h2 style="font-family: var(--font-heading); font-weight: 800; font-size: 2rem;">Bonjour, <span
+                            class="text-primary">Apprenant Kpékpé</span></h2>
+                    <p class="text-muted">Ravi de vous revoir ! Voici votre progression actuelle.</p>
+                </div>
+                <button class="btn btn-outline" onclick="switchView('landing')">Déconnexion</button>
+            </div>
+
+            <div id="enrolled-courses-grid"
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;">
+                <!-- Dynamically filled by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION DÉMO : PLAYER (Hidden by default) -->
+    <section id="demo-player" class="demo-section" style="background: white;">
+        <div class="container">
+            <button class="btn btn-outline" onclick="switchView('dashboard')" style="margin-bottom: 2rem;"><i
+                    class="fa-solid fa-arrow-left"></i> Retour au Dashboard</button>
+
+            <div class="player-layout">
+                <div class="player-main">
+                    <div class="video-container">
+                        <div style="text-align: center;">
+                            <i class="fa-solid fa-play-circle"
+                                style="font-size: 5rem; color: var(--color-accent); cursor: pointer;"></i>
+                            <p style="margin-top: 1rem; font-weight: 700;">Vidéo de démonstration Kpékpé</p>
+                        </div>
+                    </div>
+                    <div style="margin-top: 2rem;">
+                        <h2 id="player-course-title"
+                            style="font-family: var(--font-heading); font-weight: 800; color: var(--color-primary);">--
+                        </h2>
+                        <h3 id="player-lesson-title" style="margin-top: 0.5rem; color: var(--color-text-muted);">--</h3>
+                        <hr style="margin: 2rem 0; opacity: 0.1;">
+                        <div style="display: flex; gap: 1rem;">
+                            <button class="btn btn-primary"
+                                style="background: var(--color-primary); color: white; border: none; padding: 12px 25px; border-radius: 50px; font-weight: 700;"><i
+                                    class="fa-solid fa-file-pdf"></i> Supports de cours</button>
+                            <button class="btn btn-outline" onclick="window.location.href='conseiller.html'"><i
+                                    class="fa-solid fa-robot"></i> Demander au Tuteur IA</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="player-sidebar">
+                    <div class="playlist-card">
+                        <h4 style="font-family: var(--font-heading); margin-bottom: 1rem;">Contenu du module</h4>
+                        <div id="player-playlist">
+                            <!-- Dynamically filled by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SCRIPTS -->
+    <script src="js/learnia-demo.js"></script>
     <a href="https://wa.me/22879653179" target="_blank" class="whatsapp-float"><i class="fa-brands fa-whatsapp"></i></a>
     <script src="js/script.js"></script>
 </body>
