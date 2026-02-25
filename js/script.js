@@ -36,18 +36,3 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
-
-// Contact Form Handler (WhatsApp Redirection)
-function submitContactForm(event) {
-    event.preventDefault();
-    const form = event.target;
-    const name = form.querySelector('[name="name"]').value;
-    const email = form.querySelector('[name="_replyto"]').value;
-    const message = form.querySelector('[name="message"]').value;
-
-    const whatsappNumber = "22879653179";
-    const text = `Bonjour Kpékpé !\n\n*Nouveau message de contact*\n*Nom:* ${name}\n*Email:* ${email}\n\n*Message:*\n${message}`;
-
-    const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`;
-    window.location.href = url;
-}
