@@ -5,12 +5,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kpékpé Learnia - Apprends les compétences qui comptent au Togo</title>
-    <meta name="description" content="Cours certifiants, répétiteurs qualifiés et annuaire des meilleures écoles au Togo.">
+    <meta name="description"
+        content="Cours certifiants, répétiteurs qualifiés et annuaire des meilleures écoles au Togo. Tout ce qu'il te faut pour réussir.">
 
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- CSS -->
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/learnia.css">
 </head>
@@ -23,13 +31,15 @@
             <a href="index.html" class="logo">
                 <i class="fa-solid fa-lightbulb text-accent"></i> Kpékpé
             </a>
-            <button class="mobile-menu-btn" aria-label="Menu">
+
+            <button class="mobile-menu-btn">
                 <i class="fa-solid fa-bars"></i>
             </button>
+
             <nav>
                 <ul class="nav-links">
                     <li><a href="index.html" class="nav-link">Accueil</a></li>
-                    <li><a href="conseiller.html" class="nav-link">L'IA Conseiller</a></li>
+                    <li><a href="conseiller.html" class="nav-link">L’IA Conseiller</a></li>
                     <li><a href="learnia.html" class="nav-link active">Kpékpé Learnia</a></li>
                     <li><a href="apropos.html" class="nav-link">À Propos</a></li>
                     <li><a href="rejoindre.html" class="nav-link">Nous Rejoindre</a></li>
@@ -39,21 +49,21 @@
         </div>
     </header>
 
-    <!-- ======== HERO ======== -->
+    <!-- Hero Section -->
     <section class="learnia-hero">
         <div class="container">
-            <span class="hero-tagline">Apprends &amp; Réussis</span>
-            <h1>Apprends les compétences<br>qui comptent au Togo</h1>
+            <span class="hero-tagline" style="color:var(--color-accent)">Apprends & Réussis</span>
+            <h1>Apprends les compétences qui comptent au Togo</h1>
             <p class="hero-subtitle">
                 Cours certifiants, répétiteurs qualifiés et annuaire des meilleures écoles.
                 Tout ce qu'il te faut pour réussir ton insertion professionnelle.
             </p>
             <div class="hero-buttons">
                 <a href="#catalogue" class="btn btn-secondary">
-                    <i class="fa-solid fa-graduation-cap"></i> Explorer les formations
+                    Explorer les formations
                 </a>
-                <a href="#formateur" class="btn btn-outline-white">
-                    <i class="fa-solid fa-chalkboard-user"></i> Devenir formateur
+                <a href="#formateur" class="btn btn-outline" style="border-color:white; color:white;">
+                    Devenir formateur
                 </a>
             </div>
             <div class="learnia-stats">
@@ -64,38 +74,41 @@
         </div>
     </section>
 
-    <!-- ======== PILIERS ======== -->
-    <section class="section" id="piliers" style="padding-top: 4rem; background: var(--color-bg-body);">
+    <!-- Piliers Section -->
+    <section class="section" id="piliers" style="padding-top: 0;">
         <div class="container">
             <div class="piliers-grid">
                 <div class="pilier-card animated-item">
                     <i class="fa-solid fa-book-open"></i>
                     <h3>Cours Certifiants</h3>
-                    <p>Vidéos courtes, PDF téléchargeables, quiz interactifs et certificat de fin de parcours. Apprends à ton rythme, même sans connexion stable.</p>
+                    <p>Vidéos courtes, PDF, quiz et certificat de fin. Apprends à ton rythme les métiers du numérique et
+                        de l'industrie.</p>
                 </div>
                 <div class="pilier-card animated-item">
                     <i class="fa-solid fa-chalkboard-teacher"></i>
                     <h3>Marketplace Répétiteurs</h3>
-                    <p>Trouve un répétiteur qualifié près de chez toi à Lomé, Kara ou Atakpamé. Consulte les profils, réserve et laisse ton avis.</p>
+                    <p>Trouve un répétiteur qualifié près de chez toi à Lomé, Kara ou Atakpamé. Réserve et évalue ton
+                        mentor.</p>
                 </div>
                 <div class="pilier-card animated-item">
                     <i class="fa-solid fa-university"></i>
                     <h3>Annuaire Universités</h3>
-                    <p>Toutes les écoles privées et publiques du Togo avec fiches détaillées, conditions d'admission et formulaire de candidature en ligne.</p>
+                    <p>Toutes les écoles privées et publiques du Togo avec fiches détaillées et aide à la candidature en
+                        ligne.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ======== CATALOGUE ======== -->
-    <section class="section" id="catalogue" style="background: var(--color-bg-white);">
+    <!-- Catalogue Sections -->
+    <section class="section" id="catalogue" style="background-color: var(--color-bg-body);">
         <div class="container">
             <div class="catalogue-header text-center">
                 <h2>Formations disponibles</h2>
                 <p class="text-muted">Des parcours courts pour des compétences immédiates sur le marché togolais.</p>
             </div>
 
-            <div class="search-filter-bar animated-item">
+            <div class="search-filter-bar anim-fade-in">
                 <div class="search-input-wrapper">
                     <i class="fa-solid fa-magnifying-glass"></i>
                     <input type="text" id="formation-search" placeholder="Rechercher par titre, domaine ou centre...">
@@ -103,6 +116,7 @@
                 <div class="filter-controls">
                     <select id="filter-domain">
                         <option value="any">Tous les domaines</option>
+                        <!-- Domains will be populated via JS -->
                     </select>
                     <select id="filter-budget">
                         <option value="any">Tous les budgets</option>
@@ -114,85 +128,74 @@
                     <select id="filter-duration">
                         <option value="any">Toutes les durées</option>
                         <option value="3">Moins de 3 mois</option>
-                        <option value="6">3 à 6 mois</option>
+                        <option value="6">3-6 mois</option>
                         <option value="more">Plus de 6 mois</option>
                     </select>
                 </div>
             </div>
 
-            <p id="results-count" class="results-count">Chargement des formations...</p>
+            <p id="results-count" style="margin-bottom:1rem; font-weight:600; color:var(--color-primary);">Chargement
+                des formations...</p>
 
             <div class="formation-grid" id="formation-grid">
-                <!-- Cartes générées en JS -->
+                <!-- Cards populated via JS -->
             </div>
         </div>
     </section>
 
-    <!-- ======== COMPÉTITIONS ======== -->
+    <!-- Compétitions Section -->
     <section class="defi-section">
         <div class="container">
             <div class="defi-content">
                 <div>
-                    <span class="rank-pill" style="margin-left:0; display:inline-block; margin-bottom:1.2rem;">🏆 Défi de la semaine</span>
+                    <span class="rank-pill" style="margin-left: 0; margin-bottom: 1rem; display: inline-block;">🏆 Défi
+                        de la semaine</span>
                     <h2>Teste tes connaissances et grimpe au classement !</h2>
-                    <p style="opacity:0.85; margin-bottom:2rem; line-height:1.7;">
-                        Chaque semaine, relève le défi thématique — Logique, Tech, Culture Générale — et gagne des bons de réduction pour les cours premium.
+                    <p style="margin-bottom: 2rem; opacity: 0.9;">
+                        Chaque semaine, relève le défi thématique (Logique, Tech, Culture G) et gagne des bons de
+                        réduction pour les cours premium.
                     </p>
-                    <div class="countdown-wrapper">
-                        <a href="#" class="btn btn-secondary">Participer au défi</a>
-                        <div>
-                            <span class="countdown-label">Prochain défi dans :</span><br>
-                            <span id="countdown">-- : -- : --</span>
+                    <div style="display: flex; gap: 2rem; align-items: center;">
+                        <button class="btn btn-secondary">Participer au défi</button>
+                        <div style="font-family: var(--font-heading); font-weight: 700;">
+                            Prochain défi dans : <span id="countdown" class="text-accent">-- : -- : --</span>
                         </div>
                     </div>
                 </div>
                 <div class="leaderboard animated-item">
-                    <h4>Classement Top 5 cette semaine</h4>
-                    <div class="leaderboard-item">
-                        <span>🥇 Kossi A.</span>
-                        <span>980 pts <span class="rank-pill">Leader</span></span>
-                    </div>
-                    <div class="leaderboard-item">
-                        <span>🥈 Kafui M.</span>
-                        <span>955 pts</span>
-                    </div>
-                    <div class="leaderboard-item">
-                        <span>🥉 Komla D.</span>
-                        <span>920 pts</span>
-                    </div>
-                    <div class="leaderboard-item">
-                        <span>4. Afi S.</span>
-                        <span>905 pts</span>
-                    </div>
-                    <div class="leaderboard-item">
-                        <span>5. Yao B.</span>
-                        <span>880 pts</span>
-                    </div>
+                    <h4 style="color:white; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 10px;">
+                        Classement Top 5</h4>
+                    <div class="leaderboard-item"><span>1. Kossi A.</span> <span>980 pts <span
+                                class="rank-pill">🥇</span></span></div>
+                    <div class="leaderboard-item"><span>2. Kafui M.</span> <span>955 pts</span></div>
+                    <div class="leaderboard-item"><span>3. Komla D.</span> <span>920 pts</span></div>
+                    <div class="leaderboard-item"><span>4. Afi S.</span> <span>905 pts</span></div>
+                    <div class="leaderboard-item"><span>5. Yao B.</span> <span>880 pts</span></div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ======== BLOG MÉTIERS ======== -->
-    <section class="section" style="background: var(--color-bg-body);">
+    <!-- Blog Section -->
+    <section class="section">
         <div class="container">
-            <div class="text-center" style="margin-bottom:3rem;">
+            <div class="text-center mb-5" style="margin-bottom: 3rem;">
                 <h2>Ils ont trouvé leur voie</h2>
                 <p class="text-muted">Des professionnels togolais te parlent de leur quotidien</p>
             </div>
-            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:2rem;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;">
                 <div class="blog-card animated-item">
                     <div class="video-thumb">
                         <i class="fa-solid fa-play-circle"></i>
                         <span class="video-duration">08:15</span>
                     </div>
-                    <div style="padding:1.5rem;">
-                        <h4 style="margin-bottom:4px;">Kafui Mensah</h4>
-                        <p style="font-size:0.85rem; color:var(--color-primary); font-weight:600; margin-bottom:0.8rem;">Développeur Web &amp; Mobile · Gozem Lomé</p>
-                        <p class="text-muted" style="font-size:0.9rem; margin-bottom:1rem;">"Le code m'a ouvert des portes que je n'imaginais même pas depuis Lomé."</p>
-                        <a href="#" class="btn btn-outline btn-sm" style="width:100%; justify-content:center;">
-                            <i class="fa-solid fa-play"></i> Regarder
-                        </a>
+                    <div style="padding: 1.5rem;">
+                        <h4 style="margin-bottom: 5px;">Kafui Mensah</h4>
+                        <p style="font-size: 0.85rem; color: var(--color-primary); font-weight: 600;">Développeur Web &
+                            Mobile @ Gozem</p>
+                        <p class="text-muted" style="font-size: 0.9rem; margin: 10px 0;">"Le code m'a ouvert des portes
+                            que je n'imaginais même pas à Lomé."</p>
+                        <a href="#" class="btn btn-outline btn-sm" style="width:100%">Regarder</a>
                     </div>
                 </div>
                 <div class="blog-card animated-item">
@@ -200,13 +203,13 @@
                         <i class="fa-solid fa-play-circle"></i>
                         <span class="video-duration">12:40</span>
                     </div>
-                    <div style="padding:1.5rem;">
-                        <h4 style="margin-bottom:4px;">Abla Dossou</h4>
-                        <p style="font-size:0.85rem; color:var(--color-primary); font-weight:600; margin-bottom:0.8rem;">Architecte Urbaniste · EAMAU Lomé</p>
-                        <p class="text-muted" style="font-size:0.9rem; margin-bottom:1rem;">"Dessiner les villes de demain au Togo demande de la passion et de la rigueur."</p>
-                        <a href="#" class="btn btn-outline btn-sm" style="width:100%; justify-content:center;">
-                            <i class="fa-solid fa-play"></i> Regarder
-                        </a>
+                    <div style="padding: 1.5rem;">
+                        <h4 style="margin-bottom: 5px;">Abla Dossou</h4>
+                        <p style="font-size: 0.85rem; color: var(--color-primary); font-weight: 600;">Architecte
+                            Urbaniste @ EAMAU</p>
+                        <p class="text-muted" style="font-size: 0.9rem; margin: 10px 0;">"Dessiner les villes de demain
+                            au Togo demande de la passion et de la rigueur."</p>
+                        <a href="#" class="btn btn-outline btn-sm" style="width:100%">Regarder</a>
                     </div>
                 </div>
                 <div class="blog-card animated-item">
@@ -214,344 +217,251 @@
                         <i class="fa-solid fa-play-circle"></i>
                         <span class="video-duration">06:20</span>
                     </div>
-                    <div style="padding:1.5rem;">
-                        <h4 style="margin-bottom:4px;">Kofi Agbénou</h4>
-                        <p style="font-size:0.85rem; color:var(--color-primary); font-weight:600; margin-bottom:0.8rem;">Médecin Généraliste · CHU Lomé</p>
-                        <p class="text-muted" style="font-size:0.9rem; margin-bottom:1rem;">"Servir ma communauté est ma plus grande fierté chaque matin."</p>
-                        <a href="#" class="btn btn-outline btn-sm" style="width:100%; justify-content:center;">
-                            <i class="fa-solid fa-play"></i> Regarder
-                        </a>
+                    <div style="padding: 1.5rem;">
+                        <h4 style="margin-bottom: 5px;">Kofi Agbénou</h4>
+                        <p style="font-size: 0.85rem; color: var(--color-primary); font-weight: 600;">Médecin
+                            Généraliste @ CHU Lomé</p>
+                        <p class="text-muted" style="font-size: 0.9rem; margin: 10px 0;">"Servir ma communauté est ma
+                            plus grande fierté chaque matin."</p>
+                        <a href="#" class="btn btn-outline btn-sm" style="width:100%">Regarder</a>
                     </div>
                 </div>
-            </div>
-            <div class="text-center" style="margin-top:2.5rem;">
-                <a href="#" class="btn btn-outline">Voir tous les témoignages</a>
             </div>
         </div>
     </section>
 
-    <!-- ======== FORMATEUR ======== -->
-    <section class="section" id="formateur" style="background:var(--color-primary); color:white;">
+    <!-- Formateur Section -->
+    <section class="section" id="formateur" style="background-color: var(--color-primary); color: white;">
         <div class="container text-center">
-            <h2 style="color:white;">Monétise ton expertise avec Kpékpé Learnia</h2>
-            <p style="opacity:0.88; max-width:580px; margin:0.5rem auto 2.5rem; line-height:1.7;">
-                Partage ton savoir avec la jeunesse togolaise et génère des revenus complémentaires depuis chez toi.
-            </p>
+            <h2 style="color: white;">Monétise ton expertise avec Kpékpé Learnia</h2>
+            <p style="opacity: 0.9; max-width: 600px; margin: 0 auto 3rem;">Partage ton savoir avec la jeunesse et
+                génère des revenus complémentaires depuis chez toi.</p>
+
             <div class="formateur-cards">
                 <div class="commission-card card-light animated-item">
-                    <h4>Formation &lt; 15 000 FCFA</h4>
-                    <div class="commission-rate">5%</div>
-                    <p style="opacity:0.8; font-size:0.85rem;">Commission prélevée</p>
-                    <p style="margin-top:1rem; font-weight:700; font-size:1.1rem;">Tu gardes 95%</p>
+                    <h4>Formation < 15k FCFA</h4>
+                            <div class="commission-rate">5%</div>
+                            <p>Commission</p>
+                            <p style="margin-top: 1rem; font-weight: 600;">Tu gardes 95% de tes revenus</p>
                 </div>
                 <div class="commission-card card-accent animated-item">
                     <span class="popular-badge">Le plus populaire</span>
-                    <h4>15 000 – 50 000 FCFA</h4>
+                    <h4>15k – 50k FCFA</h4>
                     <div class="commission-rate">10%</div>
-                    <p style="opacity:0.8; font-size:0.85rem;">Commission prélevée</p>
-                    <p style="margin-top:1rem; font-weight:700; font-size:1.1rem;">Tu gardes 90%</p>
+                    <p>Commission</p>
+                    <p style="margin-top: 1rem; font-weight: 600;">Tu gardes 90% de tes revenus</p>
                 </div>
                 <div class="commission-card card-light animated-item">
-                    <h4>Formation &gt; 50 000 FCFA</h4>
+                    <h4>Formation > 50k FCFA</h4>
                     <div class="commission-rate">30%</div>
-                    <p style="opacity:0.8; font-size:0.85rem;">Commission prélevée</p>
-                    <p style="margin-top:1rem; font-weight:700; font-size:1.1rem;">Tu gardes 70%</p>
+                    <p>Commission</p>
+                    <p style="margin-top: 1rem; font-weight: 600;">Tu gardes 70% de tes revenus</p>
                 </div>
             </div>
-            <a href="rejoindre.html" class="btn btn-lg" style="background:white; color:var(--color-primary); font-weight:700;">
-                <i class="fa-solid fa-user-plus"></i> S'inscrire comme formateur
-            </a>
-            <p style="font-size:0.75rem; margin-top:2rem; opacity:0.65;">
-                Les universités et centres partenaires bénéficient de conditions spéciales selon le contrat signé avec Kpékpé.
-            </p>
+
+            <button class="btn btn-secondary btn-lg" style="background:white; color:var(--color-primary)">S'inscrire
+                comme formateur</button>
+            <p style="font-size: 0.75rem; margin-top: 2rem; opacity: 0.7;">Les universités et centres partenaires
+                bénéficient de conditions spéciales selon contrat signé avec Kpékpé.</p>
         </div>
     </section>
 
-    <!-- ======== CTA FINAL ======== -->
-    <section class="section text-center" style="background:var(--color-bg-body);">
+    <!-- CTA Final -->
+    <section class="section text-center" style="background-color: var(--color-bg-body);">
         <div class="container">
             <h2>Prêt à tracer ton chemin ?</h2>
-            <p class="text-muted" style="margin-bottom:2rem;">Commence par tester l'IA Conseiller — c'est gratuit et sans inscription.</p>
-            <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
-                <a href="conseiller.html" class="btn btn-primary btn-lg">
-                    <i class="fa-solid fa-robot"></i> Tester l'IA Conseiller
-                </a>
-                <a href="#catalogue" class="btn btn-outline btn-lg">
-                    <i class="fa-solid fa-graduation-cap"></i> Explorer les formations
-                </a>
+            <div style="margin-top: 2rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="conseiller.html" class="btn btn-primary">Tester l'IA Conseiller</a>
+                <a href="#catalogue" class="btn btn-outline">Explorer les formations</a>
             </div>
         </div>
     </section>
 
-    <!-- ======== FOOTER ======== -->
+    <!-- Footer -->
     <footer>
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-brand">
-                    <a href="index.html" class="logo">
-                        <i class="fa-solid fa-lightbulb" style="color:var(--color-accent);"></i> Kpékpé
-                    </a>
-                    <p>Light on your way.<br>L'orientation repensée pour la jeunesse togolaise et africaine.</p>
-                    <div class="footer-social">
-                        <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-                        <a href="#" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
-                        <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-                        <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-                        <a href="#" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
-                    </div>
-                </div>
-                <div class="footer-col">
-                    <h4>Navigation</h4>
-                    <ul>
-                        <li><a href="index.html">Accueil</a></li>
-                        <li><a href="conseiller.html">L'IA Conseiller</a></li>
-                        <li><a href="learnia.html">Kpékpé Learnia</a></li>
-                        <li><a href="apropos.html">À Propos</a></li>
-                        <li><a href="contact.html">Contact</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h4>Learnia</h4>
-                    <ul>
-                        <li><a href="#catalogue">Formations</a></li>
-                        <li><a href="#piliers">Répétiteurs</a></li>
-                        <li><a href="#piliers">Annuaire</a></li>
-                        <li><a href="#formateur">Devenir formateur</a></li>
-                        <li><a href="rejoindre.html">Nous rejoindre</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col footer-contact">
-                    <h4>Contact</h4>
-                    <p><i class="fa-solid fa-envelope"></i> kpekpelearnia@gmail.com</p>
-                    <p><i class="fa-brands fa-whatsapp"></i> +228 79 65 31 79</p>
-                    <p><i class="fa-solid fa-location-dot"></i> Lomé, Togo</p>
-                </div>
+        <div class="container text-center">
+            <div style="margin-bottom: 2rem;">
+                <a href="index.html" class="logo" style="color: white; justify-content: center;">
+                    <i class="fa-solid fa-lightbulb text-accent"></i> Kpékpé
+                </a>
             </div>
-            <div class="footer-bottom">
-                <span>&copy; 2026 Kpékpé. Tous droits réservés.</span>
-                <span>Fait avec 💚 à Lomé, Togo</span>
+            <div
+                style="text-align: center; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); opacity: 0.6; font-size: 0.85rem;">
+                &copy; 2026 Kpékpé. Tous droits réservés.
             </div>
         </div>
     </footer>
 
-    <!-- WhatsApp Float -->
-    <a href="https://wa.me/22879653179?text=Bonjour%20Kpékpé%2C%20je%20veux%20en%20savoir%20plus%20sur%20Learnia" target="_blank" class="whatsapp-float">
+    <!-- WhatsApp Button -->
+    <a href="https://wa.me/22879653179" target="_blank" class="whatsapp-float">
         <i class="fa-brands fa-whatsapp"></i>
     </a>
 
-    <!-- ======== SCRIPTS ======== -->
+    <!-- DATA & JS SCRIPTS -->
     <script>
-    // ---- DONNÉES FORMATIONS ----
-    const LEARNIA_FORMATIONS = [
-        { title: "Développement Web Full-Stack", domain: "Numérique", duree: 6, prix: 45000, niveau: "Débutant", ecole: "IPNET Lomé", verifie: true },
-        { title: "Design Graphique & UI/UX", domain: "Numérique", duree: 4, prix: 35000, niveau: "Débutant", ecole: "ESGIS Lomé", verifie: true },
-        { title: "Community Management", domain: "Numérique", duree: 2, prix: 15000, niveau: "Débutant", ecole: "DEFITECH", verifie: true },
-        { title: "Cybersécurité & Réseaux", domain: "Numérique", duree: 5, prix: 50000, niveau: "Intermédiaire", ecole: "DEFITECH", verifie: true },
-        { title: "Comptabilité PME & Gestion", domain: "Gestion", duree: 4, prix: 30000, niveau: "Débutant", ecole: "ESA Lomé", verifie: true },
-        { title: "Finance Personnelle & Microfinance", domain: "Banque", duree: 3, prix: 20000, niveau: "Débutant", ecole: "CFBT Lomé", verifie: true },
-        { title: "Techniques de Vente Moderne", domain: "Commerce", duree: 2, prix: 20000, niveau: "Débutant", ecole: "LBS Lomé", verifie: true },
-        { title: "Marketing Digital & Réseaux Sociaux", domain: "Commerce", duree: 3, prix: 25000, niveau: "Débutant", ecole: "LBS Lomé", verifie: true },
-        { title: "Secourisme & Premiers Soins", domain: "Santé", duree: 3, prix: 25000, niveau: "Tous niveaux", ecole: "FSS - UL", verifie: true },
-        { title: "Agrobusiness & Élevage Moderne", domain: "Agriculture", duree: 3, prix: 15000, niveau: "Tous niveaux", ecole: "INFA de Tové", verifie: true },
-        { title: "Lecture de Plans & AutoCAD", domain: "BTP", duree: 3, prix: 40000, niveau: "Intermédiaire", ecole: "ESTABAT", verifie: true },
-        { title: "Maintenance Industrielle", domain: "Industrie", duree: 5, prix: 50000, niveau: "Intermédiaire", ecole: "CFMI Lomé", verifie: true },
-        { title: "Stylisme & Modélisme", domain: "Arts", duree: 4, prix: 30000, niveau: "Débutant", ecole: "ESAMOD", verifie: true },
-        { title: "Initiation au Droit des Affaires", domain: "Droit", duree: 3, prix: 25000, niveau: "Débutant", ecole: "UCAO-UUT", verifie: true },
-        { title: "Logistique & Transit International", domain: "Transport", duree: 4, prix: 35000, niveau: "Débutant", ecole: "EMARITO", verifie: true },
-        { title: "Gestion Environnementale", domain: "Environnement", duree: 3, prix: 20000, niveau: "Débutant", ecole: "Université de Lomé", verifie: true }
-    ];
+        // --- EMBEDDED DATA ---
+        const LEARNIA_FORMATIONS = {
+            "Numérique": [
+                { title: "Développement Web Full-Stack", duree: 6, prix: 45000, niveau: "Débutant", ecole: "IPNET Lomé" },
+                { title: "Design Graphique & UI/UX", duree: 4, prix: 35000, niveau: "Débutant", ecole: "ESGIS" },
+                { title: "Community Management", duree: 2, prix: 15000, niveau: "Débutant", ecole: "DEFITECH" }
+            ],
+            "Industrie": [
+                { title: "Maintenance Industrielle", duree: 5, prix: 50000, niveau: "Intermédiaire", ecole: "CFMI" },
+                { title: "Froid & Climatisation", duree: 4, prix: 45000, niveau: "Débutant", ecole: "CIFT" }
+            ],
+            "Santé": [
+                { title: "Secourisme & Premiers Soins", duree: 3, prix: 25000, niveau: "Tous niveaux", ecole: "FSS Lomé" }
+            ],
+            "Gestion": [
+                { title: "Comptabilité PME", duree: 4, prix: 30000, niveau: "Débutant", ecole: "ESA" }
+            ],
+            "Agriculture": [
+                { title: "Agrobusiness & Élevage", duree: 3, prix: 15000, niveau: "Tous niveaux", ecole: "INFA de Tové" }
+            ],
+            "BTP": [
+                { title: "Lecture de Plans & AutoCAD", duree: 3, prix: 40000, niveau: "Intermédiaire", ecole: "ESTABAT" }
+            ],
+            "Commerce": [
+                { title: "Techniques de Vente Moderne", duree: 2, prix: 20000, niveau: "Débutant", ecole: "LBS Lomé" }
+            ]
+        };
 
-    // ---- BADGE COULEURS PAR DOMAINE ----
-    const DOMAIN_COLORS = {
-        "Numérique": "#dbeafe",
-        "Gestion": "#dcfce7",
-        "Commerce": "#fef9c3",
-        "Santé": "#fee2e2",
-        "Agriculture": "#d1fae5",
-        "BTP": "#fef3c7",
-        "Industrie": "#e0e7ff",
-        "Arts": "#fce7f3",
-        "Droit": "#ede9fe",
-        "Transport": "#cffafe",
-        "Banque": "#d1fae5",
-        "Environnement": "#dcfce7"
-    };
+        const SCHOOLS_LIST = [
+            "Université de Lomé", "Université de Kara", "ESGIS", "IPNET", "FORMATEC", "DEFITECH", "ESA", "CFMI", "CIFT", "ESTABAT"
+        ];
 
-    const DOMAIN_TEXT_COLORS = {
-        "Numérique": "#1d4ed8",
-        "Gestion": "#166534",
-        "Commerce": "#854d0e",
-        "Santé": "#991b1b",
-        "Agriculture": "#065f46",
-        "BTP": "#92400e",
-        "Industrie": "#3730a3",
-        "Arts": "#9d174d",
-        "Droit": "#5b21b6",
-        "Transport": "#0e7490",
-        "Banque": "#065f46",
-        "Environnement": "#166534"
-    };
+        // --- DOM ELEMENTS ---
+        const grid = document.getElementById('formation-grid');
+        const searchInput = document.getElementById('formation-search');
+        const domainSelect = document.getElementById('filter-domain');
+        const budgetSelect = document.getElementById('filter-budget');
+        const durationSelect = document.getElementById('filter-duration');
+        const countText = document.getElementById('results-count');
 
-    // ---- DOM ----
-    const grid = document.getElementById('formation-grid');
-    const searchInput = document.getElementById('formation-search');
-    const domainSelect = document.getElementById('filter-domain');
-    const budgetSelect = document.getElementById('filter-budget');
-    const durationSelect = document.getElementById('filter-duration');
-    const countText = document.getElementById('results-count');
-
-    // ---- INIT ----
-    function init() {
-        // Populate domain dropdown
-        const domains = [...new Set(LEARNIA_FORMATIONS.map(f => f.domain))].sort();
-        domains.forEach(d => {
-            const opt = document.createElement('option');
-            opt.value = d;
-            opt.innerText = d;
-            domainSelect.appendChild(opt);
-        });
-
-        renderFormations();
-        startCountdown();
-
-        [searchInput, domainSelect, budgetSelect, durationSelect].forEach(el => {
-            el.addEventListener('change', renderFormations);
-            el.addEventListener('keyup', renderFormations);
-        });
-
-        initObserver();
-    }
-
-    // ---- RENDER ----
-    function renderFormations() {
-        const query = searchInput.value.toLowerCase().trim();
-        const domain = domainSelect.value;
-        const budget = budgetSelect.value;
-        const duration = durationSelect.value;
-
-        const filtered = LEARNIA_FORMATIONS.filter(f => {
-            const matchSearch = !query ||
-                f.title.toLowerCase().includes(query) ||
-                f.ecole.toLowerCase().includes(query) ||
-                f.domain.toLowerCase().includes(query);
-
-            const matchDomain = domain === 'any' || f.domain === domain;
-
-            let matchBudget = true;
-            if (budget === '0') matchBudget = f.prix === 0;
-            else if (budget === '20000') matchBudget = f.prix > 0 && f.prix <= 20000;
-            else if (budget === '50000') matchBudget = f.prix > 20000 && f.prix <= 50000;
-            else if (budget === 'above') matchBudget = f.prix > 50000;
-
-            let matchDuration = true;
-            if (duration === '3') matchDuration = f.duree < 3;
-            else if (duration === '6') matchDuration = f.duree >= 3 && f.duree <= 6;
-            else if (duration === 'more') matchDuration = f.duree > 6;
-
-            return matchSearch && matchDomain && matchBudget && matchDuration;
-        });
-
-        countText.innerText = `${filtered.length} formation(s) trouvée(s)`;
-        grid.innerHTML = '';
-
-        if (filtered.length === 0) {
-            grid.innerHTML = `
-                <div class="empty-state">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <p style="font-weight:600; font-size:1.05rem; margin-bottom:0.5rem;">Aucune formation trouvée</p>
-                    <p>Essaie d'autres filtres ou efface ta recherche.</p>
-                </div>`;
-            return;
-        }
-
-        filtered.forEach((f, i) => {
-            const bgColor = DOMAIN_COLORS[f.domain] || '#e6f0ed';
-            const txtColor = DOMAIN_TEXT_COLORS[f.domain] || '#006a4e';
-            const card = document.createElement('div');
-            card.className = 'formation-card animated-item';
-            card.style.transitionDelay = `${i * 0.05}s`;
-            card.innerHTML = `
-                <div class="formation-content">
-                    <span class="formation-badge" style="background:${bgColor}; color:${txtColor};">${f.domain}</span>
-                    <h4>${f.title}</h4>
-                    <div class="formation-info">
-                        <span><i class="fa-solid fa-clock"></i> ${f.duree} mois</span>
-                        <span><i class="fa-solid fa-tag"></i> ${f.prix > 0 ? f.prix.toLocaleString('fr-FR') + ' FCFA' : 'Gratuit'}</span>
-                    </div>
-                    <div class="formation-info">
-                        <span><i class="fa-solid fa-layer-group"></i> ${f.niveau}</span>
-                    </div>
-                    <div class="formation-school">
-                        <span class="school-name"><i class="fa-solid fa-location-dot" style="color:var(--color-text-muted); font-size:0.75rem;"></i> ${f.ecole}</span>
-                        ${f.verifie ? '<span class="school-badge"><i class="fa-solid fa-circle-check"></i> Centre vérifié</span>' : ''}
-                    </div>
-                </div>
-                <div class="formation-actions">
-                    <button class="btn btn-primary btn-sm">Voir la formation</button>
-                    <a href="conseiller.html" class="btn btn-outline btn-sm">IA Conseiller <i class="fa-solid fa-robot"></i></a>
-                </div>
-            `;
-            grid.appendChild(card);
-        });
-
-        // Re-observer les nouvelles cartes
-        observeNewItems();
-    }
-
-    // ---- COUNTDOWN ----
-    function startCountdown() {
-        // Compte à rebours vers le prochain lundi à 8h
-        function getNextMonday() {
-            const now = new Date();
-            const day = now.getDay();
-            const diff = day === 0 ? 1 : 8 - day;
-            const next = new Date(now);
-            next.setDate(now.getDate() + diff);
-            next.setHours(8, 0, 0, 0);
-            return next;
-        }
-
-        function update() {
-            const now = new Date();
-            const target = getNextMonday();
-            const diff = target - now;
-            if (diff <= 0) return;
-
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const secs = Math.floor((diff % (1000 * 60)) / 1000);
-
-            document.getElementById('countdown').innerText =
-                `${days}j ${String(hours).padStart(2,'0')}h ${String(mins).padStart(2,'0')}m ${String(secs).padStart(2,'0')}s`;
-        }
-
-        update();
-        setInterval(update, 1000);
-    }
-
-    // ---- INTERSECTION OBSERVER ----
-    let observer;
-
-    function initObserver() {
-        observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
+        // --- APP LOGIC ---
+        function init() {
+            // Populate domains
+            const domains = Object.keys(LEARNIA_FORMATIONS);
+            domains.forEach(d => {
+                const opt = document.createElement('option');
+                opt.value = d;
+                opt.innerText = d;
+                domainSelect.appendChild(opt);
             });
-        }, { threshold: 0.08 });
 
-        document.querySelectorAll('.animated-item').forEach(el => observer.observe(el));
-    }
+            renderFormations();
+            startCountdown();
 
-    function observeNewItems() {
-        if (!observer) return;
-        document.querySelectorAll('.animated-item:not(.visible)').forEach(el => observer.observe(el));
-    }
+            // Listeners
+            [searchInput, domainSelect, budgetSelect, durationSelect].forEach(el => {
+                el.addEventListener('change', renderFormations);
+                el.addEventListener('keyup', renderFormations);
+            });
 
-    window.onload = init;
+            initObserver();
+        }
+
+        function renderFormations() {
+            const query = searchInput.value.toLowerCase();
+            const domain = domainSelect.value;
+            const budget = budgetSelect.value;
+            const durationArr = durationSelect.value;
+
+            grid.innerHTML = '';
+            let count = 0;
+
+            const allFormations = [];
+            Object.entries(LEARNIA_FORMATIONS).forEach(([dom, forms]) => {
+                forms.forEach(f => allFormations.push({ ...f, domain: dom }));
+            });
+
+            const filtered = allFormations.filter(f => {
+                const matchesSearch = f.title.toLowerCase().includes(query) || f.ecole.toLowerCase().includes(query) || f.domain.toLowerCase().includes(query);
+                const matchesDomain = domain === 'any' || f.domain === domain;
+
+                let matchesBudget = true;
+                if (budget === '0') matchesBudget = f.prix === 0;
+                else if (budget === '20000') matchesBudget = f.prix <= 20000;
+                else if (budget === '50000') matchesBudget = f.prix > 20000 && f.prix <= 50000;
+                else if (budget === 'above') matchesBudget = f.prix > 50000;
+
+                let matchesDuration = true;
+                if (durationArr === '3') matchesDuration = f.duree <= 3;
+                else if (durationArr === '6') matchesDuration = f.duree > 3 && f.duree <= 6;
+                else if (durationArr === 'more') matchesDuration = f.duree > 6;
+
+                return matchesSearch && matchesDomain && matchesBudget && matchesDuration;
+            });
+
+            filtered.forEach(f => {
+                count++;
+                const card = document.createElement('div');
+                card.className = 'formation-card animated-item';
+                card.innerHTML = `
+                    <div class="formation-content">
+                        <span class="formation-badge" style="background:#e6f0ed; color:var(--color-primary)">${f.domain}</span>
+                        <h4>${f.title}</h4>
+                        <div class="formation-info">
+                            <span><i class="fa-solid fa-clock"></i> ${f.duree} mois</span>
+                            <span><i class="fa-solid fa-tag"></i> ${f.prix.toLocaleString()} FCFA</span>
+                        </div>
+                        <div class="formation-info">
+                            <span><i class="fa-solid fa-layer-group"></i> ${f.niveau}</span>
+                        </div>
+                        <div class="formation-school">
+                            <span class="school-name">${f.ecole}</span>
+                            <span class="school-badge"><i class="fa-solid fa-check-circle"></i> Centre vérifié</span>
+                        </div>
+                    </div>
+                    <div class="formation-actions">
+                        <button class="btn btn-primary btn-sm">Voir la formation</button>
+                        <a href="conseiller.html" class="btn btn-outline btn-sm">IA Conseiller <i class="fa-solid fa-robot"></i></a>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+
+            countText.innerText = `${count} formation(s) trouvée(s)`;
+        }
+
+        function startCountdown() {
+            let days = 3;
+            let hours = 14;
+            let minutes = 52;
+            let seconds = 30;
+
+            const timer = setInterval(() => {
+                seconds--;
+                if (seconds < 0) { seconds = 59; minutes--; }
+                if (minutes < 0) { minutes = 59; hours--; }
+                if (hours < 0) { hours = 23; days--; }
+                if (days < 0) { clearInterval(timer); return; }
+
+                document.getElementById('countdown').innerText = `${days}j ${hours}h ${minutes}m ${seconds}s`;
+            }, 1000);
+        }
+
+        function initObserver() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = "1";
+                        entry.target.style.transform = "translateY(0)";
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.animated-item').forEach(el => {
+                el.style.opacity = "0";
+                el.style.transform = "translateY(20px)";
+                el.style.transition = "all 0.5s ease-out";
+                observer.observe(el);
+            });
+        }
+
+        window.onload = init;
     </script>
-
 </body>
+
 </html>
