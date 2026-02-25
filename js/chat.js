@@ -120,7 +120,12 @@ function addMessage(sender, text, quickReplies = null) {
     if (sender === 'bot') {
         const avatar = document.createElement('div');
         avatar.classList.add('message-avatar');
-        avatar.innerHTML = '<i class="fa-solid fa-lightbulb"></i>';
+        avatar.innerHTML = `
+            <svg width="24" height="24" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M45 20L15 50L45 80L35 50L45 20Z" fill="#006A4E"/>
+                <path d="M50 35L65 50L50 65L55 50L50 35Z" fill="#FCE100"/>
+            </svg>
+        `;
         msgDiv.appendChild(avatar);
     }
 

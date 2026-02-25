@@ -145,7 +145,13 @@
 
     <header class="header">
         <div class="container nav-container">
-            <a href="index.html" class="logo"><i class="fa-solid fa-lightbulb text-accent"></i> Kpékpé</a>
+            <a href="index.html" class="logo" style="display: flex; align-items: center; gap: 10px;">
+                <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M45 20L15 50L45 80L35 50L45 20Z" fill="#006A4E" />
+                    <path d="M50 35L65 50L50 65L55 50L50 35Z" fill="#FCE100" />
+                </svg>
+                Kpékpé
+            </a>
             <button class="mobile-menu-btn"><i class="fa-solid fa-bars"></i></button>
             <nav>
                 <ul class="nav-links">
@@ -268,76 +274,76 @@
                 </form>
             </div>
         </section>
+    </div>
 
-        <!-- SECTION DÉMO : DASHBOARD (Hidden by default) -->
-        <section id="demo-dashboard" class="demo-section" style="background: #f1f5f9;">
-            <div class="container">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3rem;">
-                    <div>
-                        <h2 style="font-family: var(--font-heading); font-weight: 800; font-size: 2rem;">Bonjour, <span
-                                class="text-primary">Apprenant Kpékpé</span></h2>
-                        <p class="text-muted">Ravi de vous revoir ! Voici votre progression actuelle.</p>
+    <!-- SECTION DÉMO : DASHBOARD (Hidden by default) -->
+    <section id="demo-dashboard" class="demo-section" style="background: #f1f5f9;">
+        <div class="container">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3rem;">
+                <div>
+                    <h2 style="font-family: var(--font-heading); font-weight: 800; font-size: 2rem;">Bonjour, <span
+                            class="text-primary">Apprenant Kpékpé</span></h2>
+                    <p class="text-muted">Ravi de vous revoir ! Voici votre progression actuelle.</p>
+                </div>
+                <button class="btn btn-outline" onclick="switchView('landing')">Déconnexion</button>
+            </div>
+
+            <div id="enrolled-courses-grid"
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;">
+                <!-- Dynamically filled by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION DÉMO : PLAYER (Hidden by default) -->
+    <section id="demo-player" class="demo-section" style="background: white;">
+        <div class="container">
+            <button class="btn btn-outline" onclick="switchView('dashboard')" style="margin-bottom: 2rem;"><i
+                    class="fa-solid fa-arrow-left"></i> Retour au Dashboard</button>
+
+            <div class="player-layout">
+                <div class="player-main">
+                    <div class="video-container">
+                        <div style="text-align: center;">
+                            <i class="fa-solid fa-play-circle"
+                                style="font-size: 5rem; color: var(--color-accent); cursor: pointer;"></i>
+                            <p style="margin-top: 1rem; font-weight: 700;">Vidéo de démonstration Kpékpé</p>
+                        </div>
                     </div>
-                    <button class="btn btn-outline" onclick="switchView('landing')">Déconnexion</button>
+                    <div style="margin-top: 2rem;">
+                        <h2 id="player-course-title"
+                            style="font-family: var(--font-heading); font-weight: 800; color: var(--color-primary);">
+                            --
+                        </h2>
+                        <h3 id="player-lesson-title" style="margin-top: 0.5rem; color: var(--color-text-muted);">--
+                        </h3>
+                        <hr style="margin: 2rem 0; opacity: 0.1;">
+                        <div style="display: flex; gap: 1rem;">
+                            <button class="btn btn-primary"
+                                style="background: var(--color-primary); color: white; border: none; padding: 12px 25px; border-radius: 50px; font-weight: 700;"><i
+                                    class="fa-solid fa-file-pdf"></i> Supports de cours</button>
+                            <button class="btn btn-outline" onclick="window.location.href='conseiller.html'"><i
+                                    class="fa-solid fa-robot"></i> Demander au Tuteur IA</button>
+                        </div>
+                    </div>
                 </div>
 
-                <div id="enrolled-courses-grid"
-                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;">
-                    <!-- Dynamically filled by JS -->
+                <div class="player-sidebar">
+                    <div class="playlist-card">
+                        <h4 style="font-family: var(--font-heading); margin-bottom: 1rem;">Contenu du module</h4>
+                        <div id="player-playlist">
+                            <!-- Dynamically filled by JS -->
+                        </div>
+                    </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- SECTION DÉMO : PLAYER (Hidden by default) -->
-        <section id="demo-player" class="demo-section" style="background: white;">
-            <div class="container">
-                <button class="btn btn-outline" onclick="switchView('dashboard')" style="margin-bottom: 2rem;"><i
-                        class="fa-solid fa-arrow-left"></i> Retour au Dashboard</button>
-
-                <div class="player-layout">
-                    <div class="player-main">
-                        <div class="video-container">
-                            <div style="text-align: center;">
-                                <i class="fa-solid fa-play-circle"
-                                    style="font-size: 5rem; color: var(--color-accent); cursor: pointer;"></i>
-                                <p style="margin-top: 1rem; font-weight: 700;">Vidéo de démonstration Kpékpé</p>
-                            </div>
-                        </div>
-                        <div style="margin-top: 2rem;">
-                            <h2 id="player-course-title"
-                                style="font-family: var(--font-heading); font-weight: 800; color: var(--color-primary);">
-                                --
-                            </h2>
-                            <h3 id="player-lesson-title" style="margin-top: 0.5rem; color: var(--color-text-muted);">--
-                            </h3>
-                            <hr style="margin: 2rem 0; opacity: 0.1;">
-                            <div style="display: flex; gap: 1rem;">
-                                <button class="btn btn-primary"
-                                    style="background: var(--color-primary); color: white; border: none; padding: 12px 25px; border-radius: 50px; font-weight: 700;"><i
-                                        class="fa-solid fa-file-pdf"></i> Supports de cours</button>
-                                <button class="btn btn-outline" onclick="window.location.href='conseiller.html'"><i
-                                        class="fa-solid fa-robot"></i> Demander au Tuteur IA</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="player-sidebar">
-                        <div class="playlist-card">
-                            <h4 style="font-family: var(--font-heading); margin-bottom: 1rem;">Contenu du module</h4>
-                            <div id="player-playlist">
-                                <!-- Dynamically filled by JS -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SCRIPTS -->
-        <script src="js/learnia-demo.js"></script>
-        <a href="https://wa.me/22879653179" target="_blank" class="whatsapp-float"><i
-                class="fa-brands fa-whatsapp"></i></a>
-        <script src="js/script.js"></script>
+    <!-- SCRIPTS -->
+    <script src="js/learnia-demo.js"></script>
+    <a href="https://wa.me/22879653179" target="_blank" class="whatsapp-float"><i class="fa-brands fa-whatsapp"></i></a>
+    <script src="js/script.js"></script>
 </body>
 
 </html>
