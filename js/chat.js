@@ -18,7 +18,8 @@ const STATE = {
         personality_history: [], // For 'Revenir' button
         personality_type: null,
         answers_log: [],
-        extracted_tags: [], // Tags from chat for matching
+        extracted_tags: [], // Keep for backward compatibility or simple tags
+        weighted_tags: [], // New: [{tag: "code", weight: 3, type: "passion"}]
         weak_subjects: [] // Subjects the user is not good at
     },
     test_question_index: 0,
@@ -292,7 +293,24 @@ function handleUserResponse(text) {
     if (STATE.screen === 'chat_intro' || STATE.screen === 'chat_loop') {
         STATE.screen = 'chat_loop';
         STATE.user.answers_log.push(text);
+
+        // AMÉLIORATION 1 — Pondération par question
+        const questionWeights = [2, 3, 2, 1.5, 1]; // x2, x3, x2, x1.5, x1
+        const questionTypes = ["competence", "passion", "utilite", "valeurs", "filtre"];
+
+        const currentWeight = questionWeights[STATE.chat_turn];
+        const currentType = questionTypes[STATE.chat_turn];
+
         const newTags = extractKeywords(text);
+
+        newTags.forEach(tag => {
+            STATE.user.weighted_tags.push({
+                tag: tag,
+                weight: currentWeight,
+                type: currentType
+            });
+        });
+
         STATE.user.extracted_tags = [...STATE.user.extracted_tags, ...newTags];
         STATE.chat_turn++;
 
@@ -468,112 +486,276 @@ function finishChat() {
 }
 
 function showRecommendations() {
-    const userTags = STATE.user.extracted_tags;
+    const weightedTags = STATE.user.weighted_tags;
+    const weakSubjects = STATE.user.weak_subjects;
+    const userProfile = STATE.user.personality_type;
 
-    // Score each job
-    const scores = JOBS_DATA.map(job => {
-        let interestScore = 0;
-        let personalityScore = 0;
-        let seriesBoost = 0;
+    // AMÉLIORATION 3 — Score Ikigaï croisé
+    const scoredJobs = JOBS_DATA.map(job => {
+        let passionScore = 0;
+        let competenceScore = 0;
+        let utiliteScore = 0;
+        let salaireScore = 0;
+        let weakPenalty = 0;
+        let personalityBoost = 0;
 
-        // 1. Interest Score (Keywords) - Primary Driver
-        const matches = userTags.filter(tag =>
-            job.tags.some(t => t.toLowerCase() === tag.toLowerCase())
-        );
-        interestScore = matches.length * 40; // 40 points per match
-
-        // 2. Series Boost (Togolese Academic Correlation)
-        // If the user mentioned a subject that is key to this job's series
-        job.series.forEach(sKey => {
-            const seriesInfo = SERIES_DATA[sKey];
-            if (seriesInfo) {
-                const subjectMatch = userTags.some(tag =>
-                    seriesInfo.keywords.some(k => k.toLowerCase() === tag.toLowerCase())
-                );
-                if (subjectMatch) seriesBoost += 100; // Big boost for academic alignment
+        // Calculate scores based on weighted tags
+        weightedTags.forEach(wt => {
+            const hasTag = job.tags.some(t => t.toLowerCase() === wt.tag.toLowerCase());
+            if (hasTag) {
+                if (wt.type === "passion") passionScore += wt.weight * 40;
+                if (wt.type === "competence") competenceScore += wt.weight * 35;
+                if (wt.type === "utilite") utiliteScore += wt.weight * 30;
+                // Add weighting for other types if needed, or default logic
             }
         });
 
-        // 3. Personality Score (Secondary Driver - 20%)
-        if (job.profiles.includes(STATE.user.personality_type)) {
-            personalityScore = 30;
-        } else {
-            personalityScore = -10;
-        }
+        // Salaire score
+        if (job.salary_indice === "Élevé") salaireScore = 20;
+        else if (job.salary_indice === "Moyen") salaireScore = 10;
+        else if (job.salary_indice === "Variable") salaireScore = 5;
 
-        // 4. Category Bonus
-        if (userTags.some(tag => job.category.toLowerCase().includes(tag.toLowerCase()))) {
-            interestScore += 20;
-        }
+        // AMÉLIORATION 2 — Pénalité matières faibles
+        // Check if job series overlap with weak subjects
+        let weakMatchCount = 0;
+        job.series.forEach(sKey => {
+            const sData = SERIES_DATA[sKey];
+            if (sData) {
+                const isWeak = weakSubjects.some(ws =>
+                    sData.keywords.some(k => k.toLowerCase() === ws.toLowerCase()) ||
+                    sData.name.toLowerCase().includes(ws.toLowerCase())
+                );
+                if (isWeak) weakMatchCount++;
+            }
+        });
+        weakPenalty = -60 * weakMatchCount;
 
-        const totalScore = interestScore + seriesBoost + personalityScore;
-        return { job, score: totalScore };
+        // Personality boost
+        personalityBoost = job.profiles.includes(userProfile) ? 30 : -10;
+
+        const totalScore = passionScore + competenceScore + utiliteScore + salaireScore + weakPenalty + personalityBoost;
+
+        return {
+            job,
+            score: totalScore,
+            details: { passionScore, competenceScore, utiliteScore, salaireScore, weakPenalty, personalityBoost }
+        };
     });
 
-    // Filter to ensure we ONLY recommend jobs with a positive total score if possible
-    let topJobs = scores.filter(s => s.score > 0);
+    // AMÉLIORATION 4 — Diversité forcée du top 3
+    scoredJobs.sort((a, b) => b.score - a.score);
 
-    // Fallback if filtering is too strict
-    if (topJobs.length < 3) topJobs = scores;
+    const top3 = [];
+    const usedCategories = new Set();
 
-    // Sort and take Top 3
-    topJobs.sort((a, b) => b.score - a.score);
-    const top3 = topJobs.slice(0, 3);
+    for (const item of scoredJobs) {
+        if (top3.length >= 3) break;
+        if (!usedCategories.has(item.job.category)) {
+            top3.push(item);
+            usedCategories.add(item.job.category);
+        }
+    }
 
-    // Generate HTML
+    // Fallback if we don't have enough categories
+    if (top3.length < 3) {
+        for (const item of scoredJobs) {
+            if (top3.length >= 3) break;
+            if (!top3.includes(item)) top3.push(item);
+        }
+    }
+
+    // Generate HTML for recommendations
     let html = `Voici 3 pistes qui te correspondent à merveille, ${STATE.user.name} :<br><br>`;
 
     top3.forEach((item, idx) => {
         const job = item.job;
-
-        // Logic for Students vs Others
         const isStudent = (STATE.user.status === "Collégien" || STATE.user.status === "Lycéen");
-
-        // Filtering Incompatible Series (Academic Orientation Logic)
-        let filteredSeries = job.series;
-        if (isStudent && STATE.user.weak_subjects.includes("maths")) {
-            // If weak in math, remove Series C, E, G2 if possible
-            filteredSeries = job.series.filter(s => !["C", "E", "G2"].includes(s));
-            // Ensure we still have something to recommend
-            if (filteredSeries.length === 0) filteredSeries = ["A4", "D", "G3", "G1"];
-        }
 
         let pathInfo = "";
         if (isStudent) {
-            const seriesDetails = filteredSeries.slice(0, 3).map(sKey => {
+            const recommendedSeries = job.series.slice(0, 3).map(sKey => {
                 const sData = SERIES_DATA[sKey];
-                return sData ? `<li><strong>${sData.name}</strong> : ${sData.domain}</li>` : `<li>${sKey}</li>`;
+                return sData ? `<li><strong>${sData.name}</strong></li>` : `<li>${sKey}</li>`;
             }).join("");
-            pathInfo = `<p><strong>Formations conseillées au Lycée :</strong></p><ul style="margin: 5px 0 10px 15px; font-size: 0.9em;">${seriesDetails}</ul>`;
+            pathInfo = `<p><strong>Séries conseillées :</strong></p><ul class="series-list">${recommendedSeries}</ul>`;
         } else {
             const recommendedSchools = getSchoolsForJob(job.tags);
             const schoolText = recommendedSchools.length > 0 ? recommendedSchools.join(", ") : "Universités publiques ou privées du Togo";
-            pathInfo = `<p><strong>Écoles recommandées :</strong> ${schoolText}</p>`;
+            pathInfo = `<p><strong>Écoles :</strong> ${schoolText}</p>`;
         }
 
         html += `
-        <div class="job-card">
-            <h4>${idx + 1}. ${job.title} (${job.category})</h4>
+        <div class="job-card animated-item">
+            <div class="job-rank">#${idx + 1}</div>
+            <h4>${job.title}</h4>
+            <div class="job-category-badge">${job.category}</div>
             <div class="job-details">
-                <p><strong>Pourquoi toi ?</strong> ${job.desc}</p>
+                <p><em>${job.desc}</em></p>
                 ${pathInfo}
-                <p><strong>Débouchés :</strong> ${job.recruiters.join(", ")}</p>
                 <div class="job-meta">
-                    <span class="badge">Salaire: ${job.salary_indice}</span>
-                    <span class="badge">Études: ${job.studies}</span>
+                    <span><i class="fa-solid fa-money-bill-wave"></i> ${job.salary_indice}</span>
+                    <span><i class="fa-solid fa-graduation-cap"></i> ${job.studies}</span>
                 </div>
             </div>
         </div>`;
     });
 
-    html += `<br>Qu'en penses-tu ? Ça te parle ?`;
+    botReply(html, 500);
 
-    botReply(html, 500, [
-        { text: "En savoir plus", value: "MORE" },
-        { text: "Recommencer", value: "RESTART" },
-        { text: "Télécharger PDF", value: "PDF" }
-    ]);
+    // AMÉLIORATION 5 — Pont vers Learnia & Feedback
+    setTimeout(() => {
+        showFeedbackSection(top3);
+    }, 2000);
 }
+
+// --- AMÉLIORATION 5 : FEEDBACK & LEARNIA ---
+
+function showFeedbackSection(top3) {
+    const feedbackHtml = `
+        <div class="feedback-block animated-item">
+            <p>Ta recommandation t'a plu ? Aide-nous à améliorer Kpékpé ! ⭐</p>
+            <div class="star-rating">
+                <span class="star" onclick="submitRating(1)">★</span>
+                <span class="star" onclick="submitRating(2)">★</span>
+                <span class="star" onclick="submitRating(3)">★</span>
+                <span class="star" onclick="submitRating(4)">★</span>
+                <span class="star" onclick="submitRating(5)">★</span>
+            </div>
+            <div id="comment-area" style="display:none; margin-top: 10px;">
+                <textarea id="feedback-comment" placeholder="Un commentaire ? (optionnel)" class="chat-textarea"></textarea>
+                <button onclick="submitFeedback()" class="qr-btn" style="margin-top:5px">Envoyer mon avis</button>
+            </div>
+        </div>
+    `;
+
+    // Store data for local storage
+    STATE.current_recommendation = top3.map(t => t.job.title);
+
+    botReply(feedbackHtml, 1000);
+
+    setTimeout(() => {
+        showLearniaSection(top3);
+    }, 2000);
+}
+
+window.submitRating = function (rating) {
+    STATE.user_rating = rating;
+    const stars = document.querySelectorAll('.star');
+    stars.forEach((s, idx) => {
+        s.style.color = idx < rating ? "#fce100" : "#ccc";
+    });
+    document.getElementById('comment-area').style.display = 'block';
+};
+
+window.submitFeedback = function () {
+    const comment = document.getElementById('feedback-comment').value;
+    const feedback = {
+        name: STATE.user.name,
+        rating: STATE.user_rating,
+        comment: comment,
+        personality: STATE.user.personality_type,
+        top3_jobs: STATE.current_recommendation,
+        timestamp: Date.now()
+    };
+    localStorage.setItem('kpekpe_feedback', JSON.stringify(feedback));
+
+    const commentArea = document.getElementById('comment-area');
+    commentArea.innerHTML = "<p>Merci pour ton retour ! 🙏</p>";
+};
+
+function showLearniaSection(top3) {
+    let learniaHtml = `🎓 Basé sur ton profil, voici ce que Kpékpé Learnia te propose :<br><br>`;
+
+    top3.forEach(item => {
+        const job = item.job;
+        const formationData = LEARNIA_FORMATIONS[job.category] || LEARNIA_FORMATIONS["Numérique"];
+        const schools = getSchoolsForJob(job.tags);
+        const schoolName = schools.length > 0 ? schools[0] : "Centre partenaire Kpékpé";
+
+        learniaHtml += `
+            <div class="learnia-mini-card animated-item">
+                <div class="lmc-title">${formationData.formation}</div>
+                <div class="lmc-sub">${job.title}</div>
+                <div class="lmc-info">
+                    <span><i class="fa-solid fa-clock"></i> ${formationData.duree}</span>
+                    <span><i class="fa-solid fa-tag"></i> ${formationData.prix}</span>
+                </div>
+                <div class="lmc-school">${schoolName}</div>
+                <div class="lmc-badge">✅ Centre vérifié</div>
+            </div>
+        `;
+    });
+
+    botReply(learniaHtml, 1500);
+
+    setTimeout(() => {
+        showLearniaFilter();
+    }, 2500);
+}
+
+function showLearniaFilter() {
+    const categories = [...new Set(JOBS_DATA.map(j => j.category))];
+    const catOptions = categories.map(c => `<option value="${c}">${c}</option>`).join("");
+
+    const filterHtml = `
+        <div class="learnia-filter-block animated-item">
+            <p>Tu veux explorer d'autres domaines ? Utilise ce filtre 👇</p>
+            <div class="filter-group">
+                <label>Domaine</label>
+                <select id="filter-domain">${catOptions}</select>
+            </div>
+            <div class="filter-group">
+                <label>Budget</label>
+                <select id="filter-budget">
+                    <option value="any">Tous les budgets</option>
+                    <option value="0">Gratuit</option>
+                    <option value="20000">Moins de 20 000 FCFA</option>
+                    <option value="50000">20 000 à 50 000 FCFA</option>
+                    <option value="above">Plus de 50 000 FCFA</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Durée</label>
+                <select id="filter-duration">
+                    <option value="any">Toutes les durées</option>
+                    <option value="3">Moins de 3 mois</option>
+                    <option value="6">3-6 mois</option>
+                    <option value="more">Plus de 6 mois</option>
+                </select>
+            </div>
+            <button onclick="applyLearniaFilter()" class="qr-btn" style="width:100%; margin-top:10px; background:var(--color-primary); color:white;">Voir les formations →</button>
+        </div>
+    `;
+
+    botReply(filterHtml, 1000);
+
+    setTimeout(() => {
+        botReply("Et voilà ! Qu'est-ce qu'on fait maintenant ?", 1000, [
+            { text: "🎓 Découvrir Learnia", value: "learnia.html" },
+            { text: "⭐ Donner mon avis", value: "contact.html" },
+            { text: "🔄 Recommencer", value: "RESTART" }
+        ]);
+    }, 2000);
+}
+
+window.applyLearniaFilter = function () {
+    const domain = document.getElementById('filter-domain').value;
+    const formation = LEARNIA_FORMATIONS[domain] || { formation: "Formation non disponible", duree: "-", prix: "-", niveau: "-" };
+
+    const resultHtml = `
+        <div class="learnia-mini-card">
+            <div class="lmc-title">${formation.formation}</div>
+            <div class="lmc-info">
+                <span><i class="fa-solid fa-clock"></i> ${formation.duree}</span>
+                <span><i class="fa-solid fa-tag"></i> ${formation.prix}</span>
+            </div>
+            <div class="lmc-school">Centre partenaire Kpékpé</div>
+            <div class="lmc-badge">✅ Centre vérifié</div>
+        </div>
+        <p style="font-size:0.8em; margin-top:10px;"><em>Retrouve toutes les formations sur la page Learnia.</em></p>
+    `;
+    addMessage('bot', resultHtml);
+};
 
 
 

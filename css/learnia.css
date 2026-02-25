@@ -1,0 +1,347 @@
+/* Learnia Specific Styles */
+
+.learnia-hero {
+    background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%);
+    color: white;
+    padding: var(--spacing-xl) 0;
+    text-align: center;
+}
+
+.learnia-hero h1 {
+    color: white;
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+}
+
+.learnia-hero .hero-subtitle {
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0 auto 2rem;
+}
+
+.learnia-stats {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-lg);
+    margin-top: 3rem;
+    font-family: var(--font-heading);
+    font-weight: 600;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.1rem;
+}
+
+.stat-item i {
+    color: var(--color-accent);
+}
+
+/* Piliers */
+.piliers-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-md);
+    margin-top: -50px;
+}
+
+.pilier-card {
+    background: white;
+    padding: 2.5rem 2rem;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.pilier-card:hover {
+    transform: translateY(-10px);
+}
+
+.pilier-card i {
+    font-size: 2.5rem;
+    color: var(--color-primary);
+    margin-bottom: 1.5rem;
+}
+
+/* Catalogue */
+.catalogue-header {
+    margin-bottom: 3rem;
+}
+
+.search-filter-bar {
+    background: white;
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.search-input-wrapper {
+    flex: 2;
+    min-width: 250px;
+    position: relative;
+}
+
+.search-input-wrapper i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-text-muted);
+}
+
+.search-input-wrapper input {
+    width: 100%;
+    padding: 12px 12px 12px 45px;
+    border-radius: 30px;
+    border: 1px solid #ddd;
+    outline: none;
+    font-family: var(--font-body);
+}
+
+.filter-controls {
+    flex: 3;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.filter-controls select {
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-family: var(--font-body);
+    outline: none;
+}
+
+.formation-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2rem;
+}
+
+.formation-card {
+    background: white;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid #f0f0f0;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.formation-card:hover {
+    box-shadow: var(--shadow-lg);
+    border-color: var(--color-primary-light);
+}
+
+.formation-content {
+    padding: 1.5rem;
+    flex: 1;
+}
+
+.formation-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+}
+
+.formation-card h4 {
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.formation-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    margin-bottom: 1rem;
+}
+
+.formation-school {
+    background: var(--color-bg-body);
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.school-name {
+    font-weight: 700;
+    display: block;
+    font-size: 0.9rem;
+    color: var(--color-primary);
+}
+
+.school-badge {
+    font-size: 0.7rem;
+    color: #2e7d32;
+    font-weight: 700;
+}
+
+.formation-actions {
+    display: flex;
+    gap: 10px;
+    padding: 1.5rem;
+    border-top: 1px solid #f0f0f0;
+}
+
+.formation-actions .btn {
+    flex: 1;
+    padding: 10px !important;
+    font-size: 0.85rem !important;
+}
+
+/* Defi Section */
+.defi-section {
+    background-color: #2c3e50;
+    color: white;
+    padding: var(--spacing-xl) 0;
+}
+
+.defi-content {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: var(--spacing-lg);
+    align-items: center;
+}
+
+.leaderboard {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+}
+
+.leaderboard-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.leaderboard-item:last-child {
+    border-bottom: none;
+}
+
+.rank-pill {
+    background: var(--color-accent);
+    color: var(--color-primary);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 700;
+    margin-left: 10px;
+}
+
+/* Blog Section */
+.blog-card {
+    background: white;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+}
+
+.video-thumb {
+    height: 180px;
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    cursor: pointer;
+}
+
+.video-thumb i {
+    font-size: 3rem;
+    color: white;
+    opacity: 0.8;
+}
+
+.video-duration {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+}
+
+/* Formateur Section */
+.formateur-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin: 3rem 0;
+}
+
+.commission-card {
+    padding: 2rem;
+    border-radius: var(--radius-md);
+    text-align: center;
+    position: relative;
+}
+
+.card-light {
+    background: var(--color-primary-light);
+    color: var(--color-primary);
+}
+
+.card-accent {
+    background: var(--color-accent);
+    color: var(--color-primary);
+    transform: scale(1.05);
+    box-shadow: var(--shadow-lg);
+    z-index: 2;
+}
+
+.popular-badge {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--color-primary);
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 700;
+}
+
+.commission-rate {
+    font-size: 3rem;
+    font-weight: 800;
+    margin: 1rem 0;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+
+    .piliers-grid,
+    .formateur-cards {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .learnia-hero h1 {
+        font-size: 2.5rem;
+    }
+
+    .defi-content {
+        grid-template-columns: 1fr;
+    }
+
+    .card-accent {
+        transform: scale(1);
+    }
+}

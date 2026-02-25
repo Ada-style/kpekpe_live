@@ -8,7 +8,7 @@ const PERSONALITY_PROFILES = {
     ANALYTIQUE: {
         label: "Analytique & Logique",
         desc: "Tu aimes comprendre le 'pourquoi' et le 'comment'. Tu es structuré(e) et tu prends des décisions basées sur des faits.",
-        bonus_tags: ["C", "D", "E", "Santé", "Ingénierie", "Informatique", "Finance", "Sciences"]
+        bonus_tags: ["C", "D", "E", "Santé", "Ingénierie", "Informatique", "Finance", "Sciences", "Industrie"]
     },
     CREATIF: {
         label: "Créatif & Intuitif",
@@ -18,7 +18,7 @@ const PERSONALITY_PROFILES = {
     METHODIQUE: {
         label: "Méthodique & Organisé",
         desc: "Tu es fiable, ordonné(e) et efficace. On peut compter sur toi pour gérer des projets et suivre des plans précis.",
-        bonus_tags: ["G1", "G2", "Gestion", "Administration", "Comptabilité", "Logistique", "Droit"]
+        bonus_tags: ["G1", "G2", "Gestion", "Administration", "Comptabilité", "Logistique", "Droit", "Technique"]
     },
     SOCIAL: {
         label: "Social & Empathique",
@@ -136,7 +136,14 @@ const SCHOOLS_DB = [
     { name: "IFAD Building", type: "Public/Privé", ville: "Lomé", domaines: ["Bâtiment", "Construction"] },
     { name: "IFAD Elavagnon", type: "Public/Privé", ville: "Elavagnon", domaines: ["Aquaculture", "Pêche"] },
     { name: "IFAD Barkoissi", type: "Public/Privé", ville: "Barkoissi", domaines: ["Élevage"] },
-    { name: "CFMI", type: "Partenariat", ville: "Lomé", domaines: ["Industrie", "Mécanique"] }
+    { name: "CFMI", type: "Partenariat", ville: "Lomé", domaines: ["Industrie", "Mécanique", "Électromécanique", "Froid", "Chaudronnerie"] },
+    { name: "CIFT", type: "Privé", ville: "Lomé", domaines: ["Mécanique", "Électrotechnique", "Génie Civil"] },
+    { name: "IFTS", type: "Privé", ville: "Lomé", domaines: ["Génie Civil", "Électricité", "Mécanique"] },
+    { name: "CREFER", type: "Privé", ville: "Lomé", domaines: ["Énergies Renouvelables", "Solaire"] },
+    { name: "CFA-PIA", type: "Partenariat", ville: "Adétikopé", domaines: ["Textile", "Transformation", "Industrie"] },
+    { name: "Lycée Technique d'Adidogomé", type: "Public", ville: "Lomé", domaines: ["Technique", "Industrie", "BTP"] },
+    { name: "Lycée Technique de Lomé", type: "Public", ville: "Lomé", domaines: ["Technique", "Industrie", "Électronique"] },
+    { name: "Don Bosco", type: "Privé", ville: "Lomé", domaines: ["Mécanique", "Électricité", "Menuiserie"] }
 ];
 
 // Helper pour trouver des écoles par domaine
@@ -228,9 +235,113 @@ const JOBS_DATA = [
     { id: "cm", title: "Community Manager", category: "Média", tags: ["internet", "communication", "réseaux sociaux", "web", "image"], profiles: ["CREATIF", "SOCIAL"], series: ["A4", "G3"], studies: "2 ans", recruiters: ["Agences", "PME", "Gozem"], desc: "Gestion de l'image web.", salary_indice: "Moyen" },
     { id: "assurance", title: "Assureur", category: "Finance", tags: ["protection", "sécurité", "client", "négociation", "argent"], profiles: ["METHODIQUE", "SOCIAL"], series: ["G3", "A4"], studies: "3 ans", recruiters: ["NSIA", "SUNU Assurances"], desc: "Gestion des risques.", salary_indice: "Moyen" },
     { id: "douane", title: "Agent / Commissaire Douane", category: "Administration", tags: ["port", "loi", "argent", "frontière", "sécurité"], profiles: ["METHODIQUE", "ANALYTIQUE"], series: ["A4", "D", "G2"], studies: "Concours OTR", recruiters: ["État (OTR)"], desc: "Contrôle des marchandises.", salary_indice: "Élevé" },
-    { id: "policier", title: "Policier / Gendarme", category: "Sécurité", tags: ["loi", "protection", "sécurité", "ordre", "aider"], profiles: ["METHODIQUE", "SOCIAL"], series: ["Toutes"], studies: "Concours", recruiters: ["État"], desc: "Maintien de la paix.", salary_indice: "Moyen" },
-    { id: "transitaire", title: "Déclarant en Douane", category: "Transport", tags: ["port", "documents", "logistique", "commerce", "marchandise"], profiles: ["METHODIQUE", "ANALYTIQUE"], series: ["G3", "G2", "A4"], studies: "2-3 ans", recruiters: ["Sociétés de transit", "PAL"], desc: "Formalités douanières.", salary_indice: "Moyen" }
+    { id: "policier", title: "Policier / Gendarme", category: "Sécurité", tags: ["loi", "protection", "security", "ordre", "aider"], profiles: ["METHODIQUE", "SOCIAL"], series: ["Toutes"], studies: "Concours", recruiters: ["État"], desc: "Maintien de la paix.", salary_indice: "Moyen" },
+    { id: "transitaire", title: "Déclarant en Douane", category: "Transport", tags: ["port", "documents", "logistique", "commerce", "marchandise"], profiles: ["METHODIQUE", "ANALYTIQUE"], series: ["G3", "G2", "A4"], studies: "2-3 ans", recruiters: ["Sociétés de transit", "PAL"], desc: "Formalités douanières.", salary_indice: "Moyen" },
+
+    // --- INDUSTRIE & TECHNOLOGIE (NOUVEAU) ---
+    { id: "mainten_indus", title: "Technicien en Maintenance Industrielle", category: "Industrie", tags: ["usine", "machine", "réparation", "industrie", "technique", "mécanique", "maintenance"], profiles: ["METHODIQUE", "ANALYTIQUE"], series: ["F1", "F3", "E", "TI/1"], studies: "2-3 ans", recruiters: ["WACEM", "CIMTOGO", "PIA", "Brasseries"], desc: "Assurer le bon fonctionnement des machines en usine.", salary_indice: "Moyen à Élevé" },
+    { id: "froid_indus", title: "Expert Froid & Climatisation Industriel", category: "Industrie", tags: ["froid", "climatisation", "industrie", "usine", "technique", "maintenance"], profiles: ["METHODIQUE", "ANALYTIQUE"], series: ["F3", "TI/1", "E"], studies: "2-3 ans", recruiters: ["CFMI", "Hôtels", "Industries agroalimentaires"], desc: "Installation et maintenance des systèmes de refroidissement industriels.", salary_indice: "Élevé" },
+    { id: "soudeur_homol", title: "Soudeur Homologué / Chaudronnier", category: "Industrie", tags: ["soudure", "métal", "chaudronnerie", "acier", "industrie", "construction"], profiles: ["METHODIQUE", "CREATIF"], series: ["TI/1", "F1"], studies: "Formation technique", recruiters: ["CFMI", "PIA", "Chantier Naval"], desc: "Assemblage et réparation de structures métalliques complexes.", salary_indice: "Élevé" },
+    { id: "ener_solaire", title: "Technicien en Énergies Renouvelables", category: "Technique", tags: ["solaire", "énergie", "électricité", "écologie", "technique", "installation"], profiles: ["ANALYTIQUE", "METHODIQUE"], series: ["F3", "D", "E"], studies: "2-3 ans", recruiters: ["PME Solaire", "CREFER", "Projets ruraux"], desc: "Installation et maintenance de panneaux solaires et systèmes hybrides.", salary_indice: "Moyen" },
+    { id: "meca_diesel", title: "Mécanicien Engins Lourds / Diesel", category: "Industrie", tags: ["mécanique", "moteur", "diesel", "camion", "engin", "industrie"], profiles: ["METHODIQUE", "ANALYTIQUE"], series: ["F1", "TI/1"], studies: "2-3 ans", recruiters: ["Ebomaf", "PAL", "Mines"], desc: "Maintenance des gros engins de chantier et camions.", salary_indice: "Élevé" },
+    { id: "cond_machine", title: "Conducteur de Machines de Production", category: "Industrie", tags: ["usine", "machine", "production", "industrie", "automatisation"], profiles: ["METHODIQUE"], series: ["F1", "F3", "G"], studies: "Formation pro", recruiters: ["Brasseries", "PIA", "Fan Milk"], desc: "Pilotage de lignes de production automatisées.", salary_indice: "Moyen" },
+    { id: "automatisme", title: "Technicien en Automatisme & Hydraulique", category: "Technique", tags: ["automatisme", "robotique", "hydraulique", "informatique", "technique"], profiles: ["ANALYTIQUE", "METHODIQUE"], series: ["F2", "F3", "E"], studies: "3 ans", recruiters: ["Industries chimiques", "CFMI", "Zone Franche"], desc: "Gestion des systèmes automatisés et circuits hydrauliques.", salary_indice: "Élevé" },
+    { id: "logist_port", title: "Logisticien Portuaire (Manutention)", category: "Transport", tags: ["port", "logistique", "marchandise", "organisation", "transport"], profiles: ["METHODIQUE", "SOCIAL"], series: ["G3", "G1", "A4"], studies: "2-3 ans", recruiters: ["LCT", "Togo Terminal", "MSC"], desc: "Gestion et coordination des flux de marchandises au port.", salary_indice: "Moyen" }
 ];
+
+// --- LEARNIA FORMATIONS MAPPING ---
+const LEARNIA_FORMATIONS = {
+    "Numérique": {
+        formation: "Développement Web & Mobile",
+        duree: "6 mois",
+        prix: "45 000 FCFA",
+        niveau: "Débutant"
+    },
+    "Santé": {
+        formation: "Secourisme & Santé Communautaire",
+        duree: "3 mois",
+        prix: "25 000 FCFA",
+        niveau: "Tous niveaux"
+    },
+    "Gestion": {
+        formation: "Comptabilité & Gestion PME",
+        duree: "4 mois",
+        prix: "30 000 FCFA",
+        niveau: "Débutant"
+    },
+    "Commerce": {
+        formation: "Marketing Digital & Vente",
+        duree: "3 mois",
+        prix: "20 000 FCFA",
+        niveau: "Débutant"
+    },
+    "Arts": {
+        formation: "Design Graphique & Créativité",
+        duree: "4 mois",
+        prix: "35 000 FCFA",
+        niveau: "Débutant"
+    },
+    "Agriculture": {
+        formation: "Agriculture Moderne & Business Agro",
+        duree: "3 mois",
+        prix: "15 000 FCFA",
+        niveau: "Tous niveaux"
+    },
+    "BTP": {
+        formation: "Dessin Technique & AutoCAD",
+        duree: "4 mois",
+        prix: "40 000 FCFA",
+        niveau: "Intermédiaire"
+    },
+    "Droit": {
+        formation: "Initiation au Droit des Affaires",
+        duree: "3 mois",
+        prix: "25 000 FCFA",
+        niveau: "Débutant"
+    },
+    "Média": {
+        formation: "Community Manager & Réseaux Sociaux",
+        duree: "2 mois",
+        prix: "15 000 FCFA",
+        niveau: "Débutant"
+    },
+    "Artisanat": {
+        formation: "Gestion d'Atelier & Entrepreneuriat",
+        duree: "2 mois",
+        prix: "10 000 FCFA",
+        niveau: "Tous niveaux"
+    },
+    "Transport": {
+        formation: "Logistique & Transit International",
+        duree: "4 mois",
+        prix: "35 000 FCFA",
+        niveau: "Débutant"
+    },
+    "Banque": {
+        formation: "Finance Personnelle & Microfinance",
+        duree: "3 mois",
+        prix: "20 000 FCFA",
+        niveau: "Débutant"
+    },
+    "Environnement": {
+        formation: "Gestion Environnementale & Projets Verts",
+        duree: "3 mois",
+        prix: "20 000 FCFA",
+        niveau: "Débutant"
+    },
+    "Industrie": {
+        formation: "Maintenance d'Équipements Industriels",
+        duree: "5 mois",
+        prix: "50 000 FCFA",
+        niveau: "Intermédiaire"
+    },
+    "Technique": {
+        formation: "Installation Panneaux Solaires",
+        duree: "3 mois",
+        prix: "30 000 FCFA",
+        niveau: "Débutant"
+    }
+};
 
 
 // --- LOGIQUE DE MATCHING ---
