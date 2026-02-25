@@ -243,26 +243,61 @@
             box-shadow: var(--shadow-lg);
         }
 
-        /* --- ADMIN PANEL (KPIs) --- */
-        .admin-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1.2rem;
-            padding: 2rem;
-        }
-
-        .kpi-card {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow);
-        }
-
         .kpi-num {
             font-size: 1.8rem;
             font-weight: 800;
             color: var(--green);
+        }
+
+        /* ============================
+           RESPONSIVE DESIGN (Mobile First Adjustments)
+           ============================ */
+        @media (max-width: 900px) {
+            .nav-links-global {
+                display: none;
+            }
+
+            .profile-wrap {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+
+            .admin-grid {
+                grid-template-columns: 1fr 1fr;
+                padding: 1rem;
+            }
+
+            .app-sidebar {
+                display: none;
+            }
+
+            .pay-container {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+
+            h1 {
+                font-size: 2.2rem !important;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .admin-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-actions .btn-sm {
+                padding: 6px 12px;
+                font-size: 0.75rem;
+            }
+
+            .nav-logo {
+                font-size: 1.1rem;
+            }
         }
     </style>
 </head>
@@ -385,7 +420,7 @@
             <div style="background: var(--bg); padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem;">
                 <p style="font-weight: 600; text-align: center;">HTML, CSS & JS — De Zéro à Pro</p>
                 <div
-                    style="display: flex; justify-content: space-between; margin-top: 1rem; border-top: 1px solid var(--border); pt: 1rem;">
+                    style="display: flex; justify-content: space-between; margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 1rem;">
                     <span>Total à payer :</span>
                     <strong style="color: var(--green); font-size: 1.2rem;">45 000 FCFA</strong>
                 </div>
