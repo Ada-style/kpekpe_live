@@ -121,7 +121,11 @@ function addMessage(sender, text, quickReplies = null) {
     if (sender === 'bot') {
         const avatar = document.createElement('div');
         avatar.classList.add('message-avatar');
-        avatar.innerHTML = '<i class="fa-solid fa-lightbulb"></i>';
+        avatar.innerHTML = `
+            <div class="kpekpe-logo-icon" style="margin-right:0; width:24px; height:24px;">
+                <div class="chevron chevron-green"></div>
+                <div class="chevron chevron-yellow"></div>
+            </div>`;
         msgDiv.appendChild(avatar);
     }
 
