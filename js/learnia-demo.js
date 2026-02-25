@@ -42,7 +42,8 @@ function switchView(viewName) {
 
     // Hide all sections
     document.querySelectorAll('.demo-section').forEach(s => s.style.display = 'none');
-    document.querySelector('.landing-section').style.display = (viewName === 'landing') ? 'block' : 'none';
+    const landingView = document.getElementById('landing-view');
+    if (landingView) landingView.style.display = (viewName === 'landing') ? 'block' : 'none';
 
     // Show target section
     const target = document.getElementById(`demo-${viewName}`);
